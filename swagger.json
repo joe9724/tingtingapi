@@ -1,0 +1,4682 @@
+﻿{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Tingting(Api)",
+    "version" : "1.0.0",
+    "title" : "Tingting(Api)",
+    "contact" : {
+      "email" : "64060764@qq.com"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/nanjingyouzi/TingtingApi/1.0.0",
+  "tags" : [ {
+    "name" : "Member",
+    "description" : "用户"
+  }, {
+    "name" : "Category",
+    "description" : "大类"
+  }, {
+    "name" : "Album",
+    "description" : "专辑"
+  }, {
+    "name" : "Book",
+    "description" : "书本"
+  }, {
+    "name" : "Icon",
+    "description" : "app中间图标列表"
+  }, {
+    "name" : "Chapter",
+    "description" : "章节"
+  }, {
+    "name" : "Banner",
+    "description" : "Banner"
+  }, {
+    "name" : "Recommend",
+    "description" : "推荐"
+  } ],
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/member/loginByThirdParty" : {
+      "post" : {
+        "tags" : [ "Member" ],
+        "summary" : "第三方登录",
+        "description" : "第三方登录",
+        "operationId" : "/member/loginByThirdParty",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "第三方登录",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/body"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "上报错误返回",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/order/list" : {
+      "post" : {
+        "tags" : [ "Member" ],
+        "summary" : "获取订单列表(含条件检索)",
+        "description" : "获取订单列表",
+        "operationId" : "order/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "payType",
+          "in" : "query",
+          "description" : "支付类型 0是支付宝 1是微信 2是银联 3是applay 4是其他",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "orderNo",
+          "in" : "query",
+          "description" : "订单编号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "startTime",
+          "in" : "query",
+          "description" : "统计开始时间",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTime",
+          "in" : "query",
+          "description" : "统计结束时间",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "买书人id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "albumName",
+          "in" : "query",
+          "description" : "检索时模糊查询使用",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "获取反馈列表",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_1"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/order/serialNuber" : {
+      "post" : {
+        "tags" : [ "Member" ],
+        "summary" : "充值订单产生流水号",
+        "description" : "充值订单产生流水号",
+        "operationId" : "/order/serialNuber",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "充值订单产生流水号",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/body_1"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "上报错误返回",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/checkRecharge" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "检查是否充值成功",
+        "description" : "检查是否充值成功",
+        "operationId" : "/member/checkRecharge",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "serialNumber",
+          "in" : "query",
+          "description" : "充值流水号",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_2"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/icon/list" : {
+      "get" : {
+        "tags" : [ "Icon" ],
+        "summary" : "app中间图标列表",
+        "description" : "app中间图标列表",
+        "operationId" : "/icon/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "posId",
+          "in" : "query",
+          "description" : "位置Id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "isRecommend",
+          "in" : "query",
+          "description" : "是否正常调用还是推荐调用 0=正常 1=推荐",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_2"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/fav" : {
+      "get" : {
+        "tags" : [ "Book" ],
+        "summary" : "收藏/取消收藏 书本",
+        "description" : "收藏/取消收藏 书本",
+        "operationId" : "/book/fav",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "bookId",
+          "in" : "query",
+          "description" : "书本Id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "fav/unfav",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "购买专辑返回结果",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_3"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/buy" : {
+      "get" : {
+        "tags" : [ "Book" ],
+        "summary" : "购买书本",
+        "description" : "购买书本",
+        "operationId" : "book/buy/",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "bookId",
+          "in" : "query",
+          "description" : "书本Id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "购买专辑返回结果",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_3"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/list/fav" : {
+      "get" : {
+        "tags" : [ "Book" ],
+        "summary" : "根据用户收藏书本",
+        "description" : "根据用户收藏书本",
+        "operationId" : "book/list/fav",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "isRecommend",
+          "in" : "query",
+          "description" : "是否正常调用还是推荐调用 0=正常 1=推荐",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "根据用户收藏书本",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_4"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/list" : {
+      "get" : {
+        "tags" : [ "Book" ],
+        "summary" : "根据用户信息匹配书本",
+        "description" : "根据用户信息匹配书本",
+        "operationId" : "book/list/",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "isRecommend",
+          "in" : "query",
+          "description" : "是否正常调用还是推荐调用 0=正常 1=推荐",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_4"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/album/detail" : {
+      "get" : {
+        "tags" : [ "Album" ],
+        "summary" : "专辑详情",
+        "description" : "专辑详情",
+        "operationId" : "album/detail",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "会员id,未登录 -1",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "albumId",
+          "in" : "query",
+          "description" : "专辑id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "专辑详情",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_5"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/album/list/match" : {
+      "get" : {
+        "tags" : [ "Album" ],
+        "summary" : "根据用户信息匹配专辑(备用接口)",
+        "description" : "根据用户信息匹配专辑",
+        "operationId" : "album/list/match",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "isRecommend",
+          "in" : "query",
+          "description" : "是否正常调用还是推荐调用 0=正常 1=推荐",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_6"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/album/list/fav" : {
+      "get" : {
+        "tags" : [ "Album" ],
+        "summary" : "根据用户信息获取收藏专辑",
+        "description" : "根据用户信息获取收藏专辑",
+        "operationId" : "album/list/fav",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "isRecommend",
+          "in" : "query",
+          "description" : "是否正常调用还是推荐调用 0=正常 1=推荐",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "根据用户信息获取收藏专辑",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_6"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/album/fav" : {
+      "get" : {
+        "tags" : [ "Album" ],
+        "summary" : "收藏/取消收藏专辑",
+        "description" : "收藏/取消收藏专辑",
+        "operationId" : "/album/fav",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "albumId",
+          "in" : "query",
+          "description" : "专辑Id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "fav/unfav",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "购买专辑返回结果",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_7"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/album/buy" : {
+      "get" : {
+        "tags" : [ "Album" ],
+        "summary" : "购买专辑",
+        "description" : "购买专辑",
+        "operationId" : "album/buy/",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "albumId",
+          "in" : "query",
+          "description" : "专辑Id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(参与加密)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "购买专辑返回结果",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_7"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/feedback" : {
+      "post" : {
+        "tags" : [ "Member" ],
+        "summary" : "反馈",
+        "description" : "反馈",
+        "operationId" : "feedback",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "意见反馈",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/body_2"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "上报错误返回",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_8"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/reportErr" : {
+      "post" : {
+        "tags" : [ "Member" ],
+        "summary" : "页面报错(备用)",
+        "description" : "页面报错",
+        "operationId" : "/member/reportErr",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "report ERR to server",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/body_3"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "上报错误返回",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_8"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/scanCode" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "扫码",
+        "description" : "扫码",
+        "operationId" : "/member/scanCode",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "codeUrl",
+          "in" : "query",
+          "description" : "二维码中的url",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "extraInfo",
+          "in" : "query",
+          "description" : "额外信息",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "扫码后服务端返回结果",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_9"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/search" : {
+      "get" : {
+        "tags" : [ "Search" ],
+        "summary" : "搜索",
+        "description" : "搜索",
+        "operationId" : "search",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "keyword",
+          "in" : "query",
+          "description" : "关键词",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "搜索结果",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_10"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/banner/list" : {
+      "get" : {
+        "tags" : [ "Banner" ],
+        "summary" : "Banner列表",
+        "description" : "Banner列表",
+        "operationId" : "/banner/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "posId",
+          "in" : "query",
+          "description" : "位置Id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "isRecommend",
+          "in" : "query",
+          "description" : "是否正常调用还是推荐调用 0=正常 1=推荐",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_11"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/banner/detail" : {
+      "get" : {
+        "tags" : [ "Banner" ],
+        "summary" : "Banner详情",
+        "description" : "Banner详情",
+        "operationId" : "/banner/detail",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "bannerId",
+          "in" : "query",
+          "description" : "bannerId",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_11"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/recommend" : {
+      "get" : {
+        "tags" : [ "Recommend" ],
+        "summary" : "推荐(备用)",
+        "description" : "首页推荐",
+        "operationId" : "recommend",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "posId",
+          "in" : "query",
+          "description" : "位置Id",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_12"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/msg/list" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "系统消息列表",
+        "description" : "系统消息列表",
+        "operationId" : "msg/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_13"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/record/list" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "获取录音列表",
+        "description" : "获取录音列表",
+        "operationId" : "record/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_14"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/uploadRecord" : {
+      "post" : {
+        "tags" : [ "Member" ],
+        "summary" : "添加一个大类",
+        "operationId" : "/member/uploadRecord",
+        "consumes" : [ "multipart/form-data" ],
+        "parameters" : [ {
+          "name" : "memberId",
+          "in" : "formData",
+          "description" : "会员id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "icon",
+          "in" : "formData",
+          "description" : "录音文件.",
+          "required" : true,
+          "type" : "file"
+        }, {
+          "name" : "cover",
+          "in" : "formData",
+          "description" : "封面.",
+          "required" : false,
+          "type" : "file"
+        }, {
+          "name" : "title",
+          "in" : "formData",
+          "description" : "Description of file contents.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "subTitle",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "summary",
+          "in" : "formData",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "content",
+          "in" : "formData",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "tag",
+          "in" : "formData",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "categoryId",
+          "in" : "formData",
+          "description" : "备用字段",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "上传成功，返回成功信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_8"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/chapter/list/history" : {
+      "get" : {
+        "tags" : [ "Chapter" ],
+        "summary" : "书的章节列表",
+        "description" : "浏览历史记录",
+        "operationId" : "chapter/history/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_15"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/chapter/fav" : {
+      "get" : {
+        "tags" : [ "Chapter" ],
+        "summary" : "收藏/取消收藏章节",
+        "description" : "收藏/取消收藏章节",
+        "operationId" : "chapter/fav",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "query",
+          "description" : "当前后台登录id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "chapterId",
+          "in" : "query",
+          "description" : "章节id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "fav/unfav",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "章节详情",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_16"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/chapter/buy" : {
+      "get" : {
+        "tags" : [ "Chapter" ],
+        "summary" : "购买章节",
+        "description" : "购买章节",
+        "operationId" : "chapter/buy",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "query",
+          "description" : "当前后台登录id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "chapterId",
+          "in" : "query",
+          "description" : "章节id",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "章节详情",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_16"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/chapter/detail" : {
+      "get" : {
+        "tags" : [ "Chapter" ],
+        "summary" : "章节详情",
+        "description" : "章节详情",
+        "operationId" : "chapter/detail",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "query",
+          "description" : "当前后台登录id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "chapterId",
+          "in" : "query",
+          "description" : "章节id",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "章节详情",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_17"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/chapter/list/fav" : {
+      "get" : {
+        "tags" : [ "Chapter" ],
+        "summary" : "用户收藏的书的章节列表",
+        "description" : "获取我收藏的章节列表",
+        "operationId" : "chapter/fav/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_15"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/chapterList" : {
+      "get" : {
+        "tags" : [ "Book" ],
+        "summary" : "书的章节列表",
+        "description" : "书的章节列表",
+        "operationId" : "book/chapList",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "bookId",
+          "in" : "query",
+          "description" : "书id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_18"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/album/bookList" : {
+      "get" : {
+        "tags" : [ "Book" ],
+        "summary" : "专辑下的书列表",
+        "description" : "登录接口",
+        "operationId" : "album/bookList",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "albumId",
+          "in" : "query",
+          "description" : "专辑id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_19"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/detail" : {
+      "get" : {
+        "tags" : [ "Book" ],
+        "summary" : "书本详情",
+        "description" : "书本详情",
+        "operationId" : "book/detail",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Membername",
+          "in" : "query",
+          "description" : "登录名",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "bookId",
+          "in" : "query",
+          "description" : "书本id",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_20"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/album/list" : {
+      "get" : {
+        "tags" : [ "Album" ],
+        "summary" : "子分类下的专辑列表",
+        "description" : "登录接口",
+        "operationId" : "album/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "subCategoryId",
+          "in" : "query",
+          "description" : "密码",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_6"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/register/sendSms" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "下发注册时的验证码",
+        "description" : "下发注册时的验证码",
+        "operationId" : "/member/register/sendSms",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "phoneNumber",
+          "in" : "query",
+          "description" : "登录所用手机号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(加密串要用到,供服务端验证，简单防刷)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_16"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/findPass/sendSms" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "下发找回密码时的验证码",
+        "description" : "下发找回密码时的验证码",
+        "operationId" : "findPass/sendSms",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "phoneNumber",
+          "in" : "query",
+          "description" : "登录所用手机号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(加密串要用到,供服务端验证，简单防刷)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_16"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/findPass/editPass" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "修改密码",
+        "description" : "修改密码",
+        "operationId" : "findPass/editPass",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "phoneNumber",
+          "in" : "query",
+          "description" : "登录所用手机号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "val",
+          "in" : "query",
+          "description" : "加密串",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ts",
+          "in" : "query",
+          "description" : "时间戳(加密串要用到,供服务端验证，简单防刷)",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "newPass",
+          "in" : "query",
+          "description" : "新密码",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_16"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/login" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "登录接口",
+        "description" : "登录接口",
+        "operationId" : "login",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Membername",
+          "in" : "query",
+          "description" : "登录名",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "loginType",
+          "in" : "query",
+          "description" : "登录方式,0代表密码登陆,1代表快捷登录",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "password",
+          "in" : "query",
+          "description" : "登录密码,",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "smsCode",
+          "in" : "query",
+          "description" : "快捷登录时上传smsCode,password留空",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_21"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/init" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "启动页接口",
+        "description" : "启动页接口",
+        "operationId" : "/member/init",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/InitModel"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/register" : {
+      "get" : {
+        "tags" : [ "Member" ],
+        "summary" : "注册接口",
+        "description" : "注册接口",
+        "operationId" : "register",
+        "consumes" : [ "multipart/form-data" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "version",
+          "in" : "formData",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "formData",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "formData",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "Membername",
+          "in" : "formData",
+          "description" : "登录名",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "password",
+          "in" : "formData",
+          "description" : "密码",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "validateCode",
+          "in" : "formData",
+          "description" : "短信验证码",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "phoneNumber",
+          "in" : "formData",
+          "description" : "手机号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "birth-year",
+          "in" : "formData",
+          "description" : "出生年",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "birth-month",
+          "in" : "formData",
+          "description" : "出生月",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "birth-day",
+          "in" : "formData",
+          "description" : "出生日",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "grade",
+          "in" : "formData",
+          "description" : "年级",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "avatar",
+          "in" : "formData",
+          "description" : "头像",
+          "required" : false,
+          "type" : "file"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "登录成功，返回登录信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_16"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/category/detail" : {
+      "get" : {
+        "tags" : [ "Category" ],
+        "summary" : "分类详情",
+        "description" : "分类详情",
+        "operationId" : "category/detail",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "会员id",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "categoryId",
+          "in" : "query",
+          "description" : "分类id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "分类详情",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_22"
+            }
+          },
+          "default" : {
+            "description" : "error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/category/list" : {
+      "get" : {
+        "tags" : [ "Category" ],
+        "summary" : "获取分类列表",
+        "description" : "获取分类列表",
+        "operationId" : "/category/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "parentId",
+          "in" : "query",
+          "description" : "-1表示根目录 其他表示获取子类",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "查询成功，返回组织机构列表信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_23"
+            }
+          }
+        }
+      }
+    },
+    "/category/sub/list" : {
+      "get" : {
+        "tags" : [ "Category" ],
+        "summary" : "获取子类列表",
+        "description" : "获取子类列表",
+        "operationId" : "/category/sub/list",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "startTs",
+          "in" : "query",
+          "description" : "开始时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "endTs",
+          "in" : "query",
+          "description" : "结束时间戳",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "标签(如:文学|历史|卡通)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "grade",
+          "in" : "query",
+          "description" : "年级(如:1-4)",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "categoryId",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "description" : "版本号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "imei",
+          "in" : "query",
+          "description" : "唯一识别号",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "client",
+          "in" : "query",
+          "description" : "客户端类型",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "description" : "用户id",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "分页索引",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "分页尺寸",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "查询成功，返回组织机构列表信息",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200_23"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Order" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "memberId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "albumId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "value" : {
+          "type" : "number"
+        },
+        "time" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "status" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "memberName" : {
+          "type" : "string"
+        },
+        "albumName" : {
+          "type" : "string"
+        },
+        "orderNo" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "albumName" : "albumName",
+        "orderNo" : "orderNo",
+        "albumId" : 1,
+        "memberName" : "memberName",
+        "id" : 0,
+        "time" : 5,
+        "value" : 5.962133916683182377482808078639209270477294921875,
+        "memberId" : 6,
+        "status" : 2
+      }
+    },
+    "Icon" : {
+      "type" : "object",
+      "properties" : {
+        "icon" : {
+          "type" : "string"
+        },
+        "cover" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "跳转类型(0=大类 1=小类 2=专辑 3=书本 4=章节 5=站内wap 6=第三方链接)"
+        },
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "order" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "webUrl" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "cover" : "cover",
+        "webUrl" : "webUrl",
+        "icon" : "icon",
+        "name" : "name",
+        "id" : 6,
+        "type" : 0,
+        "order" : 1
+      }
+    },
+    "Banner" : {
+      "type" : "object",
+      "properties" : {
+        "cover" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "跳转类型(0=大类 1=小类 2=专辑 3=书本 4=章节 5=站内wap 6=第三方链接)"
+        },
+        "order" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "extraInfo1" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "备用字段"
+        },
+        "extraInfo2" : {
+          "type" : "string",
+          "description" : "备用字段"
+        },
+        "extraInfo3" : {
+          "type" : "string",
+          "description" : "备用字段"
+        }
+      },
+      "description" : "大图",
+      "example" : {
+        "cover" : "cover",
+        "name" : "name",
+        "extraInfo1" : 5,
+        "id" : 6,
+        "type" : 0,
+        "extraInfo2" : "extraInfo2",
+        "order" : 1,
+        "extraInfo3" : "extraInfo3"
+      }
+    },
+    "Recommend" : {
+      "type" : "object",
+      "properties" : {
+        "resource" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Resources"
+          }
+        }
+      },
+      "example" : {
+        "resource" : [ {
+          "data" : [ {
+            "clipsNumber" : 1,
+            "summary" : "summary",
+            "playCount" : 6,
+            "subTitle" : "subTitle",
+            "authorName" : "authorName",
+            "name" : "name",
+            "icon" : "icon",
+            "subCategoryId" : 0,
+            "showIcon" : true,
+            "authorAvatar" : "authorAvatar",
+            "bookId" : 5
+          }, {
+            "clipsNumber" : 1,
+            "summary" : "summary",
+            "playCount" : 6,
+            "subTitle" : "subTitle",
+            "authorName" : "authorName",
+            "name" : "name",
+            "icon" : "icon",
+            "subCategoryId" : 0,
+            "showIcon" : true,
+            "authorAvatar" : "authorAvatar",
+            "bookId" : 5
+          } ],
+          "title" : "title"
+        }, {
+          "data" : [ {
+            "clipsNumber" : 1,
+            "summary" : "summary",
+            "playCount" : 6,
+            "subTitle" : "subTitle",
+            "authorName" : "authorName",
+            "name" : "name",
+            "icon" : "icon",
+            "subCategoryId" : 0,
+            "showIcon" : true,
+            "authorAvatar" : "authorAvatar",
+            "bookId" : 5
+          }, {
+            "clipsNumber" : 1,
+            "summary" : "summary",
+            "playCount" : 6,
+            "subTitle" : "subTitle",
+            "authorName" : "authorName",
+            "name" : "name",
+            "icon" : "icon",
+            "subCategoryId" : 0,
+            "showIcon" : true,
+            "authorAvatar" : "authorAvatar",
+            "bookId" : 5
+          } ],
+          "title" : "title"
+        } ]
+      }
+    },
+    "Resources" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Book"
+          }
+        }
+      },
+      "example" : {
+        "data" : [ {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        }, {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        } ],
+        "title" : "title"
+      }
+    },
+    "Msg" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "subTitle" : {
+          "type" : "string"
+        },
+        "createTime" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "from" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "subTitle" : "subTitle",
+        "createTime" : 0,
+        "from" : "from",
+        "title" : "title"
+      }
+    },
+    "Record" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "subTitle" : {
+          "type" : "string"
+        },
+        "summary" : {
+          "type" : "string"
+        },
+        "url" : {
+          "type" : "string"
+        },
+        "cover" : {
+          "type" : "string"
+        },
+        "duration" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "playCount" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      },
+      "example" : {
+        "summary" : "summary",
+        "cover" : "cover",
+        "duration" : 0,
+        "playCount" : 6,
+        "subTitle" : "subTitle",
+        "title" : "title",
+        "url" : "url"
+      }
+    },
+    "UploadRecord" : {
+      "type" : "object",
+      "properties" : {
+        "version" : {
+          "type" : "string"
+        },
+        "imei" : {
+          "type" : "string"
+        },
+        "client" : {
+          "type" : "string"
+        },
+        "memberId" : {
+          "type" : "string"
+        },
+        "recordFile" : {
+          "type" : "object",
+          "properties" : { }
+        }
+      }
+    },
+    "Chapter" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "icon" : {
+          "type" : "string"
+        },
+        "subTitle" : {
+          "type" : "string"
+        },
+        "showIcon" : {
+          "type" : "boolean"
+        },
+        "bigCover" : {
+          "type" : "string"
+        },
+        "playCount" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "duration" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "updateTips" : {
+          "type" : "string"
+        },
+        "mp3Url" : {
+          "type" : "string"
+        },
+        "hlsUrl" : {
+          "type" : "string"
+        },
+        "order" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "summary" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "duration" : 5,
+        "summary" : "summary",
+        "playCount" : 1,
+        "subTitle" : "subTitle",
+        "name" : "name",
+        "icon" : "icon",
+        "mp3Url" : "mp3Url",
+        "updateTips" : "updateTips",
+        "showIcon" : true,
+        "bigCover" : "bigCover",
+        "hlsUrl" : "hlsUrl",
+        "order" : 5
+      }
+    },
+    "Book" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "icon" : {
+          "type" : "string"
+        },
+        "subTitle" : {
+          "type" : "string"
+        },
+        "showIcon" : {
+          "type" : "boolean"
+        },
+        "subCategoryId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "playCount" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "clipsNumber" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "authorAvatar" : {
+          "type" : "string"
+        },
+        "authorName" : {
+          "type" : "string"
+        },
+        "summary" : {
+          "type" : "string"
+        },
+        "bookId" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      },
+      "example" : {
+        "clipsNumber" : 1,
+        "summary" : "summary",
+        "playCount" : 6,
+        "subTitle" : "subTitle",
+        "authorName" : "authorName",
+        "name" : "name",
+        "icon" : "icon",
+        "subCategoryId" : 0,
+        "showIcon" : true,
+        "authorAvatar" : "authorAvatar",
+        "bookId" : 5
+      }
+    },
+    "Album" : {
+      "type" : "object",
+      "properties" : {
+        "albumName" : {
+          "type" : "string"
+        },
+        "albumId" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      },
+      "example" : {
+        "albumName" : "albumName",
+        "albumId" : 0
+      }
+    },
+    "Category" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "summary" : {
+          "type" : "string"
+        },
+        "subCategory" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/SubCategoryItem"
+          }
+        }
+      },
+      "example" : {
+        "summary" : "summary",
+        "subCategory" : [ {
+          "summary" : "summary",
+          "showicon" : true,
+          "name" : "name",
+          "icon" : "icon",
+          "categoryId" : 0
+        }, {
+          "summary" : "summary",
+          "showicon" : true,
+          "name" : "name",
+          "icon" : "icon",
+          "categoryId" : 0
+        } ],
+        "name" : "name"
+      }
+    },
+    "SubCategoryItem" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "summary" : {
+          "type" : "string"
+        },
+        "icon" : {
+          "type" : "string"
+        },
+        "showicon" : {
+          "type" : "boolean"
+        },
+        "categoryId" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      },
+      "example" : {
+        "summary" : "summary",
+        "showicon" : true,
+        "name" : "name",
+        "icon" : "icon",
+        "categoryId" : 0
+      }
+    },
+    "Error" : {
+      "type" : "object",
+      "required" : [ "msg" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Response" : {
+      "type" : "object",
+      "required" : [ "code", "msg" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "msg" : "msg",
+        "code" : 0
+      }
+    },
+    "Recharge" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "0=等待 1=成功 2=失败 3=其他"
+        },
+        "msg" : {
+          "type" : "string"
+        },
+        "serialNumber" : {
+          "type" : "string",
+          "description" : "支付平台产生的流水号"
+        }
+      },
+      "description" : "充值结果",
+      "example" : {
+        "msg" : "msg",
+        "code" : 6,
+        "serialNumber" : "serialNumber"
+      }
+    },
+    "AlbumBuyResult" : {
+      "type" : "object",
+      "required" : [ "code", "msg" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "0=等待 1=成功 2=失败 3=其他"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      },
+      "description" : "购买结果",
+      "example" : {
+        "msg" : "msg",
+        "code" : 0
+      }
+    },
+    "BookBuyResult" : {
+      "type" : "object",
+      "required" : [ "code", "msg" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "0=等待 1=成功 2=失败 3=其他"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      },
+      "description" : "购买结果",
+      "example" : {
+        "msg" : "msg",
+        "code" : 0
+      }
+    },
+    "LoginRet" : {
+      "type" : "object",
+      "properties" : {
+        "memberId" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "Membername" : {
+          "type" : "string"
+        },
+        "avatar" : {
+          "type" : "string"
+        },
+        "gender" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      },
+      "example" : {
+        "gender" : 6,
+        "Membername" : "Membername",
+        "avatar" : "avatar",
+        "memberId" : 0
+      }
+    },
+    "Status" : {
+      "type" : "object",
+      "required" : [ "code", "msg" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 200
+        },
+        "msg" : {
+          "type" : "string",
+          "example" : "ok"
+        }
+      },
+      "example" : {
+        "msg" : "ok",
+        "code" : 200
+      }
+    },
+    "InitData" : {
+      "type" : "object",
+      "properties" : {
+        "downloadUrl" : {
+          "type" : "string",
+          "example" : "http://www.google.com/google.apk"
+        },
+        "force" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 0
+        },
+        "number" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "msg" : {
+          "type" : "string",
+          "example" : "下载地址字段"
+        },
+        "extraInfo" : {
+          "$ref" : "#/definitions/InitData_extraInfo"
+        }
+      },
+      "example" : {
+        "msg" : "下载地址字段",
+        "number" : 0,
+        "downloadUrl" : "http://www.google.com/google.apk",
+        "force" : 0,
+        "extraInfo" : {
+          "specialUrl" : "specialUrl",
+          "aboutUsUrl" : "aboutUsUrl",
+          "versionUrl" : "versionUrl"
+        }
+      }
+    },
+    "InitModel" : {
+      "type" : "object",
+      "required" : [ "data", "status" ],
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Status"
+        },
+        "data" : {
+          "$ref" : "#/definitions/InitData"
+        }
+      },
+      "example" : {
+        "data" : {
+          "msg" : "下载地址字段",
+          "number" : 0,
+          "downloadUrl" : "http://www.google.com/google.apk",
+          "force" : 0,
+          "extraInfo" : {
+            "specialUrl" : "specialUrl",
+            "aboutUsUrl" : "aboutUsUrl",
+            "versionUrl" : "versionUrl"
+          }
+        },
+        "status" : {
+          "msg" : "ok",
+          "code" : 200
+        }
+      }
+    },
+    "body" : {
+      "properties" : {
+        "version" : {
+          "type" : "string"
+        },
+        "imei" : {
+          "type" : "string"
+        },
+        "client" : {
+          "type" : "string"
+        },
+        "ts" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "val" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "第三方类型 0=微信,1=微博,2=qq,3=手机号快捷登录,4=其他"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "登录返回信息"
+        },
+        "openid" : {
+          "type" : "string"
+        },
+        "avatar" : {
+          "type" : "string"
+        },
+        "smsCode" : {
+          "type" : "string"
+        },
+        "phone" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/Recharge"
+        }
+      },
+      "example" : {
+        "data" : {
+          "msg" : "msg",
+          "code" : 6,
+          "serialNumber" : "serialNumber"
+        },
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_1" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "orders" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Order"
+          }
+        }
+      },
+      "example" : {
+        "orders" : [ {
+          "albumName" : "albumName",
+          "orderNo" : "orderNo",
+          "albumId" : 1,
+          "memberName" : "memberName",
+          "id" : 0,
+          "time" : 5,
+          "value" : 5.962133916683182377482808078639209270477294921875,
+          "memberId" : 6,
+          "status" : 2
+        }, {
+          "albumName" : "albumName",
+          "orderNo" : "orderNo",
+          "albumId" : 1,
+          "memberName" : "memberName",
+          "id" : 0,
+          "time" : 5,
+          "value" : 5.962133916683182377482808078639209270477294921875,
+          "memberId" : 6,
+          "status" : 2
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "body_1" : {
+      "properties" : {
+        "version" : {
+          "type" : "string"
+        },
+        "imei" : {
+          "type" : "string"
+        },
+        "client" : {
+          "type" : "string"
+        },
+        "ts" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "val" : {
+          "type" : "string"
+        },
+        "content" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "支付厂家类型 0=支付宝,1=微信,3=appPay,4=银联,5=其他"
+        },
+        "value" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "memberId" : {
+          "type" : "integer",
+          "format" : "int64"
+        }
+      }
+    },
+    "inline_response_200_2" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "icons" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Icon"
+          }
+        }
+      },
+      "example" : {
+        "icons" : [ {
+          "cover" : "cover",
+          "webUrl" : "webUrl",
+          "icon" : "icon",
+          "name" : "name",
+          "id" : 6,
+          "type" : 0,
+          "order" : 1
+        }, {
+          "cover" : "cover",
+          "webUrl" : "webUrl",
+          "icon" : "icon",
+          "name" : "name",
+          "id" : 6,
+          "type" : 0,
+          "order" : 1
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_3" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/BookBuyResult"
+        }
+      },
+      "example" : {
+        "data" : {
+          "msg" : "msg",
+          "code" : 0
+        },
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_4" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "albumList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Book"
+          }
+        }
+      },
+      "example" : {
+        "albumList" : [ {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        }, {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_5" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/Album"
+        },
+        "isFav" : {
+          "type" : "boolean"
+        }
+      },
+      "example" : {
+        "data" : {
+          "albumName" : "albumName",
+          "albumId" : 0
+        },
+        "isFav" : true,
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_6" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "albumList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Album"
+          }
+        }
+      },
+      "example" : {
+        "albumList" : [ {
+          "albumName" : "albumName",
+          "albumId" : 0
+        }, {
+          "albumName" : "albumName",
+          "albumId" : 0
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_7" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/AlbumBuyResult"
+        }
+      },
+      "example" : {
+        "data" : {
+          "msg" : "msg",
+          "code" : 0
+        },
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "body_2" : {
+      "required" : [ "client", "content", "imei", "ts", "type", "val", "version" ],
+      "properties" : {
+        "version" : {
+          "type" : "string"
+        },
+        "imei" : {
+          "type" : "string"
+        },
+        "client" : {
+          "type" : "string"
+        },
+        "ts" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "val" : {
+          "type" : "string"
+        },
+        "content" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "反馈类型 0=账号问题,1=付费问题,2=播放问题,3=会员问题"
+        }
+      }
+    },
+    "inline_response_200_8" : {
+      "properties" : {
+        "return" : {
+          "$ref" : "#/definitions/Response"
+        }
+      },
+      "example" : {
+        "return" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "body_3" : {
+      "properties" : {
+        "version" : {
+          "type" : "string"
+        },
+        "imei" : {
+          "type" : "string"
+        },
+        "client" : {
+          "type" : "string"
+        },
+        "ts" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "val" : {
+          "type" : "string"
+        },
+        "content" : {
+          "type" : "string"
+        }
+      }
+    },
+    "inline_response_200_9" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/Book"
+        }
+      },
+      "example" : {
+        "data" : {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        },
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_10" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "albumList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Album"
+          }
+        },
+        "bookList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Book"
+          }
+        },
+        "recordList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Record"
+          }
+        },
+        "chapterList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Chapter"
+          }
+        }
+      },
+      "example" : {
+        "chapterList" : [ {
+          "duration" : 5,
+          "summary" : "summary",
+          "playCount" : 1,
+          "subTitle" : "subTitle",
+          "name" : "name",
+          "icon" : "icon",
+          "mp3Url" : "mp3Url",
+          "updateTips" : "updateTips",
+          "showIcon" : true,
+          "bigCover" : "bigCover",
+          "hlsUrl" : "hlsUrl",
+          "order" : 5
+        }, {
+          "duration" : 5,
+          "summary" : "summary",
+          "playCount" : 1,
+          "subTitle" : "subTitle",
+          "name" : "name",
+          "icon" : "icon",
+          "mp3Url" : "mp3Url",
+          "updateTips" : "updateTips",
+          "showIcon" : true,
+          "bigCover" : "bigCover",
+          "hlsUrl" : "hlsUrl",
+          "order" : 5
+        } ],
+        "recordList" : [ {
+          "summary" : "summary",
+          "cover" : "cover",
+          "duration" : 0,
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "title" : "title",
+          "url" : "url"
+        }, {
+          "summary" : "summary",
+          "cover" : "cover",
+          "duration" : 0,
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "title" : "title",
+          "url" : "url"
+        } ],
+        "albumList" : [ {
+          "albumName" : "albumName",
+          "albumId" : 0
+        }, {
+          "albumName" : "albumName",
+          "albumId" : 0
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        },
+        "bookList" : [ {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        }, {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        } ]
+      }
+    },
+    "inline_response_200_11" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "banners" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Banner"
+          }
+        }
+      },
+      "example" : {
+        "banners" : [ {
+          "cover" : "cover",
+          "name" : "name",
+          "extraInfo1" : 5,
+          "id" : 6,
+          "type" : 0,
+          "extraInfo2" : "extraInfo2",
+          "order" : 1,
+          "extraInfo3" : "extraInfo3"
+        }, {
+          "cover" : "cover",
+          "name" : "name",
+          "extraInfo1" : 5,
+          "id" : 6,
+          "type" : 0,
+          "extraInfo2" : "extraInfo2",
+          "order" : 1,
+          "extraInfo3" : "extraInfo3"
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_12" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "recommend" : {
+          "$ref" : "#/definitions/Recommend"
+        }
+      },
+      "example" : {
+        "recommend" : {
+          "resource" : [ {
+            "data" : [ {
+              "clipsNumber" : 1,
+              "summary" : "summary",
+              "playCount" : 6,
+              "subTitle" : "subTitle",
+              "authorName" : "authorName",
+              "name" : "name",
+              "icon" : "icon",
+              "subCategoryId" : 0,
+              "showIcon" : true,
+              "authorAvatar" : "authorAvatar",
+              "bookId" : 5
+            }, {
+              "clipsNumber" : 1,
+              "summary" : "summary",
+              "playCount" : 6,
+              "subTitle" : "subTitle",
+              "authorName" : "authorName",
+              "name" : "name",
+              "icon" : "icon",
+              "subCategoryId" : 0,
+              "showIcon" : true,
+              "authorAvatar" : "authorAvatar",
+              "bookId" : 5
+            } ],
+            "title" : "title"
+          }, {
+            "data" : [ {
+              "clipsNumber" : 1,
+              "summary" : "summary",
+              "playCount" : 6,
+              "subTitle" : "subTitle",
+              "authorName" : "authorName",
+              "name" : "name",
+              "icon" : "icon",
+              "subCategoryId" : 0,
+              "showIcon" : true,
+              "authorAvatar" : "authorAvatar",
+              "bookId" : 5
+            }, {
+              "clipsNumber" : 1,
+              "summary" : "summary",
+              "playCount" : 6,
+              "subTitle" : "subTitle",
+              "authorName" : "authorName",
+              "name" : "name",
+              "icon" : "icon",
+              "subCategoryId" : 0,
+              "showIcon" : true,
+              "authorAvatar" : "authorAvatar",
+              "bookId" : 5
+            } ],
+            "title" : "title"
+          } ]
+        },
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_13" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "msgList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Msg"
+          }
+        }
+      },
+      "example" : {
+        "msgList" : [ {
+          "subTitle" : "subTitle",
+          "createTime" : 0,
+          "from" : "from",
+          "title" : "title"
+        }, {
+          "subTitle" : "subTitle",
+          "createTime" : 0,
+          "from" : "from",
+          "title" : "title"
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_14" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "recordList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Record"
+          }
+        }
+      },
+      "example" : {
+        "recordList" : [ {
+          "summary" : "summary",
+          "cover" : "cover",
+          "duration" : 0,
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "title" : "title",
+          "url" : "url"
+        }, {
+          "summary" : "summary",
+          "cover" : "cover",
+          "duration" : 0,
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "title" : "title",
+          "url" : "url"
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_15" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "books" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Chapter"
+          }
+        }
+      },
+      "example" : {
+        "books" : [ {
+          "duration" : 5,
+          "summary" : "summary",
+          "playCount" : 1,
+          "subTitle" : "subTitle",
+          "name" : "name",
+          "icon" : "icon",
+          "mp3Url" : "mp3Url",
+          "updateTips" : "updateTips",
+          "showIcon" : true,
+          "bigCover" : "bigCover",
+          "hlsUrl" : "hlsUrl",
+          "order" : 5
+        }, {
+          "duration" : 5,
+          "summary" : "summary",
+          "playCount" : 1,
+          "subTitle" : "subTitle",
+          "name" : "name",
+          "icon" : "icon",
+          "mp3Url" : "mp3Url",
+          "updateTips" : "updateTips",
+          "showIcon" : true,
+          "bigCover" : "bigCover",
+          "hlsUrl" : "hlsUrl",
+          "order" : 5
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_16" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        }
+      },
+      "example" : {
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_17" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/Chapter"
+        },
+        "isFav" : {
+          "type" : "boolean"
+        }
+      },
+      "example" : {
+        "data" : {
+          "duration" : 5,
+          "summary" : "summary",
+          "playCount" : 1,
+          "subTitle" : "subTitle",
+          "name" : "name",
+          "icon" : "icon",
+          "mp3Url" : "mp3Url",
+          "updateTips" : "updateTips",
+          "showIcon" : true,
+          "bigCover" : "bigCover",
+          "hlsUrl" : "hlsUrl",
+          "order" : 5
+        },
+        "isFav" : true,
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_18" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "chapters" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Chapter"
+          }
+        }
+      },
+      "example" : {
+        "chapters" : [ {
+          "duration" : 5,
+          "summary" : "summary",
+          "playCount" : 1,
+          "subTitle" : "subTitle",
+          "name" : "name",
+          "icon" : "icon",
+          "mp3Url" : "mp3Url",
+          "updateTips" : "updateTips",
+          "showIcon" : true,
+          "bigCover" : "bigCover",
+          "hlsUrl" : "hlsUrl",
+          "order" : 5
+        }, {
+          "duration" : 5,
+          "summary" : "summary",
+          "playCount" : 1,
+          "subTitle" : "subTitle",
+          "name" : "name",
+          "icon" : "icon",
+          "mp3Url" : "mp3Url",
+          "updateTips" : "updateTips",
+          "showIcon" : true,
+          "bigCover" : "bigCover",
+          "hlsUrl" : "hlsUrl",
+          "order" : 5
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_19" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "books" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Book"
+          }
+        }
+      },
+      "example" : {
+        "books" : [ {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        }, {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_20" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/Book"
+        },
+        "isFav" : {
+          "type" : "boolean"
+        }
+      },
+      "example" : {
+        "data" : {
+          "clipsNumber" : 1,
+          "summary" : "summary",
+          "playCount" : 6,
+          "subTitle" : "subTitle",
+          "authorName" : "authorName",
+          "name" : "name",
+          "icon" : "icon",
+          "subCategoryId" : 0,
+          "showIcon" : true,
+          "authorAvatar" : "authorAvatar",
+          "bookId" : 5
+        },
+        "isFav" : true,
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_21" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/LoginRet"
+        }
+      },
+      "example" : {
+        "data" : {
+          "gender" : 6,
+          "Membername" : "Membername",
+          "avatar" : "avatar",
+          "memberId" : 0
+        },
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_22" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "$ref" : "#/definitions/Category"
+        },
+        "isFav" : {
+          "type" : "boolean"
+        }
+      },
+      "example" : {
+        "data" : {
+          "summary" : "summary",
+          "subCategory" : [ {
+            "summary" : "summary",
+            "showicon" : true,
+            "name" : "name",
+            "icon" : "icon",
+            "categoryId" : 0
+          }, {
+            "summary" : "summary",
+            "showicon" : true,
+            "name" : "name",
+            "icon" : "icon",
+            "categoryId" : 0
+          } ],
+          "name" : "name"
+        },
+        "isFav" : true,
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "inline_response_200_23" : {
+      "properties" : {
+        "status" : {
+          "$ref" : "#/definitions/Response"
+        },
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Category"
+          }
+        }
+      },
+      "example" : {
+        "data" : [ {
+          "summary" : "summary",
+          "subCategory" : [ {
+            "summary" : "summary",
+            "showicon" : true,
+            "name" : "name",
+            "icon" : "icon",
+            "categoryId" : 0
+          }, {
+            "summary" : "summary",
+            "showicon" : true,
+            "name" : "name",
+            "icon" : "icon",
+            "categoryId" : 0
+          } ],
+          "name" : "name"
+        }, {
+          "summary" : "summary",
+          "subCategory" : [ {
+            "summary" : "summary",
+            "showicon" : true,
+            "name" : "name",
+            "icon" : "icon",
+            "categoryId" : 0
+          }, {
+            "summary" : "summary",
+            "showicon" : true,
+            "name" : "name",
+            "icon" : "icon",
+            "categoryId" : 0
+          } ],
+          "name" : "name"
+        } ],
+        "status" : {
+          "msg" : "msg",
+          "code" : 0
+        }
+      }
+    },
+    "InitData_extraInfo" : {
+      "required" : [ "aboutUsUrl", "specialUrl", "versionUrl" ],
+      "properties" : {
+        "specialUrl" : {
+          "type" : "string"
+        },
+        "versionUrl" : {
+          "type" : "string"
+        },
+        "aboutUsUrl" : {
+          "type" : "string"
+        }
+      },
+      "example" : {
+        "specialUrl" : "specialUrl",
+        "aboutUsUrl" : "aboutUsUrl",
+        "versionUrl" : "versionUrl"
+      }
+    }
+  }
+}
