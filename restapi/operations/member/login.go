@@ -7,8 +7,12 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // LoginHandlerFunc turns a function with the right signature into a login handler
@@ -53,8 +57,30 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok LoginOK
+	var response models.InlineResponse20021
+	var loginRet models.LoginRet
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	//query
+	db.Table("members").Where("phone=?",Params.Phone).Where("password=?",Params.Password).Find(&loginRet).Limit(1)
+
+	fmt.Println(loginRet)
+	response.Data = &loginRet
+	response.Data.MemberID = response.Data.Id
+	response.Data.Membername = response.Data.Name
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
+
+
 
 }

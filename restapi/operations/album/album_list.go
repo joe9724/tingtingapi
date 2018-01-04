@@ -7,8 +7,12 @@ package album
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // AlbumListHandlerFunc turns a function with the right signature into a album list handler
@@ -53,8 +57,59 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	//res := o.Handler.Handle(Params) // actually handle the request
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	var ok AlbumListOK
+	var response models.InlineResponse2006
+	var categoryList models.InlineResponse2006AlbumList
+
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	//db.Table("albums").Where(map[string]interface{}{"status":0}).Find(&categoryList).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize)))
+	//query
+
+	var test []interface{}
+	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
+	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
+
+	rows, err := db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id").Where("sub_category_items.id=?",1).Rows()
+	//var temp []models.Album
+	for rows.Next() {
+		var name string
+		var albumId int64
+		err = rows.Scan(&name,&albumId)
+		if err != nil{
+            fmt.Println(err.Error())
+		}
+		fmt.Println(name,albumId)
+		var t models.Album
+		t.AlbumID = albumId
+		t.AlbumName = name
+		//temp = append(temp,t)
+		categoryList = append(categoryList,&t)
+	}
+
+
+
+	//data
+	//fmt.Println(categoryList)
+
+
+	//db.Joins("left join sub_category_items on sub_category_items.id = category_album_relation.categoryId").Where("category_album_relation.categoryId=?",1).Find(&test)
+
+	fmt.Println("test is",test)
+
+	response.AlbumList = categoryList
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

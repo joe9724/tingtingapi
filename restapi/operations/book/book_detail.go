@@ -7,8 +7,12 @@ package book
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // BookDetailHandlerFunc turns a function with the right signature into a book detail handler
@@ -53,8 +57,27 @@ func (o *BookDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok BookDetailOK
+	var response models.InlineResponse20020
+	var book models.Book
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	db.Table("books").Where(map[string]interface{}{"status":0}).Where("id=?",Params.BookID).Find(&book)
+
+
+	response.IsFav = true
+	response.Data = &book
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

@@ -17,7 +17,7 @@ import (
 type LoginRet struct {
 
 	// membername
-	Membername string `json:"Membername,omitempty"`
+	Membername string `json:"memberName,omitempty"`
 
 	// avatar
 	Avatar string `json:"avatar,omitempty"`
@@ -27,6 +27,10 @@ type LoginRet struct {
 
 	// member Id
 	MemberID int64 `json:"memberId,omitempty"`
+
+	Id int64 `json:"id,omitempty"`
+
+	Name string `json:"name,omitempty"`
 }
 
 // Validate validates this login ret

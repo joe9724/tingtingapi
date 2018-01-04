@@ -7,8 +7,12 @@ package banner
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // NrBannerListHandlerFunc turns a function with the right signature into a banner list handler
@@ -53,8 +57,28 @@ func (o *NrBannerList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok BannerListOK
+	var response models.InlineResponse20011
+	var banners models.InlineResponse20011Banners
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	db.Table("banners").Where(map[string]interface{}{"status":0}).Find(&banners)
+	//query
+
+	//data
+    fmt.Println(banners)
+	response.Banners = banners
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

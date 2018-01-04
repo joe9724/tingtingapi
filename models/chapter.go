@@ -16,6 +16,7 @@ import (
 // swagger:model Chapter
 type Chapter struct {
 
+	Id int64 `json:"id,omitempty"`
 	// big cover
 	BigCover string `json:"bigCover,omitempty"`
 

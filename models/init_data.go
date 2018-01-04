@@ -23,13 +23,13 @@ type InitData struct {
 	ExtraInfo *InitDataExtraInfo `json:"extraInfo,omitempty"`
 
 	// force
-	Force int32 `json:"force,omitempty"`
+	Force string `json:"force,omitempty"`
 
 	// msg
 	Msg string `json:"msg,omitempty"`
 
 	// number
-	Number int64 `json:"number,omitempty"`
+	Number float64 `json:"number,omitempty"`
 }
 
 // Validate validates this init data

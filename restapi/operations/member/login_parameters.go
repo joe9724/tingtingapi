@@ -35,7 +35,7 @@ type LoginParams struct {
 	/*登录名
 	  In: query
 	*/
-	Membername *string
+	Phone *string
 	/*客户端类型
 	  In: query
 	*/
@@ -70,8 +70,8 @@ func (o *LoginParams) BindRequest(r *http.Request, route *middleware.MatchedRout
 
 	qs := runtime.Values(r.URL.Query())
 
-	qMembername, qhkMembername, _ := qs.GetOK("Membername")
-	if err := o.bindMembername(qMembername, qhkMembername, route.Formats); err != nil {
+	qPhone, qhkPhone, _ := qs.GetOK("phone")
+	if err := o.bindPhone(qPhone, qhkPhone, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -111,7 +111,7 @@ func (o *LoginParams) BindRequest(r *http.Request, route *middleware.MatchedRout
 	return nil
 }
 
-func (o *LoginParams) bindMembername(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *LoginParams) bindPhone(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -120,7 +120,7 @@ func (o *LoginParams) bindMembername(rawData []string, hasKey bool, formats strf
 		return nil
 	}
 
-	o.Membername = &raw
+	o.Phone = &raw
 
 	return nil
 }

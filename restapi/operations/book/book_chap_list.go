@@ -7,8 +7,12 @@ package book
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // BookChapListHandlerFunc turns a function with the right signature into a book chap list handler
@@ -53,8 +57,60 @@ func (o *BookChapList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok BookChapListOK
+	var response models.InlineResponse20018
+	var chapters models.InlineResponse20018Chapters
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	//db.Table("albums").Where(map[string]interface{}{"status":0}).Find(&categoryList).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize)))
+	//query
+
+	//var test []interface{}
+	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
+	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
+
+	rows, err := db.Table("chapters").Select("chapters.name, chapters.id,chapters.icon,chapters.play_count,chapters.duration,chapters.url").Joins("left join book_chapter_relation on book_chapter_relation.chapterId = chapters.id").Where("book_chapter_relation.bookId=?",Params.BookID).Rows()
+	if err !=nil{
+		fmt.Println("err is",err.Error())
+	}
+	fmt.Println("rows.count=",rows)
+	//var temp []models.Album
+	for rows.Next() {
+		var name string
+		var icon string
+		var id int64
+		var playCount int64
+		var duration int64
+		var url string
+
+		err = rows.Scan(&name,&id,&icon,&playCount,&duration,&url)
+		if err != nil{
+			fmt.Println(err.Error())
+		}
+
+		var t models.Chapter
+		t.Id = id
+		t.Name = name
+		t.Icon = icon
+		t.PlayCount = playCount
+		t.Duration = duration
+		t.Mp3URL = url
+
+		chapters = append(chapters,&t)
+	}
+
+	response.Chapters = chapters
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

@@ -24,6 +24,8 @@ type Category struct {
 
 	// summary
 	Summary string `json:"summary,omitempty"`
+
+	Category_Id int64 `json:"category_id,omitempty"`
 }
 
 // Validate validates this category

@@ -7,8 +7,12 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // NrMemberInitHandlerFunc turns a function with the right signature into a member init handler
@@ -53,8 +57,42 @@ func (o *NrMemberInit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok MemberInitOK
+	var response models.InitModel
+	var initData models.InitData
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	//query
+	db.Table("init").Where(map[string]interface{}{"status":0}).Find(&initData).Limit(1)
 
+	fmt.Println(initData)
+
+	initData.Msg = initData.Msg
+	initData.DownloadURL = "http://www.baidu.com"
+	initData.Force = initData.Force
+	initData.Number = initData.Number
+	/*var aboutus string
+	aboutus = "http://www.baidu.com"
+	initData.ExtraInfo.AboutUsURL = *aboutus
+	initData.ExtraInfo.SpecialURL = *aboutus
+	initData.ExtraInfo.VersionURL = *aboutus*/
+
+	//var s interface{}
+	//db.Table("init").Where(map[string]interface{}{"status":0}).Find(&s).Limit(1)
+	//fmt.Println(s)
+	//data
+	response.Data = &initData
+	response.Data.Force = "0"
+
+	//status
+	var status models.Status
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 }
