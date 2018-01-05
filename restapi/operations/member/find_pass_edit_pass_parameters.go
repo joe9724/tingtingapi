@@ -36,6 +36,10 @@ type FindPassEditPassParams struct {
 	  In: query
 	*/
 	Client *string
+	/*
+	  In: query
+	*/
+	ExtraInfo1 *string
 	/*唯一识别号
 	  In: query
 	*/
@@ -44,6 +48,10 @@ type FindPassEditPassParams struct {
 	  In: query
 	*/
 	NewPass *string
+	/*老密码
+	  In: query
+	*/
+	OldPass *string
 	/*登录所用手机号
 	  In: query
 	*/
@@ -52,6 +60,10 @@ type FindPassEditPassParams struct {
 	  In: query
 	*/
 	Ts *int64
+	/*0=修改密码 1=找回密码
+	  In: query
+	*/
+	Type *int64
 	/*加密串
 	  In: query
 	*/
@@ -75,6 +87,11 @@ func (o *FindPassEditPassParams) BindRequest(r *http.Request, route *middleware.
 		res = append(res, err)
 	}
 
+	qExtraInfo1, qhkExtraInfo1, _ := qs.GetOK("extraInfo1")
+	if err := o.bindExtraInfo1(qExtraInfo1, qhkExtraInfo1, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	qImei, qhkImei, _ := qs.GetOK("imei")
 	if err := o.bindImei(qImei, qhkImei, route.Formats); err != nil {
 		res = append(res, err)
@@ -85,6 +102,11 @@ func (o *FindPassEditPassParams) BindRequest(r *http.Request, route *middleware.
 		res = append(res, err)
 	}
 
+	qOldPass, qhkOldPass, _ := qs.GetOK("oldPass")
+	if err := o.bindOldPass(qOldPass, qhkOldPass, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	qPhoneNumber, qhkPhoneNumber, _ := qs.GetOK("phoneNumber")
 	if err := o.bindPhoneNumber(qPhoneNumber, qhkPhoneNumber, route.Formats); err != nil {
 		res = append(res, err)
@@ -92,6 +114,11 @@ func (o *FindPassEditPassParams) BindRequest(r *http.Request, route *middleware.
 
 	qTs, qhkTs, _ := qs.GetOK("ts")
 	if err := o.bindTs(qTs, qhkTs, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qType, qhkType, _ := qs.GetOK("type")
+	if err := o.bindType(qType, qhkType, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -125,6 +152,20 @@ func (o *FindPassEditPassParams) bindClient(rawData []string, hasKey bool, forma
 	return nil
 }
 
+func (o *FindPassEditPassParams) bindExtraInfo1(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.ExtraInfo1 = &raw
+
+	return nil
+}
+
 func (o *FindPassEditPassParams) bindImei(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
@@ -149,6 +190,20 @@ func (o *FindPassEditPassParams) bindNewPass(rawData []string, hasKey bool, form
 	}
 
 	o.NewPass = &raw
+
+	return nil
+}
+
+func (o *FindPassEditPassParams) bindOldPass(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.OldPass = &raw
 
 	return nil
 }
@@ -181,6 +236,24 @@ func (o *FindPassEditPassParams) bindTs(rawData []string, hasKey bool, formats s
 		return errors.InvalidType("ts", "query", "int64", raw)
 	}
 	o.Ts = &value
+
+	return nil
+}
+
+func (o *FindPassEditPassParams) bindType(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("type", "query", "int64", raw)
+	}
+	o.Type = &value
 
 	return nil
 }

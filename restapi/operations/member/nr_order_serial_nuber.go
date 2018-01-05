@@ -7,8 +7,13 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+
 )
 
 // NrOrderSerialNuberHandlerFunc turns a function with the right signature into a order serial nuber handler
@@ -53,8 +58,43 @@ func (o *NrOrderSerialNuber) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	//res := o.Handler.Handle(Params) // actually handle the request
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	var ok OrderSerialNuberOK
+	var response models.InlineResponse200
+	var status models.Response
+
+	//收到app端请求支付，生成一个流水号，并向相应支付平台发起请求，同时将记录入库
+	var serialNumber string
+	serialNumber = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+	//发起请求
+
+
+	//入库
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+
+	var t models.RechargeModel
+	t.Type = "支付宝"
+	t.Status = 0
+	t.Order_no = serialNumber
+	t.Value = Params.Body.Value
+	t.MemberId = Params.Body.MemberID
+
+	db.Table("recharge").Create(&t)
+
+	status.UnmarshalBinary([]byte(_var.Response200(200,"成功发起支付请求")))
+	response.Status = &status
+
+
+	response.Data.Msg = "成功发起支付请求"
+	response.Data.Code = 200
+	response.Data.SerialNumber = serialNumber
+	ok.SetPayload(&response)
+	o.Context.Respond(rw, r, route.Produces, route, ok)
+
 
 }

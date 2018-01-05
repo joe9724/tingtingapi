@@ -7,8 +7,13 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+	"time"
 )
 
 // FindPassEditPassHandlerFunc turns a function with the right signature into a find pass edit pass handler
@@ -53,8 +58,47 @@ func (o *FindPassEditPass) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok MemberRegisterSendSmsOK
+	var response models.InlineResponse20016
+	var status models.Response
+	//从数据库查找是否有符合的记录
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	fmt.Println("params.oldpass is",Params.OldPass)
+	fmt.Println("params.type is",Params.Type)
+	var msg string
+	var code int64
+	if (*(Params.Type) == 0){ //输入老密码修改新密码
+		//query
+		var member models.Member
+		db.Table("members").Where("phone=?",Params.PhoneNumber).Where(map[string]interface{}{"password":Params.OldPass}).Last(&member)
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+		if member.ID == 0{  //用户不存在 非法请求
+			msg = "密码不正确"
+			code = 201
+		}else{
+            db.Table("members").Where("phone=?",&Params.PhoneNumber).Where("password=?",&Params.OldPass).Update(map[string]interface{}{"password":Params.NewPass})
+			msg = "修改密码成功"
+			code = 200
+		}
+	}else if(*(Params.Type) == 1){ //找回密码
+		var findRecord models.SendSms
+		db.Table("sms").Where("type=?",0).Where(map[string]interface{}{"phone":Params.PhoneNumber}).Where("ts>?",time.Now().Unix()-5*60).Last(&findRecord)
+		if(findRecord.Id ==0) {
+			msg = "验证码失效"
+			code = 202
+		}else{
+			db.Table("members").Where("phone=?",&Params.PhoneNumber).Where("password=?",&Params.OldPass).Update(map[string]interface{}{"password":Params.NewPass})
+			msg ="找回密码成功"
+			code = 203
+		}
+
+	}
+	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
+	response.Status = &status
+	ok.SetPayload(&response)
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

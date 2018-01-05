@@ -7,8 +7,12 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // NrMemberScanCodeHandlerFunc turns a function with the right signature into a member scan code handler
@@ -53,8 +57,31 @@ func (o *NrMemberScanCode) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok MemberScanCodeOK
+	var response models.InlineResponse2009
+	var status models.Response
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+
+	var scan models.Scan
+	fmt.Println("Params.CodeUrl = ",Params.CodeURL)
+	db.Table("scan").Where("scanId=?",Params.CodeURL).Where(map[string]interface{}{"status":0}).Last(&scan)
+    fmt.Println(scan)
+	if(scan.BookId==0) {
+		status.UnmarshalBinary([]byte(_var.Response200(201,"没找到对应书本")))
+	}else{
+		status.UnmarshalBinary([]byte(_var.Response200(200,"找到对应书本")))
+		response.Data.BookID = scan.BookId
+	}
+
+
+	response.Status = &status
+
+	ok.SetPayload(&response)
+	o.Context.Respond(rw, r, route.Produces, route, ok)
+
 
 }

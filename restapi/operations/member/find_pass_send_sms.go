@@ -7,8 +7,13 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+	"time"
 )
 
 // FindPassSendSmsHandlerFunc turns a function with the right signature into a find pass send sms handler
@@ -53,8 +58,47 @@ func (o *FindPassSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	//(1)产生验证码
+	var code string
+	code = "051323"
+	//(2)查询数据库内是否5分钟内已经有验证码下发记录 没有的话请求第三方下发验证码
+	var findRecord models.SendSms
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	//query
+	db.Table("sms").Where("type=?",0).Where(map[string]interface{}{"phone":Params.PhoneNumber}).Where("ts>?",time.Now().Unix()-5*60).Last(&findRecord)
+	fmt.Println(findRecord)
+	if findRecord.Id == 0{
+		code = code
+		fmt.Println("5分钟内没有delay1=",time.Now().Unix()-300)
+	}else{
+		fmt.Println("5分钟内有delay2=",time.Now().Unix()-300)
+		code = findRecord.Code
+	}
+	var send bool
+	send = true
+	//(3)第二步成功后回调后入库
+	if (send==true){
+		findRecord.Code = code
+		findRecord.Phone = *(Params.PhoneNumber)
+		findRecord.Type = 2
+		findRecord.Ts = int64(time.Now().Unix())
+		db.Table("sms").Create(&findRecord)
+	}
+
+	var ok MemberRegisterSendSmsOK
+	var response models.InlineResponse20016
+
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

@@ -7,8 +7,12 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // NrMemberCheckRechargeHandlerFunc turns a function with the right signature into a member check recharge handler
@@ -53,8 +57,31 @@ func (o *NrMemberCheckRecharge) ServeHTTP(rw http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok MemberCheckRechargeOK
+	var response models.InlineResponse2002
+	var status models.Response
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+
+	var recharge models.RechargeModel
+
+	fmt.Println("sn=",*(Params.SerialNumber))
+	fmt.Println("md=",*(Params.MemberID))
+	db.Table("recharge").Select([]string{"id","memberId","type","order_no","status","value"}).Where("order_no=?",Params.SerialNumber).Where("memberId=?",Params.MemberID).Last(&recharge)
+	fmt.Println(recharge)
+	if(recharge.ID==0) {
+		status.UnmarshalBinary([]byte(_var.Response200(201,"没找到对应流水号")))
+		//response.SerialNumber = "-1"
+	}else{
+		status.UnmarshalBinary([]byte(_var.Response200(200,"找到对应流水号")))
+		//response.SerialNumber = recharge.Order_no
+	}
+
+	response.Status = &status
+	ok.SetPayload(&response)
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

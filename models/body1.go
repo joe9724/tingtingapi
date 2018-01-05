@@ -38,7 +38,7 @@ type Body1 struct {
 	Val string `json:"val,omitempty"`
 
 	// value
-	Value int64 `json:"value,omitempty"`
+	Value float64 `json:"value,omitempty"`
 
 	// version
 	Version string `json:"version,omitempty"`

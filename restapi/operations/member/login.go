@@ -66,6 +66,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	//query
+	fmt.Println("phone=",Params.Phone)
 	db.Table("members").Where("phone=?",Params.Phone).Where("password=?",Params.Password).Find(&loginRet).Limit(1)
 
 	fmt.Println(loginRet)

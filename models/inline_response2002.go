@@ -18,7 +18,7 @@ type InlineResponse2002 struct {
 
 	// icons
 	Icons InlineResponse2002Icons `json:"icons"`
-
+	//SerialNumber string `json:"serialNumber"`
 	// status
 	Status *Response `json:"status,omitempty"`
 }

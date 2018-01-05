@@ -12,29 +12,27 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// LoginRet login ret
-// swagger:model LoginRet
-type LoginRet struct {
+// Recharge 充值结果
+// swagger:model Recharge
+type RechargeModel struct {
 
+	ID int64 `json:"id,omitempty"`
+	// 0=等待 1=成功 2=失败 3=其他
+	MemberId int64 `json:"memberId,omitempty"`
 
-	// avatar
-	Avatar string `json:"avatar,omitempty"`
-	Name string `json:"name,omitempty"`
-	// gender
-	Gender int64 `json:"gender,omitempty"`
-	Id int64 `json:"id,omitempty"`
-	// member Id
-	MemberID int64 `json:"memberId,omitempty"`
+	// msg
+	Type string `json:"type,omitempty"`
 
-	// membername
-	Membername string `json:"memberName,omitempty"`
+	// 支付平台产生的流水号
+	Order_no string `json:"order_no,omitempty"`
 
+	Status int64 `json:"status,omitempty"`
 
-
+	Value float64 `json:"value,omitempty"`
 }
 
 // Validate validates this login ret
-func (m *LoginRet) Validate(formats strfmt.Registry) error {
+func (m *RechargeModel) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if len(res) > 0 {
@@ -44,7 +42,7 @@ func (m *LoginRet) Validate(formats strfmt.Registry) error {
 }
 
 // MarshalBinary interface implementation
-func (m *LoginRet) MarshalBinary() ([]byte, error) {
+func (m *RechargeModel) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -52,8 +50,8 @@ func (m *LoginRet) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *LoginRet) UnmarshalBinary(b []byte) error {
-	var res LoginRet
+func (m *RechargeModel) UnmarshalBinary(b []byte) error {
+	var res RechargeModel
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}
