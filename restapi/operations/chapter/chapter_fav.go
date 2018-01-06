@@ -7,8 +7,13 @@ package chapter
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+    "strconv"
 )
 
 // ChapterFavHandlerFunc turns a function with the right signature into a chapter fav handler
@@ -53,8 +58,37 @@ func (o *ChapterFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok ChapterFavOK
+	var response models.InlineResponse20016
+	//var icons models.AlbumBuyResult
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	var status models.Response
+	value, _ := strconv.ParseInt(*Params.ChapterID, 10, 64)
+	//如果是收藏
+	if(*(Params.Action) == "fav") {
+		db.Table("fav_chapter").FirstOrCreate(&models.Fav_Chapter{}, models.Fav_Chapter{ChapterId: value,MemberId:*Params.Userid})
+		status.UnmarshalBinary([]byte(_var.Response200(200,"收藏成功")))
+	}else if (*(Params.Action) == "unfav"){
+		var favModel interface{}
+		db.Table("fav_chapter").Where("chapter_id = ?", value).Where("member_id=?",Params.Userid).Delete(&favModel)
+		status.UnmarshalBinary([]byte(_var.Response200(200,"取消收藏成功")))
+	}
 
+	//query
+
+	//data
+
+	//response.Data = icons
+
+	//status
+
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 }

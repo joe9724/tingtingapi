@@ -7,8 +7,13 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+
 )
 
 // RegisterHandlerFunc turns a function with the right signature into a register handler
@@ -29,7 +34,7 @@ func NewRegister(ctx *middleware.Context, handler RegisterHandler) *Register {
 	return &Register{Context: ctx, Handler: handler}
 }
 
-/*Register swagger:route GET /member/register Member register
+/*Register swagger:route POST /member/register Member register
 
 注册接口
 
@@ -53,8 +58,53 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok RegisterOK
+	var response models.InlineResponse20016
+	//var loginRet models.LoginRet
+	//var msg string
+	//var code int64
+	var status models.Response
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	//query
+	fmt.Println("phone=",Params.PhoneNumber)
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	//判断member里是有已有phone对应的记录，没有的话插入，有的话更新
+
+	var member models.Member
+	db.Table("members").Where("phone=?",Params.PhoneNumber).Find(&member)
+
+	if(member.ID==int64(0)){
+		//查找是否已有用户名被占用了
+		var temp models.Member
+		db.Table("members").Where("name=?",Params.Membername).Find(&temp)
+		if (temp.ID==0){
+			//insert
+			status.UnmarshalBinary([]byte(_var.Response200(200,"注册成功")))
+			fmt.Println("注册成功")
+			db.Table("members").FirstOrCreate(&models.Member{}, models.Member{Phone: *Params.PhoneNumber,Name: *Params.Membername,Password:*Params.Password})
+		}else{
+			status.UnmarshalBinary([]byte(_var.Response200(202,"用户名已经被占用")))
+		}
+
+	}else{
+
+		//update
+		status.UnmarshalBinary([]byte(_var.Response200(201,"更新成功")))
+		member.Name = *Params.Membername
+		member.Password = *Params.Password
+		member.Phone = *Params.PhoneNumber
+		db.Save(&member)
+		//db.Table("members").FirstOrCreate(&models.Member{}, models.Member{Phone: *Params.PhoneNumber,Name: *Params.Membername,Password:*Params.Password})
+		fmt.Println("更新成功")
+	}
+
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

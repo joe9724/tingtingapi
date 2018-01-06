@@ -287,7 +287,8 @@ type TingtingAPI struct {
 	MemberRegisterHandler member.RegisterHandler
 	// SearchSearchHandler sets the operation handler for the search operation
 	SearchSearchHandler search.SearchHandler
-
+	// MemberNrMemberRegisterMemberHandler sets the operation handler for the member register member operation
+	MemberNrMemberRegisterMemberHandler member.NrMemberRegisterMemberHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -397,11 +398,17 @@ func (o *TingtingAPI) Validate() error {
 	if o.MemberNrMemberRegisterSendSmsHandler == nil {
 		unregistered = append(unregistered, "member.NrMemberRegisterSendSmsHandler")
 	}
-
+	if o.MemberNrMemberRegisterMemberHandler == nil {
+		unregistered = append(unregistered, "member.NrMemberRegisterMemberHandler")
+	}
 	if o.MemberNrMemberReportErrHandler == nil {
 		unregistered = append(unregistered, "member.NrMemberReportErrHandler")
 	}
+	o.handlers["POST"]["/member/registerMember"] = member.NewNrMemberRegisterMember(o.context, o.MemberNrMemberRegisterMemberHandler)
 
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
 	if o.MemberNrMemberScanCodeHandler == nil {
 		unregistered = append(unregistered, "member.NrMemberScanCodeHandler")
 	}
@@ -658,7 +665,7 @@ func (o *TingtingAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/member/init"] = member.NewNrMemberInit(o.context, o.MemberNrMemberInitHandler)
+	o.handlers["GET"]["/member/startUp"] = member.NewNrMemberInit(o.context, o.MemberNrMemberInitHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
@@ -818,10 +825,10 @@ func (o *TingtingAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/member/register"] = member.NewRegister(o.context, o.MemberRegisterHandler)
+	o.handlers["POST"]["/member/register"] = member.NewRegister(o.context, o.MemberRegisterHandler)
 
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/search"] = search.NewSearch(o.context, o.SearchSearchHandler)
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "tingtingapi/models"
+	"tingtingapi/models"
 )
 
 // RegisterOKCode is the HTTP code returned for type RegisterOK

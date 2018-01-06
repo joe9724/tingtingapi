@@ -7,8 +7,13 @@ package album
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+	"strconv"
 )
 
 // AlbumBuyHandlerFunc turns a function with the right signature into a album buy handler
@@ -53,8 +58,55 @@ func (o *AlbumBuy) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok AlbumBuyOK
+	var response models.InlineResponse2007
+	//var albumBuyResult models.AlbumBuyResult
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	var status models.Response
+
+
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+
+	//第一步查出Album对应的价格
+	var album models.Album
+	db.Table("albums").Where("id=?",Params.AlbumID).Last(&album)
+	if(album.ID==0){
+		fmt.Println("albumId不存在")
+		status.UnmarshalBinary([]byte(_var.Response200(201,"albumId不存在")))
+	}else{
+		//检查当前memberId是否有足够money
+		var member models.Member
+		db.Table("members").Where("id=?",Params.MemberID).Last(&member)
+		if(member.ID==0){
+			fmt.Println("用户不存在对应id")
+			status.UnmarshalBinary([]byte(_var.Response200(202,"用户不存在对应id")))
+		}else{
+			if(member.Money>=album.Value){//够的话直接购买，插入order记录，并扣款
+                //扣款
+				//db.Model(&member).UpdateColumn("money", gorm.Expr("money - ?", album.Value)).Where("id=?",Params.MemberID)
+				db.Model(&member).UpdateColumn("money", member.Money-album.Value).Where("id=?",Params.MemberID)
+                //db.Table("members").Where("id=?",Params.MemberID).Assign(models.Member{Money: member.Money-album.Value})
+				//db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
+                //插入order记录
+				memberId, _ := strconv.ParseInt(*Params.MemberID, 10, 64)
+				var order = models.Order{AlbumID: *Params.AlbumID, MemberID: memberId}
+				db.Create(&order)
+				//db.Table("orders").FirstOrCreate(&models.Order{}, models.Order{AlbumID: *Params.AlbumID,MemberID:album.Value})
+
+				status.UnmarshalBinary([]byte(_var.Response200(204,"购买成功")))
+			}else{//不够的话，返回购买错误，币不足
+				status.UnmarshalBinary([]byte(_var.Response200(203,"金币不足")))
+			}
+		}
+	}
+
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

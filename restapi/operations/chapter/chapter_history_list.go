@@ -7,8 +7,12 @@ package chapter
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // ChapterHistoryListHandlerFunc turns a function with the right signature into a chapter history list handler
@@ -53,8 +57,49 @@ func (o *ChapterHistoryList) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok ChapterFavListOK
+	var response models.InlineResponse20015
+	var albumList models.InlineResponse20015Books
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	//db.Table("albums").Where(map[string]interface{}{"status":0}).Find(&categoryList).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize)))
+	//query
+
+	var test []interface{}
+	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
+	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
+
+	rows, err := db.Table("history_chapter").Select("chapters.name,chapters.id").Joins("left join chapters on history_chapter.chapter_id = chapters.id").Where("history_chapter.member_id=?",Params.MemberID).Rows()
+	//var temp []models.Album
+	for rows.Next() {
+		var name string
+		var bookId int64
+		err = rows.Scan(&name,&bookId)
+		if err != nil{
+			fmt.Println(err.Error())
+		}
+		fmt.Println(name,bookId)
+		var t models.Chapter
+		t.Id = bookId
+		t.Name = name
+		//temp = append(temp,t)
+		albumList = append(albumList,&t)
+	}
+
+	fmt.Println("test is",test)
+
+	response.Books = albumList
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

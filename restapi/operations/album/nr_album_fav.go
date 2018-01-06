@@ -7,8 +7,13 @@ package album
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+	"strconv"
 )
 
 // NrAlbumFavHandlerFunc turns a function with the right signature into a album fav handler
@@ -53,8 +58,40 @@ func (o *NrAlbumFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok AlbumFavOK
+	var response models.InlineResponse2007
+	//var icons models.AlbumBuyResult
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+
+	//如果是收藏
+	if(*(Params.Action) == "fav") {
+		//
+		value, _ := strconv.ParseInt(*Params.MemberID, 10, 64)
+		db.Table("fav_album").FirstOrCreate(&models.Fav_Album{}, models.Fav_Album{AlbumId: *Params.AlbumID,MemberId:value})
+		fmt.Println("收藏成功")
+	}else if (*(Params.Action) == "unfav"){
+		var favModel interface{}
+		db.Table("fav_album").Where("album_id = ?", Params.AlbumID).Where("member_id=?",Params.MemberID).Delete(&favModel)
+		fmt.Println("取消收藏成功")
+	}
+
+	//query
+
+	//data
+
+	//response.Data = icons
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

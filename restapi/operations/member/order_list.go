@@ -7,8 +7,12 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // OrderListHandlerFunc turns a function with the right signature into a order list handler
@@ -53,8 +57,28 @@ func (o *OrderList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok OrderListOK
+	var response models.InlineResponse2001
+	var orderList models.InlineResponse2001Orders
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	db.Table("orders").Where(map[string]interface{}{"status":0}).Where("order_no=?",Params.OrderNo).Find(&orderList)
+	//query
+
+	//data
+
+	response.Orders = orderList
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

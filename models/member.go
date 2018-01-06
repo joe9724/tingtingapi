@@ -36,5 +36,7 @@ type Member struct {
 
 	// web Url
 	Password string `json:"password,omitempty"`
+
+	Money int64 `json:"money,omitempty"`
 }
 

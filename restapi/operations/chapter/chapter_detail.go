@@ -7,8 +7,12 @@ package chapter
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // ChapterDetailHandlerFunc turns a function with the right signature into a chapter detail handler
@@ -53,8 +57,27 @@ func (o *ChapterDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok ChapterDetailOK
+	var response models.InlineResponse20017
+	var chapter models.Chapter
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	db.Table("chapters").Where(map[string]interface{}{"status":0}).Where("id=?",Params.ChapterID).Find(&chapter)
+
+
+	response.IsFav = true
+	response.Data = &chapter
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

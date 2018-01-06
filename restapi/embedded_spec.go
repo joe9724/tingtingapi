@@ -2178,7 +2178,7 @@ func init() {
         }
       }
     },
-    "/member/init": {
+    "/member/startUp": {
       "get": {
         "description": "启动页接口",
         "produces": [
@@ -2188,7 +2188,7 @@ func init() {
           "Member"
         ],
         "summary": "启动页接口",
-        "operationId": "/member/init",
+        "operationId": "/member/startUp",
         "parameters": [
           {
             "type": "string",
@@ -2567,7 +2567,7 @@ func init() {
       }
     },
     "/member/register": {
-      "get": {
+      "post": {
         "description": "注册接口",
         "consumes": [
           "multipart/form-data"
@@ -2722,6 +2722,114 @@ func init() {
             "description": "时间戳(加密串要用到,供服务端验证，简单防刷)",
             "name": "ts",
             "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登录成功，返回登录信息",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_16"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/registerMember": {
+      "post": {
+        "description": "注册接口",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "注册接口",
+        "operationId": "/member/registerMember",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "登录名",
+            "name": "Membername",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "密码",
+            "name": "password",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "短信验证码",
+            "name": "validateCode",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "手机号",
+            "name": "phoneNumber",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生年",
+            "name": "birth-year",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生月",
+            "name": "birth-month",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生日",
+            "name": "birth-day",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "年级",
+            "name": "grade",
+            "in": "formData"
+          },
+          {
+            "type": "file",
+            "description": "头像",
+            "name": "avatar",
+            "in": "formData"
           }
         ],
         "responses": {
@@ -7200,7 +7308,7 @@ func init() {
         }
       }
     },
-    "/member/init": {
+    "/member/startUp": {
       "get": {
         "description": "启动页接口",
         "produces": [
@@ -7210,7 +7318,7 @@ func init() {
           "Member"
         ],
         "summary": "启动页接口",
-        "operationId": "/member/init",
+        "operationId": "/member/startUp",
         "parameters": [
           {
             "type": "string",
@@ -7589,7 +7697,7 @@ func init() {
       }
     },
     "/member/register": {
-      "get": {
+      "post": {
         "description": "注册接口",
         "consumes": [
           "multipart/form-data"
@@ -7744,6 +7852,114 @@ func init() {
             "description": "时间戳(加密串要用到,供服务端验证，简单防刷)",
             "name": "ts",
             "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登录成功，返回登录信息",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_16"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/registerMember": {
+      "post": {
+        "description": "注册接口",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "注册接口",
+        "operationId": "/member/registerMember",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "登录名",
+            "name": "Membername",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "密码",
+            "name": "password",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "短信验证码",
+            "name": "validateCode",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "手机号",
+            "name": "phoneNumber",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生年",
+            "name": "birth-year",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生月",
+            "name": "birth-month",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生日",
+            "name": "birth-day",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "年级",
+            "name": "grade",
+            "in": "formData"
+          },
+          {
+            "type": "file",
+            "description": "头像",
+            "name": "avatar",
+            "in": "formData"
           }
         ],
         "responses": {
