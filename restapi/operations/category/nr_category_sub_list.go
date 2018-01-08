@@ -78,7 +78,9 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			album.Name = "现代文学"
 			album.ID = int64(i)
 			album.AlbumName = "现代文学"
-			album.Value = 1
+			album.PlayCount = 123
+			album.BooksNumber = 34
+			album.Value = 118
 			album.Icon = "http://tingting-resource.bitekun.xin/resource/image/cover.png"
 			album.Cover = "http://tingting-resource.bitekun.xin/resource/image/cover.png"
 			albums = append(albums,album)

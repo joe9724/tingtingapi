@@ -93,7 +93,9 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 		//update
 		status.UnmarshalBinary([]byte(_var.Response200(201,"更新成功")))
-		member.Name = *Params.Membername
+		if(Params.Membername!=nil) {
+			member.Name = *Params.Membername
+		}
 		member.Password = *Params.Password
 		member.Phone = *Params.PhoneNumber
 		db.Save(&member)

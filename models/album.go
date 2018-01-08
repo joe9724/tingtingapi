@@ -33,6 +33,11 @@ type Album struct {
 	Icon string `json:"icon,omitempty"`
 
 	Cover string `json:"cover,omitempty"`
+
+	PlayCount int64 `json:"playCount,omitempty"`
+
+	BooksNumber int64 `json:"books_number,omitempty"`
+
 }
 
 // Validate validates this album
