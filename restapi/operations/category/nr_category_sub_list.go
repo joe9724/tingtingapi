@@ -7,8 +7,13 @@ package category
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	_"fmt"
+	"tingtingbackend/var"
+
 )
 
 // NrCategorySubListHandlerFunc turns a function with the right signature into a category sub list handler
@@ -53,8 +58,42 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok CategorySubListOK
+	var response models.InlineResponse20023
+	var categoryList models.InlineResponse20023Data
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	response.Data = categoryList
+
+	var SubCategories []models.SubCategoryItem
+
+	for k:=0; k<6;k++  {
+		var sub models.SubCategoryItem
+		sub.CategoryID = 1
+		sub.Name = "猜你喜欢"
+		sub.Icon = "http://tingting-resource.bitekun.xin/resource/image/avatar.jpg"
+		//
+		var albums []models.Album
+		for i:=0;i<6 ;i++  {
+			var album models.Album
+			album.Name = "现代文学"
+			album.ID = int64(i)
+			album.AlbumName = "现代文学"
+			album.Value = 1
+			albums = append(albums,album)
+		}
+		sub.AlbumList = albums
+		//
+		SubCategories = append(SubCategories,sub)
+	}
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+	response.DataList = SubCategories
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }
