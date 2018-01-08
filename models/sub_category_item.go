@@ -30,6 +30,8 @@ type SubCategoryItem struct {
 
 	// summary
 	Summary string `json:"summary,omitempty"`
+
+	AlbumList []Album `json:"albumList,omitempty"`
 }
 
 // Validate validates this sub category item

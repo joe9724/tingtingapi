@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
+
 )
 
 // InlineResponse20023 inline response 200 23
@@ -21,6 +22,8 @@ type InlineResponse20023 struct {
 
 	// status
 	Status *Response `json:"status,omitempty"`
+
+	DataList []SubCategoryItem `json:"dataList,omitempty"`
 }
 
 // Validate validates this inline response 200 23

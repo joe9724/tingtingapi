@@ -29,6 +29,10 @@ type Album struct {
 	Name string `json:"name,omitempty"`
 
 	Value int64 `json:"value,omitempty"`
+
+	Icon string `json:"icon,omitempty"`
+
+	Cover string `json:"cover,omitempty"`
 }
 
 // Validate validates this album
