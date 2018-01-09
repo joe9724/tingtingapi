@@ -59,7 +59,6 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 	}
 
 
-
 	//(1)产生验证码
 	var code string
 	code = "051323"
