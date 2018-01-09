@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"tingtingbackend/var"
 
+	"time"
 )
 
 // RegisterHandlerFunc turns a function with the right signature into a register handler
@@ -84,7 +85,7 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			//insert
 			status.UnmarshalBinary([]byte(_var.Response200(200,"注册成功")))
 			fmt.Println("注册成功")
-			db.Table("members").FirstOrCreate(&models.Member{}, models.Member{Phone: *Params.PhoneNumber,Name: *Params.Membername,Password:*Params.Password})
+			db.Table("members").FirstOrCreate(&models.Member{}, models.Member{Phone: *Params.PhoneNumber,Name: *Params.Membername,Password:*Params.Password,Ts:time.Now().Unix()})
 		}else{
 			status.UnmarshalBinary([]byte(_var.Response200(202,"用户名已经被占用")))
 		}

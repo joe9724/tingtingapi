@@ -38,5 +38,9 @@ type Member struct {
 	Password string `json:"password,omitempty"`
 
 	Money int64 `json:"money,omitempty"`
+
+	Ts  int64 `json:"ts,omitempty"`
+
+	Ts1  string `json:"ts1,omitempty"`
 }
 
