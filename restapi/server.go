@@ -345,7 +345,7 @@ func (s *Server) Listen() error {
 	}
 
 	if s.hasScheme(schemeHTTP) {
-		listener, err := net.Listen("tcp", net.JoinHostPort(s.Host, "82"))
+		listener, err := net.Listen("tcp", net.JoinHostPort(s.Host, "94"))
 		if err != nil {
 			return err
 		}

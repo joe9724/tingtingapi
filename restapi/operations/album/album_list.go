@@ -87,6 +87,10 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		var t models.Album
 		t.AlbumID = albumId
 		t.AlbumName = name
+		t.AlbumName = "现代文学"
+		t.Value = 1
+		t.Icon = "http://tingting-resource.bitekun.xin/resource/image/cover.png"
+		t.Cover = "http://tingting-resource.bitekun.xin/resource/image/cover.png"
 		//temp = append(temp,t)
 		categoryList = append(categoryList,&t)
 	}

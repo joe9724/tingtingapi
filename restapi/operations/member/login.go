@@ -73,6 +73,21 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	response.Data = &loginRet
 	response.Data.MemberID = response.Data.Id
 	response.Data.Membername = response.Data.Name
+
+	response.Data.MemberID = 1
+	response.Data.Membername = "bf"
+	response.Data.Gender=1
+	response.Data.Avatar = "http://tingting-resource.bitekun.xin/resource/image/avatar.jpg"
+	response.Data.Name = "pf"
+	response.Data.Area = "江苏 南京"
+	response.Data.Birth = "1991-08-17"
+	response.Data.Grade = "1-3"
+	response.Data.Id = 1
+	response.Data.Level = 1
+	response.Data.Phone = "18963602871"
+	response.Data.Money = 118
+	response.Data.Ts = 1787868685
+
 	//status
 	var status models.Response
 	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))

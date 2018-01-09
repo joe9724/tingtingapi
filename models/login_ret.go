@@ -25,12 +25,18 @@ type LoginRet struct {
 	Id int64 `json:"id,omitempty"`
 	// member Id
 	MemberID int64 `json:"memberId,omitempty"`
-
 	// membername
 	Membername string `json:"memberName,omitempty"`
-
-
-
+	//
+	Area string `json:"area,omitempty"`
+	Birth string `json:"birth,omitempty"`
+	Grade string `json:"grade,omitempty"`
+	Level int64 `json:"id,omitempty"`
+	Phone string `json:"phone,omitempty"`
+	Tags string `json:"tags,omitempty"`
+	Status int64 `json:"memberName,omitempty"`
+	Ts  int64 `json:"ts,omitempty"`
+	Money int64 `json:"money,omitempty"`
 }
 
 // Validate validates this login ret
