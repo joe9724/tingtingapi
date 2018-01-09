@@ -67,11 +67,14 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	//query
 	fmt.Println("phone=",Params.Phone)
+	fmt.Println("password=",Params.Password)
+	fmt.Println("loginType=",Params.LoginType)
+
 	db.Table("members").Where("phone=?",Params.Phone).Where("password=?",Params.Password).Find(&loginRet).Limit(1)
 
 	fmt.Println(loginRet)
 	response.Data = &loginRet
-	response.Data.MemberID = response.Data.Id
+	/*response.Data.MemberID = response.Data.Id
 	response.Data.Membername = response.Data.Name
 
 	response.Data.MemberID = 1
@@ -86,7 +89,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	response.Data.Level = 1
 	response.Data.Phone = "18963602871"
 	response.Data.Money = 118
-	response.Data.Ts = 1787868685
+	response.Data.Ts = 1787868685*/
 
 	//status
 	var status models.Response
