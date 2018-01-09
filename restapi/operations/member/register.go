@@ -99,6 +99,7 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		}
 		member.Password = *Params.Password
 		member.Phone = *Params.PhoneNumber
+		member.Ts = time.Now().Unix()
 		db.Save(&member)
 		//db.Table("members").FirstOrCreate(&models.Member{}, models.Member{Phone: *Params.PhoneNumber,Name: *Params.Membername,Password:*Params.Password})
 		fmt.Println("更新成功")
