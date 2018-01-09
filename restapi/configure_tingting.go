@@ -21,6 +21,8 @@ import (
 	"tingtingapi/restapi/operations/member"
 	"tingtingapi/restapi/operations/recommend"
 	"tingtingapi/restapi/operations/search"
+	"github.com/didip/tollbooth"
+	_"time"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten
@@ -202,7 +204,11 @@ func configureServer(s *graceful.Server, scheme, addr string) {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation
 func setupMiddlewares(handler http.Handler) http.Handler {
-	return handler
+	limiter := tollbooth.NewLimiter(1, nil)
+	limiter.SetMessage("api 每5秒只能请求一次")
+	limiter.SetIPLookups([]string{"RemoteAddr", "X-Forwarded-For", "X-Real-IP"})
+	return tollbooth.LimitHandler(limiter,handler)
+	//return handler
 }
 
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.

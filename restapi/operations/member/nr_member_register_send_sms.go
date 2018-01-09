@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"tingtingapi/var"
 	"time"
+	"math/rand"
 )
 
 // NrMemberRegisterSendSmsHandlerFunc turns a function with the right signature into a member register send sms handler
@@ -61,7 +62,10 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 
 	//(1)产生验证码
 	var code string
-	code = "051323"
+	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	vcode := fmt.Sprintf("%06v", rnd.Int31n(1000000))
+	fmt.Println(vcode)
+	code = vcode
 	//(2)查询数据库内是否5分钟内已经有验证码下发记录 没有的话请求第三方下发验证码
     var findRecord models.SendSms
 
