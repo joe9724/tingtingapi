@@ -172,6 +172,9 @@ func NewTingtingAPI(spec *loads.Document) *TingtingAPI {
 		SearchSearchHandler: search.SearchHandlerFunc(func(params search.SearchParams) middleware.Responder {
 			return middleware.NotImplemented("operation SearchSearch has not yet been implemented")
 		}),
+		MemberMemberDetailHandler: member.MemberDetailHandlerFunc(func(params member.MemberDetailParams) middleware.Responder {
+			return middleware.NotImplemented("operation MemberMemberDetail has not yet been implemented")
+		}),
 	}
 }
 
@@ -290,6 +293,9 @@ type TingtingAPI struct {
 	// MemberNrMemberRegisterMemberHandler sets the operation handler for the member register member operation
 	MemberNrMemberRegisterMemberHandler member.NrMemberRegisterMemberHandler
 	// ServeError is called when an error is received, there is a default handler
+	MemberNrMemberEditHandler member.NrMemberEditHandler
+
+	MemberMemberDetailHandler member.MemberDetailHandler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
 
@@ -831,6 +837,15 @@ func (o *TingtingAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/search"] = search.NewSearch(o.context, o.SearchSearchHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/member/edit"] = member.NewNrMemberEdit(o.context, o.MemberNrMemberEditHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/member/detail"] = member.NewMemberDetail(o.context, o.MemberMemberDetailHandler)
 
 }
 

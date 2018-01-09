@@ -176,6 +176,12 @@ func configureAPI(api *operations.TingtingAPI) http.Handler {
 	api.SearchSearchHandler = search.SearchHandlerFunc(func(params search.SearchParams) middleware.Responder {
 		return middleware.NotImplemented("operation search.Search has not yet been implemented")
 	})
+	api.MemberMemberDetailHandler = member.MemberDetailHandlerFunc(func(params member.MemberDetailParams) middleware.Responder {
+		return middleware.NotImplemented("operation member.MemberDetail has not yet been implemented")
+	})
+	api.MemberNrMemberEditHandler = member.NrMemberEditHandlerFunc(func(params member.NrMemberEditParams) middleware.Responder {
+		return middleware.NotImplemented("operation member.NrMemberEdit has not yet been implemented")
+	})
 	api.ServerShutdown = func() {}
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))

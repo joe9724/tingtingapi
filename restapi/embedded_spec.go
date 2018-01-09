@@ -2000,6 +2000,193 @@ func init() {
         }
       }
     },
+    "/member/detail": {
+      "get": {
+        "description": "会员详情",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "会员详情",
+        "operationId": "member/detail",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "会员id,未登录 -1",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "时间戳",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "专辑详情",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_15"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/edit": {
+      "post": {
+        "description": "修改用户资料",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "修改用户资料",
+        "operationId": "/member/edit",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "登录名",
+            "name": "Membername",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "密码",
+            "name": "password",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "短信验证码",
+            "name": "validateCode",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "手机号",
+            "name": "phoneNumber",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生年",
+            "name": "birth-year",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生月",
+            "name": "birth-month",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生日",
+            "name": "birth-day",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "年级",
+            "name": "grade",
+            "in": "formData"
+          },
+          {
+            "type": "file",
+            "description": "头像",
+            "name": "avatar",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳",
+            "name": "ts",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "formData"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_17"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/member/feedback": {
       "post": {
         "description": "反馈",
@@ -7119,6 +7306,193 @@ func init() {
             "description": "登录成功，返回登录信息",
             "schema": {
               "$ref": "#/definitions/inline_response_200_2"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/detail": {
+      "get": {
+        "description": "会员详情",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "会员详情",
+        "operationId": "member/detail",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "会员id,未登录 -1",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "时间戳",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "专辑详情",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_15"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/edit": {
+      "post": {
+        "description": "修改用户资料",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "修改用户资料",
+        "operationId": "/member/edit",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "登录名",
+            "name": "Membername",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "密码",
+            "name": "password",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "短信验证码",
+            "name": "validateCode",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "手机号",
+            "name": "phoneNumber",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生年",
+            "name": "birth-year",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生月",
+            "name": "birth-month",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "出生日",
+            "name": "birth-day",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "年级",
+            "name": "grade",
+            "in": "formData"
+          },
+          {
+            "type": "file",
+            "description": "头像",
+            "name": "avatar",
+            "in": "formData"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳",
+            "name": "ts",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "formData"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_17"
             }
           },
           "default": {

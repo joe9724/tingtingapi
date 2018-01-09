@@ -41,6 +41,12 @@ type Member struct {
 
 	Ts  int64 `json:"ts,omitempty"`
 
+	Status  int64 `json:"status,omitempty"`
+
 	Ts1  string `json:"ts1,omitempty"`
+
+	Birth string `json:"birth,omitempty"`
+
+
 }
 
