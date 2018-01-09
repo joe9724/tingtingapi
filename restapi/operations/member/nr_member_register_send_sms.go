@@ -12,7 +12,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	"fmt"
-	"tingtingbackend/var"
+	"tingtingapi/var"
 	"time"
 )
 
@@ -76,9 +76,13 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
     if findRecord.Id == 0{
     	code = code
     	fmt.Println("5分钟内没有delay1=",time.Now().Unix()-300)
+    	//调用第三方sp平台下发短信
+    	_var.SendMsg(*(Params.PhoneNumber),code)
 	}else{
 		fmt.Println("5分钟内有delay2=",time.Now().Unix()-300)
 		code = findRecord.Code
+		//调用第三方sp平台下发短信
+		_var.SendMsg(*(Params.PhoneNumber),code)
 	}
 	var send bool
     send = true

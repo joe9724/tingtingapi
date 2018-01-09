@@ -4,6 +4,10 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 
+	"net/url"
+	"log"
+	"io/ioutil"
+	"net/http"
 )
 
 func Response200(code int64,msg string) (string) {
@@ -14,6 +18,35 @@ func Response200(code int64,msg string) (string) {
     "msg": "ok"
     }`
 	return responseStr
+}
+
+func SendMsg(mobile string,str string) bool{
+	var sendOk bool
+	var content string
+	content = "【听听阅读】验证码是:"+str
+	var requestUrl string
+	requestUrl = "http://mes.sh-hstx.com:8800/sendXSms.do?username=tusheng&password=abcd1234&mobile="+mobile+"&content="+content+"&dstime=&productid=100035"
+	fmt.Println("send str is",url.QueryEscape(requestUrl))
+	u, _ := url.Parse(requestUrl)
+	//q := u.Query()
+	//u.RawQuery = q.Encode()
+	res, err := http.Get(u.String())
+	fmt.Println("url is",u.String())
+	if err != nil {
+		log.Fatal(err)
+		//return
+	}
+	result, err := ioutil.ReadAll(res.Body)
+	res.Body.Close()
+	if err != nil {
+		sendOk = false
+	}else{
+		sendOk = true
+	}
+
+	fmt.Printf("SP网关回复内容是:%s", result)
+
+	return sendOk
 }
 
 func OpenConnection() (db *gorm.DB, err error) {
