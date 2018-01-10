@@ -12,7 +12,11 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	"fmt"
-	"tingtingapi/var"
+	"tingtingbackend/var"
+	"io/ioutil"
+	"time"
+	"strings"
+	"runtime"
 	"strconv"
 )
 
@@ -58,48 +62,114 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var ok MemberDetailOK
-	var response models.InlineResponse200155
-
-	var code int64
+	var ok MemberEditOK
+	var response models.InlineResponse20017
 	var msg string
+	var code int64
+	//var loginRet models.LoginRet
+	//var msg string
+	//var code int64
+	var status models.Response
+
+	if (Params.Val == nil){
+		status.UnmarshalBinary([]byte(_var.Response200(401,"missing encrypt str")))
+		response.Status = &status
+		ok.SetPayload(&response)
+		o.Context.Respond(rw, r, route.Produces, route, ok)
+
+		return
+	}
 
 	db,err := _var.OpenConnection()
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
-	var status models.Response
-
+	//query
+	fmt.Println("Params.MemberID=",Params.MemberID)
+	//判断验证码是否正确
 	var member models.Member
 	db.Table("members").Where("id=?",Params.MemberID).Find(&member)
-	//db.Table("members").Where(map[string]interface{}{"status":0}).Where("id=?",Params.MemberID).Last(&detail)
-	if(Params.MemberID==nil) {
-		//member.Name = *Params.Membername
-		code = 201
-		msg = "missing memberId"
-	}else {
-		if (Params.Membername != nil) {
-			member.Name = *Params.Membername
-		}
-		if (Params.BirthYear != nil) {
-			member.Birth = strconv.FormatInt(*(Params.BirthYear),10) + "-" + strconv.FormatInt(*(Params.BirthMonth),10) + "-" + strconv.FormatInt(*(Params.BirthDay),10)
-		}
-		if (Params.Grade != nil) {
-			member.Grade = *(Params.Grade)
-		}
-		code = 200
-		msg = "ok"
+	if (member.ID == 0){
+		status.UnmarshalBinary([]byte(_var.Response200(402,"无此用户")))
+		response.Status = &status
+		ok.SetPayload(&response)
+		o.Context.Respond(rw, r, route.Produces, route, ok)
+
+		return
 	}
-	db.Save(&member)
+
+	//判断member里是有已有phone对应的记录，没有的话插入，有的话更新
+	var filename string
+	var birth string
+	var grade string
+
+	filename = strconv.FormatInt((time.Now().Unix()),10)
+
+	db.Table("members").Where("phone=?",Params.PhoneNumber).Find(&member)
+
+	if(Params.Membername!=nil) {
+		member.Name = *Params.Membername
+	}
+
+	member.Ts = time.Now().Unix()
+	if (Params.BirthYear != nil) {
+		birth = strconv.FormatInt(*(Params.BirthYear),10) + "-" + strconv.FormatInt(*(Params.BirthMonth),10) + "-" + strconv.FormatInt(*(Params.BirthDay),10)
+		member.Birth = birth
+	}
+	if (Params.Grade != nil) {
+		grade = *(Params.Grade)
+		member.Grade = grade
+	}
+	if(member.ID==int64(0)){
+		code = 203
+		msg = "用户不存在"
+	}else{
+		code = 200
+		msg = "修改成功"
+		has,_ := HasEditAvatar(Params,filename)
+		if has == true{
+			member.Avatar = filename
+		}
+		db.Save(&member)
+	}
+
 	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
-	//response.Data = &detail
-
-	//status
-
 	response.Status = &status
 
 	ok.SetPayload(&response)
 
 	o.Context.Respond(rw, r, route.Produces, route, ok)
 
+}
+
+func HasEditAvatar(Params  NrMemberEditParams , filename string)  (r bool,saveFileName string) {
+	//如果有cover
+	if (Params.Avatar != nil) {
+		avatar, err := ioutil.ReadAll(Params.Avatar)
+		if err != nil {
+			fmt.Println("err upload:", err.Error())
+		}
+		contentType := http.DetectContentType(avatar)
+		var lower string
+		lower = strings.ToLower(contentType)
+		if (strings.Contains(lower, "jp") || (strings.Contains(lower, "pn"))) {
+			if (runtime.GOOS == "windows") {
+				err1 := ioutil.WriteFile(filename+".jpg", avatar, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			} else {
+				err1 := ioutil.WriteFile("/root/go/src/resource/image/avatar/"+filename+".jpg", avatar, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			}
+			return true, filename + ".jpg"
+		} else {
+			return false, ""
+		}
+
+	} else {
+		return false, ""
+	}
 }

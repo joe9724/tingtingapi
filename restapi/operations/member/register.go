@@ -13,8 +13,11 @@ import (
 	"tingtingapi/models"
 	"fmt"
 	"tingtingbackend/var"
-
+    "io/ioutil"
 	"time"
+	"strings"
+	"runtime"
+	"strconv"
 )
 
 // RegisterHandlerFunc turns a function with the right signature into a register handler
@@ -61,6 +64,8 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	var ok RegisterOK
 	var response models.InlineResponse20016
+	var msg string
+	var code int64
 	//var loginRet models.LoginRet
 	//var msg string
 	//var code int64
@@ -71,44 +76,105 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	//query
 	fmt.Println("phone=",Params.PhoneNumber)
+	//判断验证码是否正确
+	validateCode := *(Params.ValidateCode)
+	var sms models.SendSms
+	db.Table("sms").Where("phone=?",Params.PhoneNumber).Where("code=?",validateCode).Last(&sms)
+	if (sms.Id == 0){
+		status.UnmarshalBinary([]byte(_var.Response200(401,"验证码不正确")))
+		response.Status = &status
+		ok.SetPayload(&response)
+		o.Context.Respond(rw, r, route.Produces, route, ok)
+
+		return
+	}
 
 	//判断member里是有已有phone对应的记录，没有的话插入，有的话更新
+	var filename string
+	var birth string
+	var grade string
 
+	filename = strconv.FormatInt((time.Now().Unix()),10)
 	var member models.Member
 	db.Table("members").Where("phone=?",Params.PhoneNumber).Find(&member)
 
+	if(Params.Membername!=nil) {
+		member.Name = *Params.Membername
+	}
+	member.Password = *Params.Password
+	member.Phone = *Params.PhoneNumber
+	member.Ts = time.Now().Unix()
+	if (Params.BirthYear != nil) {
+		birth = strconv.FormatInt(*(Params.BirthYear),10) + "-" + strconv.FormatInt(*(Params.BirthMonth),10) + "-" + strconv.FormatInt(*(Params.BirthDay),10)
+		member.Birth = birth
+	}
+	if (Params.Grade != nil) {
+		grade = strconv.FormatInt(*(Params.Grade),10)
+		member.Grade = grade
+	}
 	if(member.ID==int64(0)){
 		//查找是否已有用户名被占用了
 		var temp models.Member
 		db.Table("members").Where("name=?",Params.Membername).Find(&temp)
 		if (temp.ID==0){
 			//insert
-			status.UnmarshalBinary([]byte(_var.Response200(200,"注册成功")))
-			fmt.Println("注册成功")
-			db.Table("members").FirstOrCreate(&models.Member{}, models.Member{Phone: *Params.PhoneNumber,Name: *Params.Membername,Password:*Params.Password,Ts:time.Now().Unix()})
+			code = 200
+			msg = "注册成功"
+			has,_ := HasAvatar(Params,filename)
+            if has == true{
+            	member.Avatar = filename
+			}
+			db.Save(&member)
 		}else{
-			status.UnmarshalBinary([]byte(_var.Response200(202,"用户名已经被占用")))
+			code = 202
+			msg = "用户名已被注册,请换个用户名"
 		}
 
 	}else{
-
-		//update
-		status.UnmarshalBinary([]byte(_var.Response200(201,"更新成功")))
-		if(Params.Membername!=nil) {
-			member.Name = *Params.Membername
-		}
-		member.Password = *Params.Password
-		member.Phone = *Params.PhoneNumber
-		member.Ts = time.Now().Unix()
-		db.Save(&member)
-		//db.Table("members").FirstOrCreate(&models.Member{}, models.Member{Phone: *Params.PhoneNumber,Name: *Params.Membername,Password:*Params.Password})
-		fmt.Println("更新成功")
+		code = 203
+		msg = "手机号已经被注册"
 	}
 
+	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
 	response.Status = &status
 
 	ok.SetPayload(&response)
 
 	o.Context.Respond(rw, r, route.Produces, route, ok)
 
+}
+
+
+
+func HasAvatar(Params  RegisterParams , filename string)  (r bool,saveFileName string){
+	//如果有cover
+	if (Params.Avatar!=nil) {
+		avatar, err := ioutil.ReadAll(Params.Avatar)
+		if err != nil {
+			fmt.Println("err upload:", err.Error())
+		}
+		contentType := http.DetectContentType(avatar)
+		var lower string
+		lower = strings.ToLower(contentType)
+		if(strings.Contains(lower,"jp")||(strings.Contains(lower,"pn"))) {
+			if(runtime.GOOS == "windows") {
+				err1 := ioutil.WriteFile(filename+".jpg", avatar, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			}else{
+				err1 := ioutil.WriteFile("/root/go/src/resource/image/avatar/"+filename+".jpg", avatar, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			}
+			return true,filename+".jpg"
+		}else{
+			return false,""
+		}
+
+
+	}else{
+		return false,""
+	}
 }

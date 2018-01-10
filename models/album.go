@@ -22,6 +22,10 @@ type Album struct {
 	// album name
 	AlbumName string `json:"albumName,omitempty"`
 
+	Sub_Title string `json:"sub_title,omitempty"`
+
+	Time int64 `json:"time,omitempty"`
+
 	// album Id
 	ID int64 `json:"id,omitempty"`
 
@@ -34,9 +38,15 @@ type Album struct {
 
 	Cover string `json:"cover,omitempty"`
 
-	PlayCount int64 `json:"playCount,omitempty"`
+	Play_Count int64 `json:"playCount,omitempty"`
 
 	BooksNumber int64 `json:"books_number,omitempty"`
+
+	Author_Name string `json:"author_name,omitempty"`
+
+	Author_Avatar string `json:"author_avatar,omitempty"`
+
+	Books_Number int64 `json:"books_number,omitempty"`
 
 }
 

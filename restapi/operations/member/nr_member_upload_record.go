@@ -183,6 +183,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 	}
 
 	record.Title = Params.Title
+	record.User_id = *(Params.MemberID)
     db.Create(&record)
 	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
 	response.Return = &status
