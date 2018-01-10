@@ -47,6 +47,8 @@ type NrMemberUploadRecordParams struct {
 	  In: formData
 	*/
 	Cover io.ReadCloser
+
+	RecordFile io.ReadCloser
 	/*录音文件.
 	  Required: true
 	  In: formData
@@ -113,12 +115,25 @@ func (o *NrMemberUploadRecordParams) BindRequest(r *http.Request, route *middlew
 	}
 
 	icon, iconHeader, err := r.FormFile("icon")
-	if err != nil {
-		res = append(res, errors.New(400, "reading file %q failed: %v", "icon", err))
+	if err != nil && err != http.ErrMissingFile {
+		res = append(res, errors.New(400, "reading file %q failed: %v", "cover", err))
+	} else if err == http.ErrMissingFile {
+		// no-op for missing but optional file parameter
 	} else if err := o.bindIcon(icon, iconHeader); err != nil {
 		res = append(res, err)
 	} else {
 		o.Icon = &runtime.File{Data: icon, Header: iconHeader}
+	}
+
+	recordFile, recordFileHeader, err := r.FormFile("recordFile")
+	if err != nil && err != http.ErrMissingFile {
+		res = append(res, errors.New(400, "reading file %q failed: %v", "recordFile", err))
+	} else if err == http.ErrMissingFile {
+		// no-op for missing but optional file parameter
+	} else if err := o.bindRecordFile(recordFile, recordFileHeader); err != nil {
+		res = append(res, err)
+	} else {
+		o.RecordFile = &runtime.File{Data: recordFile, Header: recordFileHeader}
 	}
 
 	fdMemberID, fdhkMemberID, _ := fds.GetOK("memberId")
@@ -193,6 +208,12 @@ func (o *NrMemberUploadRecordParams) bindIcon(file multipart.File, header *multi
 
 	return nil
 }
+
+func (o *NrMemberUploadRecordParams) bindRecordFile(file multipart.File, header *multipart.FileHeader) error {
+
+	return nil
+}
+
 
 func (o *NrMemberUploadRecordParams) bindMemberID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string

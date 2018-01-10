@@ -26,7 +26,7 @@ type Record struct {
 	PlayCount int64 `json:"playCount,omitempty"`
 
 	// sub title
-	SubTitle string `json:"subTitle,omitempty"`
+	Sub_Title string `json:"subTitle,omitempty"`
 
 	// summary
 	Summary string `json:"summary,omitempty"`
@@ -36,6 +36,11 @@ type Record struct {
 
 	// url
 	URL string `json:"url,omitempty"`
+
+	User_id  int64 `json:"user_id,omitempty"`
+
+	Icon  string `json:"icon,omitempty"`
+
 }
 
 // Validate validates this record

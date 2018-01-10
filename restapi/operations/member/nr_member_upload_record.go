@@ -7,10 +7,16 @@ package member
 
 import (
 	"net/http"
-"io/ioutil"
+    "io/ioutil"
 	middleware "github.com/go-openapi/runtime/middleware"
 	"fmt"
 	_"os"
+	"runtime"
+	"time"
+	"strings"
+	"tingtingapi/models"
+	"tingtingapi/var"
+	"strconv"
 )
 
 // NrMemberUploadRecordHandlerFunc turns a function with the right signature into a member upload record handler
@@ -53,11 +59,136 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 		return
 	}
 
-	body, err := ioutil.ReadAll(Params.Icon)
-	if err!=nil{
-		fmt.Println("err upload:",err.Error())
+	var ok MemberUploadRecordOK
+	var response models.InlineResponse2008
+	var status models.Response
+	var record models.Record
+	var msg string
+	var code int64
+
+    var filename string
+    filename = strconv.FormatInt((time.Now().Unix()),10)
+
+    fmt.Println("filename is",filename)
+	//如果有录音文件
+	if (Params.RecordFile!=nil) {
+		recordFile, err := ioutil.ReadAll(Params.RecordFile)
+		if err != nil {
+			fmt.Println("err upload:", err.Error())
+		}
+		//fmt.Println(len(recordFile))
+		// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
+		contentType := http.DetectContentType(recordFile)
+		fmt.Println("contentType is", contentType)
+
+		//save
+		var lower string
+		lower = strings.ToLower(contentType)
+		if(strings.Contains(lower,"mp3")||(strings.Contains(lower,"octet-stream"))) {
+			if (runtime.GOOS == "windows") {
+				err1 := ioutil.WriteFile(filename+".mp3", recordFile, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			} else {
+				err1 := ioutil.WriteFile("/root/go/src/resource/image/icon/"+filename+".mp3", recordFile, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			}
+			record.URL = filename+".mp3"
+		}else{
+			code = 401
+			msg = "recordFile format need mp3"
+		}
 	}
-	fmt.Println(len(body))
+
+	//如果有icon
+	if (Params.Icon!=nil) {
+		icon, err := ioutil.ReadAll(Params.Icon)
+		if err != nil {
+			fmt.Println("err upload:", err.Error())
+		}
+		fmt.Println(len(icon))
+		// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
+		contentType := http.DetectContentType(icon)
+		fmt.Println("contentType is", contentType)
+
+		//save
+		var lower string
+		lower = strings.ToLower(contentType)
+		if(strings.Contains(lower,"jp")||(strings.Contains(lower,"pn"))) {
+			if (runtime.GOOS == "windows") {
+				err1 := ioutil.WriteFile(filename+".jpg", icon, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			} else {
+				err1 := ioutil.WriteFile("/root/go/src/resource/image/icon/"+filename+".jpg", icon, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			}
+			record.Icon = filename+".jpg"
+		}else{
+			code = 401
+			msg = "image format need jpg or png"
+		}
+	}
+
+	//如果有cover
+	if (Params.Cover!=nil) {
+		cover, err := ioutil.ReadAll(Params.Cover)
+		if err != nil {
+			fmt.Println("err upload:", err.Error())
+		}
+		//fmt.Println(len(icon))
+		// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
+		contentType := http.DetectContentType(cover)
+		//fmt.Println("contentType is", contentType)
+
+		//save
+		var lower string
+		lower = strings.ToLower(contentType)
+		if(strings.Contains(lower,"jp")||(strings.Contains(lower,"pn"))) {
+			if(runtime.GOOS == "windows") {
+				err1 := ioutil.WriteFile(filename+".jpg", cover, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			}else{
+				err1 := ioutil.WriteFile("/root/go/src/resource/image/icon/"+filename+".jpg", cover, 0644)
+				if err1 != nil {
+					fmt.Println(err1.Error())
+				}
+			}
+			record.Cover = filename+".jpg"
+		}else{
+			code = 402
+			msg = "image format need jpg or png"
+		}
+
+	}
+
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+
+	if(&(Params.SubTitle)!=nil){
+		record.Sub_Title = Params.SubTitle
+	}
+	if(&(Params.Summary)!=nil){
+		record.Summary = *(Params.Summary)
+	}
+
+	record.Title = Params.Title
+    db.Create(&record)
+	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
+	response.Return = &status
+	ok.SetPayload(&response)
+	o.Context.Respond(rw, r, route.Produces, route, ok)
+
 
 	/*buffer := make([]byte, 512)
 	_, err = file.Read(buffer)
@@ -68,23 +199,14 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 	// Reset the read pointer if necessary.
 	file.Seek(0, 0)
 */
-	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
-	contentType := http.DetectContentType(body)
-    fmt.Println("contentType is",contentType)
 
-	//save
-	fmt.Println()
-	err1 := ioutil.WriteFile("111", body, 0644)
-	if err1 != nil {
-		fmt.Println(err1.Error())
-	}
 
 	/*defer func() {
 		_ = os.RemoveAll(path)
 	}()*/
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	/*res := o.Handler.Handle(Params) // actually handle the request
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	o.Context.Respond(rw, r, route.Produces, route, res)*/
 
 }
