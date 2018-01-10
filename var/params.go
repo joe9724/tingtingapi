@@ -33,7 +33,7 @@ func SendMsg(mobile string,str string,t int64) bool{
 	}
 	fmt.Println(content)
 	/*var requestUrl string
-	requestUrl = "http://mes.sh-hstx.com:8800/sendXSms.do?username=tusheng&password=abcd1234&mobile="+mobile+"&content="+content+"&dstime=&productid=100035"
+	requestUrl = "http://mes.sh-hstx.com:8800/sendXSms.do?username=tusheng1234&password=abcd1234&mobile="+mobile+"&content="+content+"&dstime=&productid=100035"
 	fmt.Println("send str is",url.QueryEscape(requestUrl))
 	u, _ := url.Parse(requestUrl)
 	//q := u.Query()
