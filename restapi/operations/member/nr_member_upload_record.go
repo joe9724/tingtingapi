@@ -7,8 +7,10 @@ package member
 
 import (
 	"net/http"
-
+"io/ioutil"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"fmt"
+	_"os"
 )
 
 // NrMemberUploadRecordHandlerFunc turns a function with the right signature into a member upload record handler
@@ -50,6 +52,36 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 		o.Context.Respond(rw, r, route.Produces, route, err)
 		return
 	}
+
+	body, err := ioutil.ReadAll(Params.Icon)
+	if err!=nil{
+		fmt.Println("err upload:",err.Error())
+	}
+	fmt.Println(len(body))
+
+	/*buffer := make([]byte, 512)
+	_, err = file.Read(buffer)
+	if err != nil {
+		return err
+	}
+
+	// Reset the read pointer if necessary.
+	file.Seek(0, 0)
+*/
+	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
+	contentType := http.DetectContentType(body)
+    fmt.Println("contentType is",contentType)
+
+	//save
+	fmt.Println()
+	err1 := ioutil.WriteFile("111", body, 0644)
+	if err1 != nil {
+		fmt.Println(err1.Error())
+	}
+
+	/*defer func() {
+		_ = os.RemoveAll(path)
+	}()*/
 
 	res := o.Handler.Handle(Params) // actually handle the request
 
