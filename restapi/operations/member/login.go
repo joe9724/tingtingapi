@@ -70,26 +70,14 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	fmt.Println("password=",Params.Password)
 	fmt.Println("loginType=",Params.LoginType)
 
-	db.Table("members").Where("phone=?",Params.Phone).Where("password=?",Params.Password).Find(&loginRet).Limit(1)
+	/*if(Params.LoginType == 0){
+
+	}
+*/
+	db.Table("members").Where("phone=?",Params.Phone).Where("password=?",Params.Password).Last(&loginRet)
 
 	fmt.Println(loginRet)
 	response.Data = &loginRet
-	/*response.Data.MemberID = response.Data.Id
-	response.Data.Membername = response.Data.Name
-
-	response.Data.MemberID = 1
-	response.Data.Membername = "bf"
-	response.Data.Gender=1
-	response.Data.Avatar = "http://tingting-resource.bitekun.xin/resource/image/avatar.jpg"
-	response.Data.Name = "pf"
-	response.Data.Area = "江苏 南京"
-	response.Data.Birth = "1991-08-17"
-	response.Data.Grade = "1-3"
-	response.Data.Id = 1
-	response.Data.Level = 1
-	response.Data.Phone = "18963602871"
-	response.Data.Money = 118
-	response.Data.Ts = 1787868685*/
 
 	//status
 	var status models.Response
@@ -101,5 +89,20 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 
+	/*response.Data.MemberID = response.Data.Id
+		response.Data.Membername = response.Data.Name
 
+		response.Data.MemberID = 1
+		response.Data.Membername = "bf"
+		response.Data.Gender=1
+		response.Data.Avatar = "http://tingting-resource.bitekun.xin/resource/image/avatar.jpg"
+		response.Data.Name = "pf"
+		response.Data.Area = "江苏 南京"
+		response.Data.Birth = "1991-08-17"
+		response.Data.Grade = "1-3"
+		response.Data.Id = 1
+		response.Data.Level = 1
+		response.Data.Phone = "18963602871"
+		response.Data.Money = 118
+		response.Data.Ts = 1787868685*/
 }

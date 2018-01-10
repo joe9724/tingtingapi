@@ -59,6 +59,10 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	var ok MemberRegisterSendSmsOK
+	var response models.InlineResponse20016
+
+	var status models.Response
 
 	//(1)产生验证码
 	var code string
@@ -66,7 +70,8 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 	vcode := fmt.Sprintf("%06v", rnd.Int31n(1000000))
 	fmt.Println(vcode)
 	code = vcode
-	//(2)查询数据库内是否5分钟内已经有验证码下发记录 没有的话请求第三方下发验证码
+	code = "654321"
+	// (2)查询数据库内是否5分钟内已经有验证码下发记录 没有的话请求第三方下发验证码
     var findRecord models.SendSms
 
 
@@ -75,35 +80,42 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 		fmt.Println(err.Error())
 	}
 	//query
-	db.Table("sms").Where("type=?",0).Where(map[string]interface{}{"phone":Params.PhoneNumber}).Where("ts>?",time.Now().Unix()-5*60).Last(&findRecord)
-    fmt.Println(findRecord)
-    if findRecord.Id == 0{
-    	code = code
-    	fmt.Println("5分钟内没有delay1=",time.Now().Unix()-300)
-    	//调用第三方sp平台下发短信
-    	_var.SendMsg(*(Params.PhoneNumber),code)
-	}else{
-		fmt.Println("5分钟内有delay2=",time.Now().Unix()-300)
-		code = findRecord.Code
-		//调用第三方sp平台下发短信
-		_var.SendMsg(*(Params.PhoneNumber),code)
-	}
-	var send bool
-    send = true
-	//(3)第二步成功后回调后入库
-    if (send==true){
-    findRecord.Code = code
-    findRecord.Phone = *(Params.PhoneNumber)
-    findRecord.Type = 0
-    findRecord.Ts = int64(time.Now().Unix())
-    db.Table("sms").Create(&findRecord)
-	}
+    // type =0 正常注册      =1 第三方登录后绑定手机号     =2 快捷登录
+		db.Table("sms").Where("type=?", 0).Where(map[string]interface{}{"phone": Params.PhoneNumber}).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)
+		fmt.Println(findRecord)
+		if findRecord.Id == 0 {
+			code = code
+			fmt.Println("5分钟内没有delay1=", time.Now().Unix()-300)
+			//调用第三方sp平台下发短信
+			_var.SendMsg(*(Params.PhoneNumber), code,*(Params.Type))
+		} else {
+			fmt.Println("5分钟内有delay2=", time.Now().Unix()-300)
+			code = findRecord.Code
+			//调用第三方sp平台下发短信
+			_var.SendMsg(*(Params.PhoneNumber), code,*(Params.Type))
+		}
+		var send bool
+		send = true
+		//(3)第二步成功后回调后入库
+		if (send == true) {
+			findRecord.Code = code
+			findRecord.Phone = *(Params.PhoneNumber)
+			findRecord.Type = *(Params.Type)
+			findRecord.Ts = int64(time.Now().Unix())
+			db.Table("sms").Create(&findRecord)
+		}
 
-	var ok MemberRegisterSendSmsOK
-	var response models.InlineResponse20016
+		// 如果是快捷登录，将验证码作为临时密码存放到member里
+		if(*(Params.Type) ==1 || *(Params.Type) ==2){
+			var member models.Member
+			db.Table("members").Where("phone=?",Params.PhoneNumber).Find(&member)
+			member.Password = code
+			member.Phone = *Params.PhoneNumber
+			member.Ts = time.Now().Unix()
+			db.Save(&member)
+		}
 
-	var status models.Response
-	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+    status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
 	response.Status = &status
 
 	ok.SetPayload(&response)

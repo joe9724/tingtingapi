@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 
-	"net/url"
-	"log"
-	"io/ioutil"
-	"net/http"
+	_"net/url"
+	_"log"
+	_"io/ioutil"
+	_"net/http"
 )
 
 func Response200(code int64,msg string) (string) {
@@ -20,11 +20,19 @@ func Response200(code int64,msg string) (string) {
 	return responseStr
 }
 
-func SendMsg(mobile string,str string) bool{
+func SendMsg(mobile string,str string,t int64) bool{
 	var sendOk bool
+	sendOk = true
 	var content string
-	content = "【听听阅读】验证码是:"+str
-	var requestUrl string
+	if t==0 {
+		content = "【听听阅读】(5分钟内有效)验证码是:" + str
+	}else if t == 1{
+		content = "【听听阅读】(5分钟内有效)绑定手机号后初始密码是:" + str
+	}else if t == 2{
+		content = "【听听阅读】(5分钟内有效)快捷登录初始密码是:" + str
+	}
+	fmt.Println(content)
+	/*var requestUrl string
 	requestUrl = "http://mes.sh-hstx.com:8800/sendXSms.do?username=tusheng&password=abcd1234&mobile="+mobile+"&content="+content+"&dstime=&productid=100035"
 	fmt.Println("send str is",url.QueryEscape(requestUrl))
 	u, _ := url.Parse(requestUrl)
@@ -44,7 +52,7 @@ func SendMsg(mobile string,str string) bool{
 		sendOk = true
 	}
 
-	fmt.Printf("SP网关回复内容是:%s", result)
+	fmt.Printf("SP网关回复内容是:%s", result)*/
 
 	return sendOk
 }

@@ -56,6 +56,12 @@ type NrMemberRegisterSendSmsParams struct {
 	  In: query
 	*/
 	Version *string
+
+	Type *int64
+
+	OpenID * string
+
+	ThirdPartyName * string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -83,6 +89,21 @@ func (o *NrMemberRegisterSendSmsParams) BindRequest(r *http.Request, route *midd
 
 	qTs, qhkTs, _ := qs.GetOK("ts")
 	if err := o.bindTs(qTs, qhkTs, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qType, qhkType, _ := qs.GetOK("type")
+	if err := o.bindType(qType, qhkType, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qOpenID, qhkOpenID, _ := qs.GetOK("openId")
+	if err := o.bindOpenID(qOpenID, qhkOpenID, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qThirdPartyName, qhkThirdPartyName, _ := qs.GetOK("thirdPartyName")
+	if err := o.bindThirdPartyName(qThirdPartyName, qhkThirdPartyName, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -158,6 +179,52 @@ func (o *NrMemberRegisterSendSmsParams) bindTs(rawData []string, hasKey bool, fo
 		return errors.InvalidType("ts", "query", "int64", raw)
 	}
 	o.Ts = &value
+
+	return nil
+}
+
+func (o *NrMemberRegisterSendSmsParams) bindType(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("type", "query", "int64", raw)
+	}
+	o.Type = &value
+
+	return nil
+}
+
+func (o *NrMemberRegisterSendSmsParams) bindOpenID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.OpenID = &raw
+
+	return nil
+}
+
+func (o *NrMemberRegisterSendSmsParams) bindThirdPartyName(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.ThirdPartyName = &raw
 
 	return nil
 }
