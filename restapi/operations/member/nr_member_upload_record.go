@@ -91,7 +91,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 					fmt.Println(err1.Error())
 				}
 			} else {
-				err1 := ioutil.WriteFile("/root/go/src/resource/image/icon/"+filename+".mp3", recordFile, 0644)
+				err1 := ioutil.WriteFile("/root/go/src/resource/mp3/"+filename+".mp3", recordFile, 0644)
 				if err1 != nil {
 					fmt.Println(err1.Error())
 				}
@@ -157,7 +157,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 					fmt.Println(err1.Error())
 				}
 			}else{
-				err1 := ioutil.WriteFile("/root/go/src/resource/image/icon/"+filename+".jpg", cover, 0644)
+				err1 := ioutil.WriteFile("/root/go/src/resource/image/cover/"+filename+".jpg", cover, 0644)
 				if err1 != nil {
 					fmt.Println(err1.Error())
 				}
