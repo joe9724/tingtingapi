@@ -12,7 +12,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	"fmt"
-	"tingtingbackend/var"
+	"tingtingapi/var"
 )
 
 // LoginHandlerFunc turns a function with the right signature into a login handler
@@ -76,17 +76,18 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 */
 	db.Table("members").Where("phone=?",Params.Phone).Where("password=?",Params.Password).Last(&loginRet)
 
-	fmt.Println(loginRet)
+	fmt.Println(loginRet.ID)
 	response.Data = &loginRet
+	response.Data.MemberID = loginRet.ID
+	response.Data.Level = loginRet.Level
+	fmt.Println("id is",response.Data.ID)
 
 	//status
 	var status models.Response
 	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
 	response.Status = &status
 
-	ok.SetPayload(&response)
 
-	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 
 	/*response.Data.MemberID = response.Data.Id
@@ -105,4 +106,8 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		response.Data.Phone = "18963602871"
 		response.Data.Money = 118
 		response.Data.Ts = 1787868685*/
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 }

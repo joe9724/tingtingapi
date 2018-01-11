@@ -15,14 +15,13 @@ import (
 // LoginRet login ret
 // swagger:model LoginRet
 type LoginRet struct {
-
-
+	ID int64 `json:"id,omitempty"`
 	// avatar
 	Avatar string `json:"avatar,omitempty"`
 	Name string `json:"name,omitempty"`
 	// gender
 	Gender int64 `json:"gender,omitempty"`
-	Id int64 `json:"id,omitempty"`
+
 	// member Id
 	MemberID int64 `json:"memberId,omitempty"`
 	// membername
