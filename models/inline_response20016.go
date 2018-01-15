@@ -15,7 +15,6 @@ import (
 // InlineResponse20016 inline response 200 16
 // swagger:model inline_response_200_16
 type InlineResponse20016 struct {
-
 	// status
 	Status *Response `json:"status,omitempty"`
 }

@@ -235,19 +235,20 @@ func (o *NrMemberUploadRecordParams) bindMemberID(rawData []string, hasKey bool,
 
 func (o *NrMemberUploadRecordParams) bindSubTitle(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("subTitle", "formData")
-	}
-	var raw string
-	if len(rawData) > 0 {
-		raw = rawData[len(rawData)-1]
-	}
-	if err := validate.RequiredString("subTitle", "formData", raw); err != nil {
-		return err
-	}
+		return nil
+	}else {
+		var raw string
+		if len(rawData) > 0 {
+			raw = rawData[len(rawData)-1]
+		}
+		if err := validate.RequiredString("subTitle", "formData", raw); err != nil {
+			return err
+		}
 
-	o.SubTitle = raw
+		o.SubTitle = raw
 
-	return nil
+		return nil
+	}
 }
 
 func (o *NrMemberUploadRecordParams) bindSummary(rawData []string, hasKey bool, formats strfmt.Registry) error {

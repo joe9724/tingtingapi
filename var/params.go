@@ -8,16 +8,31 @@ import (
 	_"log"
 	_"io/ioutil"
 	_"net/http"
+	"encoding/json"
 )
 
 func Response200(code int64,msg string) (string) {
-	fmt.Println(code)
+	/*fmt.Println(code)
 	fmt.Println(msg)
 	responseStr := `{
     "code": 201,
     "msg": "ok"
     }`
-	return responseStr
+	return responseStr*/
+	var response Respoonse
+	response.Code = code
+	response.Msg = msg
+
+	out, _ := json.Marshal(response)
+	fmt.Println("ous is",out)
+	return(string(out))
+
+}
+
+type Respoonse struct{
+	Code int64 `json:"code,omitempty"`
+	// cover
+	Msg string `json:"msg,omitempty"`
 }
 
 func SendMsg(mobile string,str string,t int64) bool{

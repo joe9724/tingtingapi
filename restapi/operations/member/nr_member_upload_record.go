@@ -84,22 +84,22 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 		//save
 		var lower string
 		lower = strings.ToLower(contentType)
-		if(strings.Contains(lower,"mp3")||(strings.Contains(lower,"octet-stream"))) {
+		if(strings.Contains(lower,"amr")||(strings.Contains(lower,"octet-stream"))) {
 			if (runtime.GOOS == "windows") {
-				err1 := ioutil.WriteFile(filename+".mp3", recordFile, 0644)
+				err1 := ioutil.WriteFile(filename+".amr", recordFile, 0644)
 				if err1 != nil {
 					fmt.Println(err1.Error())
 				}
 			} else {
-				err1 := ioutil.WriteFile("/root/go/src/resource/mp3/"+filename+".mp3", recordFile, 0644)
+				err1 := ioutil.WriteFile("/root/go/src/resource/amr/"+filename+".amr", recordFile, 0644)
 				if err1 != nil {
 					fmt.Println(err1.Error())
 				}
 			}
-			record.URL = filename+".mp3"
+			record.URL = filename+".amr"
 		}else{
 			code = 401
-			msg = "recordFile format need mp3"
+			msg = "recordFile format need amr"
 		}
 	}
 
