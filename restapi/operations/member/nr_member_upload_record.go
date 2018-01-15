@@ -96,7 +96,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 					fmt.Println(err1.Error())
 				}
 			}
-			record.URL = filename+".amr"
+			record.URL = "http://tingting-resource.bitekun.xin/resource/mp3/"+filename+".amr"
 		}else{
 			code = 401
 			msg = "recordFile format need amr"
