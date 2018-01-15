@@ -96,6 +96,8 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 					fmt.Println(err1.Error())
 				}
 			}
+			code = 200
+			msg = "ok"
 			record.URL = "http://tingting-resource.bitekun.xin/resource/mp3/"+filename+".amr"
 		}else{
 			code = 401
@@ -130,6 +132,8 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 				}
 			}
 			record.Icon = filename+".jpg"
+			code = 200
+			msg = "ok"
 		}else{
 			code = 401
 			msg = "image format need jpg or png"
@@ -162,6 +166,8 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 					fmt.Println(err1.Error())
 				}
 			}
+			code = 200
+			msg = "ok"
 			record.Cover = filename+".jpg"
 		}else{
 			code = 402
