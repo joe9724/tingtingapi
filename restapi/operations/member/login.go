@@ -13,6 +13,7 @@ import (
 	"tingtingapi/models"
 	"fmt"
 	"tingtingapi/var"
+	"time"
 )
 
 // LoginHandlerFunc turns a function with the right signature into a login handler
@@ -60,6 +61,8 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	var ok LoginOK
 	var response models.InlineResponse20021
 	var loginRet models.LoginRet
+	var code int64
+	var msg string
 
 	db,err := _var.OpenConnection()
 	if err!=nil{
@@ -69,24 +72,59 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	fmt.Println("phone=",Params.Phone)
 	fmt.Println("password=",Params.Password)
 	fmt.Println("loginType=",Params.LoginType)
-
+	var findRecord models.SendSms
 	/*if(Params.LoginType == 0){
 
 	}
 */
-	db.Table("members").Where("phone=?",Params.Phone).Where("password=?",Params.Password).Last(&loginRet)
+    if(*(Params.LoginType) == 0 ) { //普通密码登录
+		db.Table("members").Where("phone=?", Params.Phone).Where("password=?", Params.Password).Last(&loginRet)
+		if(loginRet.ID==0){
+			code = 201
+			msg = "账号错误"
+		}else {
+			code = 200
+			msg = "ok"
+			response.Data = &loginRet
+			response.Data.MemberID = loginRet.ID
+			response.Data.Level = loginRet.Level
+			fmt.Println("id is",response.Data.ID)
+		}
+	}else if(*(Params.LoginType) == 1){ //验证码快捷登录
+		db.Table("sms").Where("type=?", 2).Where("code=?",Params.SmsCode).Where(map[string]interface{}{"phone": Params.Phone}).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)
+		if(findRecord.Id==0){
+			code = 202
+			msg = "验证码错误或验证码超时"
+		}else{
+			var member models.Member
+			member.Phone = *(Params.Phone)
+			member.Password = *(Params.SmsCode)
+			db.Save(&member)
+			//
+			var temp  models.LoginRet
+		    db.Table("members").Where("phone=?", Params.Phone).Where("password=?", Params.SmsCode).Last(&temp)
+		    if(temp.ID==0){
+				code = 203
+				msg = "无此用户"
+			}else {
+				code = 200
+				msg = "ok"
+				response.Data = &temp
+				response.Data.MemberID = temp.ID
+				response.Data.Level = temp.Level
+			}
 
-	fmt.Println(loginRet.ID)
-	response.Data = &loginRet
-	response.Data.MemberID = loginRet.ID
-	response.Data.Level = loginRet.Level
-	fmt.Println("id is",response.Data.ID)
+		}
+	}
 
-	//status
 	var status models.Response
-	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	fmt.Println("code is",code)
+	fmt.Println("msg is",msg)
+	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
 	response.Status = &status
+	ok.SetPayload(&response)
 
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 
 
@@ -107,7 +145,5 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		response.Data.Money = 118
 		response.Data.Ts = 1787868685*/
 
-	ok.SetPayload(&response)
 
-	o.Context.Respond(rw, r, route.Produces, route, ok)
 }

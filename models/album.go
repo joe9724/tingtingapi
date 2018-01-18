@@ -17,36 +17,36 @@ import (
 type Album struct {
 
 	// album Id
-	AlbumID int64 `json:"albumId,omitempty"`
+	AlbumID int64 `json:"albumId"`
 
 	// album name
-	AlbumName string `json:"albumName,omitempty"`
+	AlbumName string `json:"albumName"`
 
-	Sub_Title string `json:"sub_title,omitempty"`
+	Sub_Title string `json:"sub_title"`
 
-	Time int64 `json:"time,omitempty"`
+	Time int64 `json:"time"`
 
 	// album Id
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 
 	// album name
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
-	Value int64 `json:"value,omitempty"`
+	Value int64 `json:"value"`
 
-	Icon string `json:"icon,omitempty"`
+	Icon string `json:"icon"`
 
-	Cover string `json:"cover,omitempty"`
+	Cover string `json:"cover"`
 
-	Play_Count int64 `json:"playCount,omitempty"`
+	Play_Count int64 `json:"playCount"`
 
-	BooksNumber int64 `json:"books_number,omitempty"`
+	Author_Name string `json:"author_name"`
 
-	Author_Name string `json:"author_name,omitempty"`
+	Author_Avatar string `json:"author_avatar"`
 
-	Author_Avatar string `json:"author_avatar,omitempty"`
+	Books_Number int64 `json:"books_number"`
 
-	Books_Number int64 `json:"books_number,omitempty"`
+	Summary string `json:"summary"`
 
 }
 

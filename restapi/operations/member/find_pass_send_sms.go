@@ -91,7 +91,7 @@ func (o *FindPassSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if (send==true){
 		findRecord.Code = code
 		findRecord.Phone = *(Params.PhoneNumber)
-		findRecord.Type = 2
+		findRecord.Type = 1
 		findRecord.Ts = int64(time.Now().Unix())
 		db.Table("sms").Create(&findRecord)
 	}

@@ -73,6 +73,8 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	response.Data = &album
 	response.Data.AlbumID = album.ID
     response.Data.AlbumName = album.Name
+    response.Data.Books_Number = album.Books_Number
+    response.Data.Summary = "<html><b>待加</b></html>"
 
 	//status
 	var status models.Response

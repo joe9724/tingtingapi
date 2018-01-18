@@ -13,7 +13,7 @@ import (
 	"tingtingapi/models"
 	"fmt"
 	"tingtingbackend/var"
-	"time"
+	_"time"
 )
 
 // FindPassEditPassHandlerFunc turns a function with the right signature into a find pass edit pass handler
@@ -84,16 +84,24 @@ func (o *FindPassEditPass) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			code = 200
 		}
 	}else if(*(Params.Type) == 1){ //找回密码
-		var findRecord models.SendSms
-		db.Table("sms").Where("type=?",0).Where(map[string]interface{}{"phone":Params.PhoneNumber}).Where("ts>?",time.Now().Unix()-5*60).Last(&findRecord)
-		if(findRecord.Id ==0) {
-			msg = "验证码失效"
-			code = 202
-		}else{
-			db.Table("members").Where("phone=?",&Params.PhoneNumber).Where("password=?",&Params.OldPass).Update(map[string]interface{}{"password":Params.NewPass})
-			msg ="找回密码成功"
-			code = 203
+	    if(Params.NewPass == nil){
+	    	msg = "缺少新密码参数"
+	    	code = 204
+		}else
+		{
+			var findRecord models.SendSms
+			db.Table("sms").Where("type=?",1).Where(map[string]interface{}{"phone":Params.PhoneNumber}).Last(&findRecord)
+			fmt.Println("find is",findRecord)
+			if(findRecord.Id ==0) {
+				msg = "验证码失效"
+				code = 202
+			}else{
+				db.Table("members").Where("phone=?",&Params.PhoneNumber).Where("password=?",&Params.OldPass).Update(map[string]interface{}{"password":Params.NewPass})
+				msg ="找回密码成功"
+				code = 203
+			}
 		}
+
 
 	}
 	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
