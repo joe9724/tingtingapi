@@ -23,9 +23,11 @@ type Category struct {
 	SubCategory CategorySubCategory `json:"subCategory"`
 
 	// summary
-	Summary string `json:"summary,omitempty"`
+	Summary string `json:"summary"`
 
-	Category_Id int64 `json:"category_id,omitempty"`
+	Category_Id int64 `json:"category_id"`
+
+	Icon string `json:"icon"`
 }
 
 // Validate validates this category
