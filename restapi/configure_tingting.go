@@ -204,8 +204,8 @@ func configureServer(s *graceful.Server, scheme, addr string) {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation
 func setupMiddlewares(handler http.Handler) http.Handler {
-	limiter := tollbooth.NewLimiter(1, nil)
-	limiter.SetMessage("api 每5秒只能请求一次")
+	limiter := tollbooth.NewLimiter(1000, nil)
+	limiter.SetMessage("api 每1000秒只能请求一次")
 	limiter.SetIPLookups([]string{"RemoteAddr", "X-Forwarded-For", "X-Real-IP"})
 	return tollbooth.LimitHandler(limiter,handler)
 	//return handler
