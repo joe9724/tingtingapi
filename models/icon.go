@@ -17,25 +17,27 @@ import (
 type Icon struct {
 
 	// cover
-	Cover string `json:"cover,omitempty"`
+	Cover string `json:"cover"`
 
 	// icon
 	Icon string `json:"icon,omitempty"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 
 	// name
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// order
 	Order int64 `json:"order,omitempty"`
 
 	// 跳转类型(0=大类 1=小类 2=专辑 3=书本 4=章节 5=站内wap 6=第三方链接)
-	Type int64 `json:"type,omitempty"`
+	Type int64 `json:"type"`
 
 	// web Url
-	WebURL string `json:"webUrl,omitempty"`
+	WebURL string `json:"webUrl"`
+
+	TargetId string `json:"targetId"`
 }
 
 // Validate validates this icon
