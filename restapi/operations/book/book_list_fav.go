@@ -72,6 +72,7 @@ func (o *BookListFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
+
 	rows, err := db.Table("fav_book").Select("books.name,books.id").Joins("left join books on fav_book.book_id = books.id").Where("fav_book.member_id=?",Params.MemberID).Rows()
 	//var temp []models.Album
 	for rows.Next() {

@@ -15,27 +15,27 @@ import (
 // LoginRet login ret
 // swagger:model LoginRet
 type LoginRet struct {
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 	// avatar
-	Avatar string `json:"avatar,omitempty"`
-	Name string `json:"name,omitempty"`
+	Avatar string `json:"avatar"`
+	Name string `json:"name"`
 	// gender
-	Gender int64 `json:"gender,omitempty"`
+	Gender int64 `json:"gender"`
 
 	// member Id
-	MemberID int64 `json:"memberId,omitempty"`
+	MemberID int64 `json:"memberId"`
 	// membername
-	Membername string `json:"memberName,omitempty"`
+	Membername string `json:"memberName"`
 	//
-	Area string `json:"area,omitempty"`
-	Birth string `json:"birth,omitempty"`
-	Grade string `json:"grade,omitempty"`
-	Level int64 `json:"id,omitempty"`
-	Phone string `json:"phone,omitempty"`
-	Tags string `json:"tags,omitempty"`
-	Status int64 `json:"memberName,omitempty"`
-	Ts  int64 `json:"ts,omitempty"`
-	Money int64 `json:"money,omitempty"`
+	Area string `json:"area"`
+	Birth string `json:"birth"`
+	Grade string `json:"grade"`
+	Level int64 `json:"id"`
+	Phone string `json:"phone"`
+	Tags string `json:"tags"`
+	Status int64 `json:"memberName"`
+	Ts  int64 `json:"ts"`
+	Money int64 `json:"money"`
 }
 
 // Validate validates this login ret

@@ -110,6 +110,9 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if(Params.Membername!=nil) {
 		member.Name = *Params.Membername
 	}
+	if(Params.Gender!=nil){
+		member.Gender = *Params.Gender
+	}
 
 	member.Ts = time.Now().Unix()
 	if (Params.BirthYear != nil) {
@@ -120,6 +123,7 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		grade = *(Params.Grade)
 		member.Grade = grade
 	}
+
 	if(member.ID==int64(0)){
 		code = 203
 		msg = "用户不存在"

@@ -93,6 +93,8 @@ type NrMemberEditParams struct {
 	  In: formData
 	*/
 	Version *string
+
+	Gender *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -138,6 +140,11 @@ func (o *NrMemberEditParams) BindRequest(r *http.Request, route *middleware.Matc
 
 	fdBirthYear, fdhkBirthYear, _ := fds.GetOK("birth-year")
 	if err := o.bindBirthYear(fdBirthYear, fdhkBirthYear, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	fdGender, fdhkGender, _ := fds.GetOK("gender")
+	if err := o.bindGender(fdGender, fdhkGender, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -230,6 +237,24 @@ func (o *NrMemberEditParams) bindBirthDay(rawData []string, hasKey bool, formats
 		return errors.InvalidType("birth-day", "formData", "int64", raw)
 	}
 	o.BirthDay = &value
+
+	return nil
+}
+
+func (o *NrMemberEditParams) bindGender(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("gender", "formData", "int64", raw)
+	}
+	o.Gender = &value
 
 	return nil
 }
