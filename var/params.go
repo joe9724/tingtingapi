@@ -24,7 +24,24 @@ func Response200(code int64,msg string) (string) {
 	fmt.Println("ous is",out)
 	return(string(out))
 }
-
+func GetResourceDomain(filetype string) (string){
+	var val string
+	if(filetype == "avatar") {
+		val = "http://tingting-resource.bitekun.xin/resource/image/avatar/"
+	}
+	if(filetype == "icon") {
+		val = "http://tingting-resource.bitekun.xin/resource/image/icon/"
+	}else if(filetype == "cover"){
+		val = "http://tingting-resource.bitekun.xin/resource/image/cover/"
+	}else if(filetype == "mp3"){
+		val = "http://tingting-resource.bitekun.xin/resource/mp3/"
+	}else if(filetype == "amr"){
+		val = "http://tingting-resource.bitekun.xin/resource/amr/"
+	}else if(filetype == "other"){
+		val = "http://tingting-resource.bitekun.xin/resource/other/"
+	}
+	return val
+}
 func SendMsg(mobile string,str string,t int64) bool{
 	var sendOk bool
 	sendOk = true

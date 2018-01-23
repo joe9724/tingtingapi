@@ -12,7 +12,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	"fmt"
-	"tingtingbackend/var"
+	"tingtingapi/var"
 	"io/ioutil"
 	"time"
 	"strings"
@@ -136,7 +136,7 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		msg = "修改成功"
 		has,_ := HasEditAvatar(Params,filename)
 		if has == true{
-			member.Avatar = filename
+			member.Avatar = _var.GetResourceDomain("avatar")+filename+".jpg"
 		}
 		db.Save(&member)
 	}
