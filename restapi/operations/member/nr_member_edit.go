@@ -107,6 +107,10 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	db.Table("members").Where("phone=?",Params.PhoneNumber).Find(&member)
 
+	if(Params.Address!=nil) {
+		member.Area = *Params.Address
+	}
+
 	if(Params.Membername!=nil) {
 		member.Name = *Params.Membername
 	}

@@ -95,6 +95,8 @@ type NrMemberEditParams struct {
 	Version *string
 
 	Gender *int64
+
+	Address *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -195,6 +197,11 @@ func (o *NrMemberEditParams) BindRequest(r *http.Request, route *middleware.Matc
 
 	fdVersion, fdhkVersion, _ := fds.GetOK("version")
 	if err := o.bindVersion(fdVersion, fdhkVersion, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	fdAddress, fdhkAddress, _ := fds.GetOK("address")
+	if err := o.bindAddress(fdAddress, fdhkAddress, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -305,6 +312,24 @@ func (o *NrMemberEditParams) bindClient(rawData []string, hasKey bool, formats s
 	}
 
 	o.Client = &raw
+
+	return nil
+}
+
+func (o *NrMemberEditParams) bindAddress(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value := raw
+	/*if err != nil {
+		return errors.InvalidType("grade", "formData", "int64", raw)
+	}*/
+	o.Address = &value
 
 	return nil
 }
@@ -446,3 +471,4 @@ func (o *NrMemberEditParams) bindVersion(rawData []string, hasKey bool, formats 
 
 	return nil
 }
+
