@@ -17,13 +17,13 @@ import (
 type InlineResponse20020 struct {
 
 	// data
-	Data *Book `json:"data,omitempty"`
+	Data *Book `json:"data"`
 
 	// is fav
-	IsFav bool `json:"isFav,omitempty"`
+	IsFav bool `json:"isFav"`
 
 	// status
-	Status *Response `json:"status,omitempty"`
+	Status *Response `json:"status"`
 }
 
 // Validate validates this inline response 200 20

@@ -17,37 +17,37 @@ import (
 type Book struct {
 
 	// author avatar
-	AuthorAvatar string `json:"authorAvatar,omitempty"`
+	AuthorAvatar string `json:"authorAvatar"`
 
 	// author name
-	AuthorName string `json:"authorName,omitempty"`
+	AuthorName string `json:"authorName"`
 
 	// book Id
-	BookID int64 `json:"bookId,omitempty"`
+	BookID int64 `json:"bookId"`
 
 	// clips number
-	ClipsNumber int64 `json:"clipsNumber,omitempty"`
+	ClipsNumber int64 `json:"clipsNumber"`
 
 	// icon
-	Icon string `json:"icon,omitempty"`
+	Icon string `json:"icon"`
 
 	// name
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// play count
-	PlayCount int64 `json:"playCount,omitempty"`
+	PlayCount int64 `json:"playCount"`
 
 	// show icon
-	ShowIcon bool `json:"showIcon,omitempty"`
+	ShowIcon bool `json:"showIcon"`
 
 	// sub category Id
-	SubCategoryID int64 `json:"subCategoryId,omitempty"`
+	SubCategoryID int64 `json:"subCategoryId"`
 
 	// sub title
-	SubTitle string `json:"subTitle,omitempty"`
+	SubTitle string `json:"subTitle"`
 
 	// summary
-	Summary string `json:"summary,omitempty"`
+	Summary string `json:"summary"`
 }
 
 // Validate validates this book

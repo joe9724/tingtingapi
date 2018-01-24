@@ -25,7 +25,7 @@ type BookDetailOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.InlineResponse20020 `json:"body,omitempty"`
+	Payload *models.InlineResponse20020 `json:"body"`
 }
 
 // NewBookDetailOK creates BookDetailOK with default headers values
