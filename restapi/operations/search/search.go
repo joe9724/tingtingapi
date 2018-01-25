@@ -72,7 +72,7 @@ func (o *Search) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
 	if (*(Params.Action) == "getContent"){
-		rows, err := db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("albums.name like '%南%'").Rows()
+		rows, err := db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("albums.name like '%南%'").Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
 		//var temp []models.Album
 		for rows.Next() {
 			var name string

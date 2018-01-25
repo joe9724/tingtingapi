@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
-
+"github.com/go-openapi/swag"
 	strfmt "github.com/go-openapi/strfmt"
 )
 
@@ -53,6 +53,17 @@ type SearchParams struct {
 	Version *string
 
 	Action *string
+
+	PageIndex *int64
+	/*分页尺寸
+	  In: query
+	*/
+	PageSize *int64
+	/*标签
+	  In: query
+	*/
+
+
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -70,6 +81,16 @@ func (o *SearchParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 
 	qImei, qhkImei, _ := qs.GetOK("imei")
 	if err := o.bindImei(qImei, qhkImei, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qPageIndex, qhkPageIndex, _ := qs.GetOK("pageIndex")
+	if err := o.bindPageIndex(qPageIndex, qhkPageIndex, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qPageSize, qhkPageSize, _ := qs.GetOK("pageSize")
+	if err := o.bindPageSize(qPageSize, qhkPageSize, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -109,6 +130,42 @@ func (o *SearchParams) bindClient(rawData []string, hasKey bool, formats strfmt.
 	}
 
 	o.Client = &raw
+
+	return nil
+}
+
+func (o *SearchParams) bindPageIndex(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("pageIndex", "query", "int64", raw)
+	}
+	o.PageIndex = &value
+
+	return nil
+}
+
+func (o *SearchParams) bindPageSize(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("pageSize", "query", "int64", raw)
+	}
+	o.PageSize = &value
 
 	return nil
 }
