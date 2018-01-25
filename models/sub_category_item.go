@@ -16,22 +16,23 @@ import (
 // swagger:model SubCategoryItem
 type SubCategoryItem struct {
 
+	ID int64 `json:"id"`
 	// category Id
-	CategoryID int64 `json:"categoryId,omitempty"`
+	CategoryID int64 `json:"categoryId"`
 
 	// icon
-	Icon string `json:"icon,omitempty"`
+	Icon string `json:"icon"`
 
 	// name
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// showicon
-	Showicon bool `json:"showicon,omitempty"`
+	Showicon bool `json:"showicon"`
 
 	// summary
-	Summary string `json:"summary,omitempty"`
+	Summary string `json:"summary"`
 
-	AlbumList []Album `json:"albumList,omitempty"`
+	AlbumList []Album `json:"albumList"`
 }
 
 // Validate validates this sub category item

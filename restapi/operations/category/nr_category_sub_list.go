@@ -14,6 +14,7 @@ import (
 	_"fmt"
 	"tingtingbackend/var"
 
+	"fmt"
 )
 
 // NrCategorySubListHandlerFunc turns a function with the right signature into a category sub list handler
@@ -62,7 +63,21 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	var response models.InlineResponse20023
 	var categoryList models.InlineResponse20023Data
 
-	response.Data = categoryList
+	//根据categoryId找到对应的子类
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	var CategoryList []models.SubCategoryItem
+	db.Table("sub_category_items").Where("category_id=?",*(Params.CategoryID)).Find(&CategoryList)
+	for j:=0; j<len(categoryList);j++  {
+		//根据subCategoryId请求出前6条albumList
+		var AlbumList []models.Album
+		db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",CategoryList[j].ID).Find(&AlbumList)
+		CategoryList[j].AlbumList = AlbumList
+	}
+
+	/*response.Data = categoryList
 
 	var SubCategories []models.SubCategoryItem
 
@@ -88,13 +103,13 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		sub.AlbumList = albums
 		//
 		SubCategories = append(SubCategories,sub)
-	}
+	}*/
 
 	//status
 	var status models.Response
 	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
 	response.Status = &status
-	response.DataList = SubCategories
+	response.DataList = CategoryList
 
 	ok.SetPayload(&response)
 
