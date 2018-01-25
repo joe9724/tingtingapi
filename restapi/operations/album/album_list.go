@@ -74,7 +74,7 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
-	rows, err := db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",Params.SubCategoryID).Rows()
+	rows, err := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",Params.SubCategoryID).Rows()
 	//var temp []models.Album
 	for rows.Next() {
 		var name string
@@ -83,12 +83,12 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		var author_name string
 		var books_number int64
 		var icon string
-		var cover string
 		var play_count int64
 		var sub_title string
 		var time int64
+		var cover string
 
-		err = rows.Scan(&name,&albumId,&author_avatar,&author_name,&books_number,&icon,&play_count,&sub_title,&time)
+		err = rows.Scan(&name,&albumId,&author_avatar,&author_name,&books_number,&icon,&play_count,&sub_title,&time,&cover)
 		if err != nil{
             fmt.Println(err.Error())
 		}
