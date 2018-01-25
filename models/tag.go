@@ -6,28 +6,32 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	strfmt "github.com/go-openapi/strfmt"
 
+	"github.com/go-openapi/errors"
+	"github.com/go-openapi/swag"
 )
 
 // Msg msg
 // swagger:model Msg
-type Msg struct {
+type Tag struct {
 
 	// create time
-	CreateTime int64 `json:"createTime,omitempty"`
+	Id int64 `json:"id,omitempty"`
 
 	// from
-	From string `json:"from,omitempty"`
+	Icon string `json:"icon,omitempty"`
 
 	// sub title
-	SubTitle string `json:"subTitle,omitempty"`
+	Type string `json:"type,omitempty"`
 
 	// title
-	Title string `json:"title,omitempty"`
+	Status string `json:"status,omitempty"`
+
+	Name string `json:"name,omitempty"`
 }
 
 // Validate validates this msg
-/*
 func (m *Msg) Validate(formats strfmt.Registry) error {
 	var res []error
 
@@ -54,4 +58,3 @@ func (m *Msg) UnmarshalBinary(b []byte) error {
 	*m = res
 	return nil
 }
-*/

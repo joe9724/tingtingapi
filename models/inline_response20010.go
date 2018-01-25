@@ -28,6 +28,8 @@ type InlineResponse20010 struct {
 	// record list
 	RecordList InlineResponse20010RecordList `json:"recordList"`
 
+	TagList []Tag `json:"tagList"`
+
 	// status
 	Status *Response `json:"status,omitempty"`
 }

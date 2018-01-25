@@ -51,6 +51,8 @@ type SearchParams struct {
 	  In: query
 	*/
 	Version *string
+
+	Action *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -68,6 +70,11 @@ func (o *SearchParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 
 	qImei, qhkImei, _ := qs.GetOK("imei")
 	if err := o.bindImei(qImei, qhkImei, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qAction, qhkAction, _ := qs.GetOK("action")
+	if err := o.bindAction(qAction, qhkAction, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -102,6 +109,20 @@ func (o *SearchParams) bindClient(rawData []string, hasKey bool, formats strfmt.
 	}
 
 	o.Client = &raw
+
+	return nil
+}
+
+func (o *SearchParams) bindAction(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.Action = &raw
 
 	return nil
 }
