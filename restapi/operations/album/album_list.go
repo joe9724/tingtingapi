@@ -83,6 +83,7 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		var author_name string
 		var books_number int64
 		var icon string
+		var cover string
 		var play_count int64
 		var sub_title string
 		var time int64
@@ -96,7 +97,7 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		t.AlbumID = albumId
 		t.AlbumName = name
 		t.Value = 1
-		t.Icon = icon
+		t.Cover = cover
 		t.Author_Name = author_name
 		t.Author_Avatar = author_avatar
 		t.Books_Number = books_number
