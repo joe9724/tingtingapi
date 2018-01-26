@@ -70,6 +70,7 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//var msg string
 	//var code int64
 	var status models.Response
+	msg = "修改成功"
 
 	if (Params.Val == nil){
 		status.UnmarshalBinary([]byte(_var.Response200(401,"missing encrypt str")))

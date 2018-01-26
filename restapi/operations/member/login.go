@@ -73,6 +73,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	fmt.Println("password=",Params.Password)
 	fmt.Println("loginType=",Params.LoginType)
 	var findRecord models.SendSms
+	msg = "登录成功"
 	/*if(Params.LoginType == 0){
 
 	}

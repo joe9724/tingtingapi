@@ -69,6 +69,7 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//var loginRet models.LoginRet
 	//var msg string
 	//var code int64
+	msg = "注册成功"
 	var status models.Response
 	db,err := _var.OpenConnection()
 	if err!=nil{

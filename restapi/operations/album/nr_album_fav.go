@@ -12,7 +12,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	"fmt"
-	"tingtingbackend/var"
+	"tingtingapi/var"
 	"strconv"
 )
 
@@ -60,6 +60,7 @@ func (o *NrAlbumFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	var ok AlbumFavOK
 	var response models.InlineResponse2007
+	var msg string
 	//var icons models.AlbumBuyResult
 
 	db,err := _var.OpenConnection()
@@ -72,10 +73,12 @@ func (o *NrAlbumFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		//
 		value, _ := strconv.ParseInt(*Params.MemberID, 10, 64)
 		db.Table("fav_album").FirstOrCreate(&models.Fav_Album{}, models.Fav_Album{AlbumId: *Params.AlbumID,MemberId:value})
+		msg = "收藏成功"
 		fmt.Println("收藏成功")
 	}else if (*(Params.Action) == "unfav"){
 		var favModel interface{}
 		db.Table("fav_album").Where("album_id = ?", Params.AlbumID).Where("member_id=?",Params.MemberID).Delete(&favModel)
+		msg = "取消收藏成功"
 		fmt.Println("取消收藏成功")
 	}
 
@@ -87,7 +90,7 @@ func (o *NrAlbumFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	//status
 	var status models.Response
-	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	status.UnmarshalBinary([]byte(_var.Response200(200,msg)))
 	response.Status = &status
 
 	ok.SetPayload(&response)

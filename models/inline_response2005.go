@@ -10,20 +10,22 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/swag"
+
 )
 
 // InlineResponse2005 inline response 200 5
 // swagger:model inline_response_200_5
 type InlineResponse2005 struct {
 
+	TagList []Tag `json:"tagList"`
 	// data
-	Data *Album `json:"data,omitempty"`
+	Data *Album `json:"data"`
 
 	// is fav
-	IsFav bool `json:"isFav,omitempty"`
+	IsFav bool `json:"isFav"`
 
 	// status
-	Status *Response `json:"status,omitempty"`
+	Status *Response `json:"status"`
 }
 
 // Validate validates this inline response 200 5

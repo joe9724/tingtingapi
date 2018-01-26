@@ -13,6 +13,7 @@ import (
 	"tingtingapi/models"
 	"fmt"
 	"tingtingbackend/var"
+	"strconv"
 )
 
 // AlbumDetailHandlerFunc turns a function with the right signature into a album detail handler
@@ -76,6 +77,26 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
     response.Data.Books_Number = album.Books_Number
     response.Data.Summary = "<html><b>待加</b></html>"
 
+    if (Params.MemberID !=nil){
+    	var count int64
+    	db.Table("fav_album").Where("album_id=?",*(Params.AlbumID)).Where("member_id=?",*(Params.MemberID)).Count(&count)
+    	if(count>0){
+    		response.IsFav = true
+		}else{
+			response.IsFav = false
+		}
+	}
+
+	//get taglist
+    var tagList []models.Tag
+	//db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join tag_album_relation on tag_album_relation.albumId = albums.id").Where("tag_album_relation.album_id=?",Params.AlbumID).Find(&tagList)
+	for k:=0; k<5;k++  {
+		var temp models.Tag
+		temp.Id = int64(k+1)
+		temp.Name = "文学"+strconv.FormatInt(int64(k+1),10)
+		tagList = append(tagList,temp)
+	}
+	response.TagList = tagList
 	//status
 	var status models.Response
 	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))

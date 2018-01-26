@@ -17,18 +17,18 @@ import (
 type Tag struct {
 
 	// create time
-	Id int64 `json:"id,omitempty"`
+	Id int64 `json:"id"`
 
 	// from
-	Icon string `json:"icon,omitempty"`
+	Icon string `json:"icon"`
 
 	// sub title
-	Type string `json:"type,omitempty"`
+	Type string `json:"type"`
 
 	// title
-	Status string `json:"status,omitempty"`
+	Status string `json:"status"`
 
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 }
 
 // Validate validates this msg
