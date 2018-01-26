@@ -68,7 +68,9 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	var CategoryList []models.SubCategoryItem
+
 	db.Table("sub_category_items").Where("category_id=?",*(Params.CategoryID)).Find(&CategoryList)
 	for j:=0; j<len(CategoryList);j++  {
 		//根据subCategoryId请求出前6条albumList
