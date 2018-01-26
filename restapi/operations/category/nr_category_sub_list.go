@@ -74,8 +74,11 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		//根据subCategoryId请求出前6条albumList
 		var AlbumList []models.Album
 		db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",CategoryList[j].ID).Find(&AlbumList)
+
+		for k:=0; k<len(AlbumList);k++  {
+			AlbumList[k].AlbumName = AlbumList[k].Name
+		}
 		CategoryList[j].AlbumList = AlbumList
-		CategoryList[j].ID = CategoryList[j].ID
 	}
 
 	/*response.Data = categoryList
