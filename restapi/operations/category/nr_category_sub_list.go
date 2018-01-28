@@ -79,6 +79,7 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 		for k:=0; k<len(AlbumList);k++  {
 			AlbumList[k].AlbumName = AlbumList[k].Name
+			AlbumList[k].AlbumID = AlbumList[k].ID
 		}
 		CategoryList[j].AlbumList = AlbumList
 	}

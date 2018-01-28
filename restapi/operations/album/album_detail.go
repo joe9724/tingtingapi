@@ -70,7 +70,7 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	//response.Data.AlbumID = album.ID
 	//response.Data.AlbumName = album.Name
-	response.IsFav = true
+	response.IsFav = false
 	response.Data = &album
 	response.Data.AlbumID = album.ID
     response.Data.AlbumName = album.Name
