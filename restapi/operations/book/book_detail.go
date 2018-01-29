@@ -68,7 +68,7 @@ func (o *BookDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	db.Table("books").Where(map[string]interface{}{"status":0}).Where("id=?",Params.BookID).Find(&book)
 
 
-	response.IsFav = true
+	response.IsFav = false
 	response.Data = &book
 
 	//status
