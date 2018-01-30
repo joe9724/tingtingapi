@@ -70,6 +70,9 @@ func (o *NrIconList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//query
 
 	//data
+	for k=0;k<len(icons) ;k++  {
+		icons[k].Icon = icons[k].Cover
+	}
 
 	response.Icons = icons
 

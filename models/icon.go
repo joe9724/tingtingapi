@@ -20,7 +20,7 @@ type Icon struct {
 	Cover string `json:"cover"`
 
 	// icon
-	Icon string `json:"icon,omitempty"`
+	Icon string `json:"icon"`
 
 	// id
 	ID int64 `json:"id"`
