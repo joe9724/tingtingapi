@@ -92,7 +92,7 @@ func (o *BookListFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("test is",test)
 
-	response.AlbumList = albumList
+	response.BookList = albumList
 
 	//status
 	var status models.Response

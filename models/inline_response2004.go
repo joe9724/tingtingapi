@@ -17,7 +17,7 @@ import (
 type InlineResponse2004 struct {
 
 	// album list
-	AlbumList InlineResponse2004AlbumList `json:"albumList"`
+	BookList InlineResponse2004AlbumList `json:"bookList"`
 
 	// status
 	Status *Response `json:"status,omitempty"`
