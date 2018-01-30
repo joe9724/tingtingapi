@@ -112,6 +112,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 				code = 200
 				msg = "ok"
 				response.Data = &temp
+				response.Data.ID = temp.ID
 				/*response.Data.MemberID = temp.ID
 				response.Data.Level = temp.Level
 				response.Data.Gender = temp.Gender*/
