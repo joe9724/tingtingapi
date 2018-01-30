@@ -12,40 +12,40 @@ import (
 // Icon icon
 // swagger:model Icon
 type Member struct {
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 	// cover
-	Area string `json:"area,omitempty"`
+	Area string `json:"area"`
 
 	// icon
-	Avatar string `json:"avatar,omitempty"`
+	Avatar string `json:"avatar"`
 
 	// id
-	Gender int64 `json:"gender,omitempty"`
+	Gender int64 `json:"gender"`
 
 	// name
-	Grade string `json:"grade,omitempty"`
+	Grade string `json:"grade"`
 
 	// order
-	Level int64 `json:"level,omitempty"`
+	Level int64 `json:"level"`
 
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
-	Phone string `json:"phone,omitempty"`
+	Phone string `json:"phone"`
 
-	Tags string `json:"tags,omitempty"`
+	Tags string `json:"tags"`
 
 	// web Url
-	Password string `json:"password,omitempty"`
+	Password string `json:"password"`
 
-	Money int64 `json:"money,omitempty"`
+	Money int64 `json:"money"`
 
-	Ts  int64 `json:"ts,omitempty"`
+	Ts  int64 `json:"ts"`
 
-	Status  int64 `json:"status,omitempty"`
+	Status  int64 `json:"status"`
 
-	Ts1  string `json:"ts1,omitempty"`
+	Ts1  string `json:"ts1"`
 
-	Birth string `json:"birth,omitempty"`
+	Birth string `json:"birth"`
 
 
 }

@@ -87,7 +87,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			code = 200
 			msg = "ok"
 			response.Data = &loginRet
-			response.Data.MemberID = loginRet.ID
+			//response.Data.MemberID = loginRet.ID
 			response.Data.Level = loginRet.Level
 			fmt.Println("id is",response.Data.ID)
 		}
@@ -104,6 +104,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			//
 			var temp  models.LoginRet
 		    db.Table("members").Where("phone=?", Params.Phone).Where("password=?", Params.SmsCode).Last(&temp)
+		    temp.Password = ""
 		    if(temp.ID==0){
 				code = 203
 				msg = "无此用户"

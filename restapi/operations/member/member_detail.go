@@ -66,7 +66,7 @@ func (o *MemberDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	db.Table("members").Where(map[string]interface{}{"status":0}).Where("id=?",Params.MemberID).Last(&detail)
-
+    detail.Password = ""
 	response.Data = &detail
 
 	//status
