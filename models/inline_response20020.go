@@ -16,6 +16,7 @@ import (
 // swagger:model inline_response_200_20
 type InlineResponse20020 struct {
 
+	TagList []Tag `json:"tagList"`
 	// data
 	Data *Book `json:"data"`
 
