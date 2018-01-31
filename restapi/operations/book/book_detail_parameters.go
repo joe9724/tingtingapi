@@ -7,7 +7,7 @@ package book
 
 import (
 	"net/http"
-
+"github.com/go-openapi/swag"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
@@ -51,6 +51,8 @@ type BookDetailParams struct {
 	  In: query
 	*/
 	Version *string
+
+	MemberID *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -83,6 +85,11 @@ func (o *BookDetailParams) BindRequest(r *http.Request, route *middleware.Matche
 
 	qVersion, qhkVersion, _ := qs.GetOK("version")
 	if err := o.bindVersion(qVersion, qhkVersion, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qMemberID, qhkMemberID, _ := qs.GetOK("memberId")
+	if err := o.bindMemberID(qMemberID, qhkMemberID, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -161,3 +168,22 @@ func (o *BookDetailParams) bindVersion(rawData []string, hasKey bool, formats st
 
 	return nil
 }
+
+func (o *BookDetailParams) bindMemberID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("memberId", "query", "int64", raw)
+	}
+	o.MemberID = &value
+
+	return nil
+}
+

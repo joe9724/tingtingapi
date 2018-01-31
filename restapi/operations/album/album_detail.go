@@ -75,7 +75,7 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	response.Data.AlbumID = album.ID
     response.Data.AlbumName = album.Name
     response.Data.Books_Number = album.Books_Number
-    response.Data.Summary = "<html><b>待加</b></html>"
+    response.Data.Summary = album.Summary
 
     if (Params.MemberID !=nil){
     	var count int64

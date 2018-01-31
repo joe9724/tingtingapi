@@ -80,6 +80,16 @@ func (o *BookDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	response.TagList = tagList
 
+	if (Params.MemberID !=nil){
+		var count int64
+		db.Table("fav_book").Where("book_id=?",*(Params.BookID)).Where("member_id=?",*(Params.MemberID)).Count(&count)
+		if(count>0){
+			response.IsFav = true
+		}else{
+			response.IsFav = false
+		}
+	}
+
 	response.Data = &book
 
 	//status
