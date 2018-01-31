@@ -66,6 +66,7 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	db.Table("albums").Where(map[string]interface{}{"status":0}).Where("id=?",Params.AlbumID).Find(&album)
 
 	//response.Data.AlbumID = album.ID
