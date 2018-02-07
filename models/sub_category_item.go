@@ -18,7 +18,7 @@ type SubCategoryItem struct {
 
 	ID int64 `json:"id"`
 	// category Id
-	CategoryID int64 `json:"categoryId"`
+	CategoryID int64 `json:"category_id"`
 
 	// icon
 	Icon string `json:"icon"`
