@@ -98,6 +98,7 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		tagList = append(tagList,temp)
 	}
 	response.TagList = tagList
+	response.Data.AlbumID,_ = strconv.ParseInt(*(Params.AlbumID), 10, 64)
 	//status
 	var status models.Response
 	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))

@@ -66,7 +66,7 @@ func (o *NrIconList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	//db.Table("icons").Where(map[string]interface{}{"status":0}).Find(&icons)
-	db.Table("icons").Select("icons.id, icons.name,icons.cover,icons.targetId,icons.webUrl").Joins("left join category_icon_relation on icons.id = category_icon_relation.iconId").Where("category_icon_relation.categoryId =?",*Params.PosID).Find(&icons)
+	db.Table("icons").Select("icons.id, icons.name,icons.cover,icons.targetId,icons.webUrl,icons.type").Joins("left join category_icon_relation on icons.id = category_icon_relation.iconId").Where("category_icon_relation.categoryId =?",*Params.PosID).Find(&icons)
 	//query
 
 	//data
