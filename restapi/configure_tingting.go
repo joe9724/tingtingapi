@@ -22,6 +22,7 @@ import (
 	"tingtingapi/restapi/operations/recommend"
 	"tingtingapi/restapi/operations/search"
 	"github.com/didip/tollbooth"
+	"tingtingapi/restapi/operations/analytics"
 	_"time"
 )
 
@@ -49,11 +50,18 @@ func configureAPI(api *operations.TingtingAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	api.AlbumNrAlbumClickHandler = album.NrAlbumClickHandlerFunc(func(params album.NrAlbumClickParams) middleware.Responder {
+		return middleware.NotImplemented("operation album.NrAlbumClick has not yet been implemented")
+	})
+
 	api.AlbumNrAlbumFavHandler = album.NrAlbumFavHandlerFunc(func(params album.NrAlbumFavParams) middleware.Responder {
 		return middleware.NotImplemented("operation album.NrAlbumFav has not yet been implemented")
 	})
 	api.BannerNrBannerDetailHandler = banner.NrBannerDetailHandlerFunc(func(params banner.NrBannerDetailParams) middleware.Responder {
 		return middleware.NotImplemented("operation banner.NrBannerDetail has not yet been implemented")
+	})
+	api.BookNrBookClickHandler = book.NrBookClickHandlerFunc(func(params book.NrBookClickParams) middleware.Responder {
+		return middleware.NotImplemented("operation book.NrBookClick has not yet been implemented")
 	})
 	api.BannerNrBannerListHandler = banner.NrBannerListHandlerFunc(func(params banner.NrBannerListParams) middleware.Responder {
 		return middleware.NotImplemented("operation banner.NrBannerList has not yet been implemented")
@@ -63,6 +71,9 @@ func configureAPI(api *operations.TingtingAPI) http.Handler {
 	})
 	api.CategoryNrCategoryListHandler = category.NrCategoryListHandlerFunc(func(params category.NrCategoryListParams) middleware.Responder {
 		return middleware.NotImplemented("operation category.NrCategoryList has not yet been implemented")
+	})
+	api.AnalyticsNrAnalyticsAppHandler = analytics.NrAnalyticsAppHandlerFunc(func(params analytics.NrAnalyticsAppParams) middleware.Responder {
+		return middleware.NotImplemented("operation analytics.NrAnalyticsApp has not yet been implemented")
 	})
 	api.CategoryNrCategorySubListHandler = category.NrCategorySubListHandlerFunc(func(params category.NrCategorySubListParams) middleware.Responder {
 		return middleware.NotImplemented("operation category.NrCategorySubList has not yet been implemented")
@@ -183,6 +194,9 @@ func configureAPI(api *operations.TingtingAPI) http.Handler {
 	})
 	api.MemberNrMemberEditHandler = member.NrMemberEditHandlerFunc(func(params member.NrMemberEditParams) middleware.Responder {
 		return middleware.NotImplemented("operation member.NrMemberEdit has not yet been implemented")
+	})
+	api.MemberMemberRechargeListHandler = member.MemberRechargeListHandlerFunc(func(params member.MemberRechargeListParams) middleware.Responder {
+		return middleware.NotImplemented("operation member.MemberRechargeList has not yet been implemented")
 	})
 	api.ServerShutdown = func() {}
 

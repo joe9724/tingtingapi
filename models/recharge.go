@@ -16,14 +16,31 @@ import (
 // swagger:model Recharge
 type Recharge struct {
 
-	// 0=等待 1=成功 2=失败 3=其他
-	Code int64 `json:"code,omitempty"`
+	Code int64 `json:"code"`
+
+	// member Id
+	MemberID string `json:"memberId"`
 
 	// msg
-	Msg string `json:"msg,omitempty"`
+	Msg string `json:"msg"`
+
+	// order no
+	OrderNo string `json:"order_no"`
 
 	// 支付平台产生的流水号
-	SerialNumber string `json:"serialNumber,omitempty"`
+	SerialNumber string `json:"serialNumber"`
+
+	// status
+	Status int64 `json:"status"`
+
+	// time
+	Time int64 `json:"time"`
+
+	// type
+	Type int64 `json:"type"`
+
+	// value
+	Value int64 `json:"value"`
 }
 
 // Validate validates this recharge

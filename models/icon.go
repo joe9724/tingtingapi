@@ -29,7 +29,7 @@ type Icon struct {
 	Name string `json:"name"`
 
 	// order
-	Order int64 `json:"order,omitempty"`
+	Order int64 `json:"order"`
 
 	// 跳转类型(0=大类 1=小类 2=专辑 3=书本 4=章节 5=站内wap 6=第三方链接)
 	Type int64 `json:"type"`

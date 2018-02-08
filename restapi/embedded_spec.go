@@ -205,6 +205,85 @@ func init() {
         }
       }
     },
+    "/album/click": {
+      "get": {
+        "description": "点赞/取消点赞专辑",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Album"
+        ],
+        "summary": "点赞/取消点赞专辑",
+        "operationId": "/album/click",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "专辑Id",
+            "name": "albumId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "click/unclick",
+            "name": "action",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回结果",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/album/detail": {
       "get": {
         "description": "专辑详情",
@@ -861,6 +940,79 @@ func init() {
         }
       }
     },
+    "/analytics/app": {
+      "get": {
+        "description": "统计",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "统计",
+        "operationId": "/analytics/app",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "点赞/取消点赞 click/unclick",
+            "name": "action",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "被点赞内容类型",
+            "name": "targetType",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "被点赞内容id",
+            "name": "targetId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登录成功，返回登录信息",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/book/chapterList": {
       "get": {
         "description": "书的章节列表",
@@ -949,6 +1101,85 @@ func init() {
             "description": "登录成功，返回登录信息",
             "schema": {
               "$ref": "#/definitions/inline_response_200_18"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/click": {
+      "get": {
+        "description": "点赞/取消点赞 书本",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "点赞/取消点赞 书本",
+        "operationId": "/book/click",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "书本Id",
+            "name": "bookId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "fav/unfav",
+            "name": "action",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回结果",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200"
             }
           },
           "default": {
@@ -2649,6 +2880,102 @@ func init() {
             "description": "上报错误返回",
             "schema": {
               "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/recharge/list": {
+      "post": {
+        "description": "获取充值列表",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "获取充值列表(含条件检索)",
+        "operationId": "member/recharge/list",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页索引",
+            "name": "pageIndex",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页尺寸",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "支付类型 0是支付宝 1是微信 2是银联 3是applay 4是其他",
+            "name": "payType",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "流水号",
+            "name": "orderNo",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "统计开始时间",
+            "name": "startTime",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "统计结束时间",
+            "name": "endTime",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "会员id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "检索时模糊查询使用",
+            "name": "albumName",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "获取反馈列表",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_2"
             }
           },
           "default": {
@@ -5522,6 +5849,85 @@ func init() {
         }
       }
     },
+    "/album/click": {
+      "get": {
+        "description": "点赞/取消点赞专辑",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Album"
+        ],
+        "summary": "点赞/取消点赞专辑",
+        "operationId": "/album/click",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "专辑Id",
+            "name": "albumId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "click/unclick",
+            "name": "action",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回结果",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/album/detail": {
       "get": {
         "description": "专辑详情",
@@ -5974,6 +6380,79 @@ func init() {
         }
       }
     },
+    "/analytics/app": {
+      "get": {
+        "description": "统计",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "统计",
+        "operationId": "/analytics/app",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "点赞/取消点赞 click/unclick",
+            "name": "action",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "被点赞内容类型",
+            "name": "targetType",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "被点赞内容id",
+            "name": "targetId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登录成功，返回登录信息",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/banner/detail": {
       "get": {
         "description": "Banner详情",
@@ -6266,6 +6745,85 @@ func init() {
             "description": "登录成功，返回登录信息",
             "schema": {
               "$ref": "#/definitions/inline_response_200_18"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/click": {
+      "get": {
+        "description": "点赞/取消点赞 书本",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "点赞/取消点赞 书本",
+        "operationId": "/book/click",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "书本Id",
+            "name": "bookId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "fav/unfav",
+            "name": "action",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回结果",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200"
             }
           },
           "default": {
@@ -7966,6 +8524,102 @@ func init() {
             "description": "上报错误返回",
             "schema": {
               "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/member/recharge/list": {
+      "post": {
+        "description": "获取充值列表",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "获取充值列表(含条件检索)",
+        "operationId": "member/recharge/list",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页索引",
+            "name": "pageIndex",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页尺寸",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "支付类型 0是支付宝 1是微信 2是银联 3是applay 4是其他",
+            "name": "payType",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "流水号",
+            "name": "orderNo",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "统计开始时间",
+            "name": "startTime",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "统计结束时间",
+            "name": "endTime",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "会员id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "检索时模糊查询使用",
+            "name": "albumName",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "获取反馈列表",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_2"
             }
           },
           "default": {

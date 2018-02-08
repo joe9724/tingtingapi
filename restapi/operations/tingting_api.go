@@ -28,6 +28,7 @@ import (
 	"tingtingapi/restapi/operations/member"
 	"tingtingapi/restapi/operations/recommend"
 	"tingtingapi/restapi/operations/search"
+	"tingtingapi/restapi/operations/analytics"
 )
 
 // NewTingtingAPI creates a new Tingting instance
@@ -46,17 +47,26 @@ func NewTingtingAPI(spec *loads.Document) *TingtingAPI {
 		JSONConsumer:          runtime.JSONConsumer(),
 		MultipartformConsumer: runtime.DiscardConsumer,
 		JSONProducer:          runtime.JSONProducer(),
+		AlbumNrAlbumClickHandler: album.NrAlbumClickHandlerFunc(func(params album.NrAlbumClickParams) middleware.Responder {
+			return middleware.NotImplemented("operation AlbumNrAlbumClick has not yet been implemented")
+		}),
 		AlbumNrAlbumFavHandler: album.NrAlbumFavHandlerFunc(func(params album.NrAlbumFavParams) middleware.Responder {
 			return middleware.NotImplemented("operation AlbumNrAlbumFav has not yet been implemented")
 		}),
 		BannerNrBannerDetailHandler: banner.NrBannerDetailHandlerFunc(func(params banner.NrBannerDetailParams) middleware.Responder {
 			return middleware.NotImplemented("operation BannerNrBannerDetail has not yet been implemented")
 		}),
+		AnalyticsNrAnalyticsAppHandler: analytics.NrAnalyticsAppHandlerFunc(func(params analytics.NrAnalyticsAppParams) middleware.Responder {
+			return middleware.NotImplemented("operation AnalyticsNrAnalyticsApp has not yet been implemented")
+		}),
 		BannerNrBannerListHandler: banner.NrBannerListHandlerFunc(func(params banner.NrBannerListParams) middleware.Responder {
 			return middleware.NotImplemented("operation BannerNrBannerList has not yet been implemented")
 		}),
 		BookNrBookFavHandler: book.NrBookFavHandlerFunc(func(params book.NrBookFavParams) middleware.Responder {
 			return middleware.NotImplemented("operation BookNrBookFav has not yet been implemented")
+		}),
+		BookNrBookClickHandler: book.NrBookClickHandlerFunc(func(params book.NrBookClickParams) middleware.Responder {
+			return middleware.NotImplemented("operation BookNrBookClick has not yet been implemented")
 		}),
 		CategoryNrCategoryListHandler: category.NrCategoryListHandlerFunc(func(params category.NrCategoryListParams) middleware.Responder {
 			return middleware.NotImplemented("operation CategoryNrCategoryList has not yet been implemented")
@@ -175,6 +185,9 @@ func NewTingtingAPI(spec *loads.Document) *TingtingAPI {
 		MemberMemberDetailHandler: member.MemberDetailHandlerFunc(func(params member.MemberDetailParams) middleware.Responder {
 			return middleware.NotImplemented("operation MemberMemberDetail has not yet been implemented")
 		}),
+		MemberMemberRechargeListHandler: member.MemberRechargeListHandlerFunc(func(params member.MemberRechargeListParams) middleware.Responder {
+			return middleware.NotImplemented("operation MemberMemberRechargeList has not yet been implemented")
+		}),
 	}
 }
 
@@ -208,10 +221,12 @@ type TingtingAPI struct {
 
 	// AlbumNrAlbumFavHandler sets the operation handler for the album fav operation
 	AlbumNrAlbumFavHandler album.NrAlbumFavHandler
+	AlbumNrAlbumClickHandler album.NrAlbumClickHandler
 	// BannerNrBannerDetailHandler sets the operation handler for the banner detail operation
 	BannerNrBannerDetailHandler banner.NrBannerDetailHandler
 	// BannerNrBannerListHandler sets the operation handler for the banner list operation
 	BannerNrBannerListHandler banner.NrBannerListHandler
+	BookNrBookClickHandler book.NrBookClickHandler
 	// BookNrBookFavHandler sets the operation handler for the book fav operation
 	BookNrBookFavHandler book.NrBookFavHandler
 	// CategoryNrCategoryListHandler sets the operation handler for the category list operation
@@ -230,6 +245,7 @@ type TingtingAPI struct {
 	MemberNrMemberRegisterSendSmsHandler member.NrMemberRegisterSendSmsHandler
 	// MemberNrMemberReportErrHandler sets the operation handler for the member report err operation
 	MemberNrMemberReportErrHandler member.NrMemberReportErrHandler
+	AnalyticsNrAnalyticsAppHandler analytics.NrAnalyticsAppHandler
 	// MemberNrMemberScanCodeHandler sets the operation handler for the member scan code operation
 	MemberNrMemberScanCodeHandler member.NrMemberScanCodeHandler
 	// MemberNrMemberUploadRecordHandler sets the operation handler for the member upload record operation
@@ -294,7 +310,7 @@ type TingtingAPI struct {
 	MemberNrMemberRegisterMemberHandler member.NrMemberRegisterMemberHandler
 	// ServeError is called when an error is received, there is a default handler
 	MemberNrMemberEditHandler member.NrMemberEditHandler
-
+	MemberMemberRechargeListHandler member.MemberRechargeListHandler
 	MemberMemberDetailHandler member.MemberDetailHandler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -397,6 +413,10 @@ func (o *TingtingAPI) Validate() error {
 		unregistered = append(unregistered, "member.NrMemberInitHandler")
 	}
 
+	if o.AlbumNrAlbumClickHandler == nil {
+		unregistered = append(unregistered, "album.NrAlbumClickHandler")
+	}
+
 	if o.MemberNrMemberLoginByThirdPartyHandler == nil {
 		unregistered = append(unregistered, "member.NrMemberLoginByThirdPartyHandler")
 	}
@@ -417,6 +437,14 @@ func (o *TingtingAPI) Validate() error {
 	}
 	if o.MemberNrMemberScanCodeHandler == nil {
 		unregistered = append(unregistered, "member.NrMemberScanCodeHandler")
+	}
+
+	if o.BookNrBookClickHandler == nil {
+		unregistered = append(unregistered, "book.NrBookClickHandler")
+	}
+
+	if o.AnalyticsNrAnalyticsAppHandler == nil {
+		unregistered = append(unregistered, "analytics.NrAnalyticsAppHandler")
 	}
 
 	if o.MemberNrMemberUploadRecordHandler == nil {
@@ -535,6 +563,10 @@ func (o *TingtingAPI) Validate() error {
 		unregistered = append(unregistered, "search.SearchHandler")
 	}
 
+	if o.MemberMemberRechargeListHandler == nil {
+		unregistered = append(unregistered, "member.MemberRechargeListHandler")
+	}
+
 	if len(unregistered) > 0 {
 		return fmt.Errorf("missing registration: %s", strings.Join(unregistered, ", "))
 	}
@@ -646,12 +678,23 @@ func (o *TingtingAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/album/click"] = album.NewNrAlbumClick(o.context, o.AlbumNrAlbumClickHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/book/fav"] = book.NewNrBookFav(o.context, o.BookNrBookFavHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/category/list"] = category.NewNrCategoryList(o.context, o.CategoryNrCategoryListHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/analytics/app"] = analytics.NewNrAnalyticsApp(o.context, o.AnalyticsNrAnalyticsAppHandler)
+
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -687,6 +730,11 @@ func (o *TingtingAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/member/reportErr"] = member.NewNrMemberReportErr(o.context, o.MemberNrMemberReportErrHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/book/click"] = book.NewNrBookClick(o.context, o.BookNrBookClickHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -841,6 +889,11 @@ func (o *TingtingAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/member/edit"] = member.NewNrMemberEdit(o.context, o.MemberNrMemberEditHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/member/recharge/list"] = member.NewMemberRechargeList(o.context, o.MemberMemberRechargeListHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

@@ -13,6 +13,7 @@ import (
 	"tingtingapi/models"
 	"fmt"
 	"tingtingbackend/var"
+	"strconv"
 )
 
 // NrIconListHandlerFunc turns a function with the right signature into a icon list handler
@@ -68,10 +69,11 @@ func (o *NrIconList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("icons").Where(map[string]interface{}{"status":0}).Find(&icons)
 	db.Table("icons").Select("icons.id, icons.name,icons.cover,icons.targetId,icons.webUrl,icons.type").Joins("left join category_icon_relation on icons.id = category_icon_relation.iconId").Where("category_icon_relation.categoryId =?",*Params.PosID).Find(&icons)
 	//query
-
+    fmt.Println("targetId is",icons[0].TargetId)
 	//data
 	for k:=0;k<len(icons) ;k++  {
 		icons[k].Icon = icons[k].Cover
+		icons[k].TargetId = strconv.Itoa(k)
 	}
 
 	response.Icons = icons
