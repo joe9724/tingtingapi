@@ -66,6 +66,7 @@ func (o *FindPassEditPass) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	fmt.Println("params.oldpass is",Params.OldPass)
 	fmt.Println("params.type is",Params.Type)
 	var msg string

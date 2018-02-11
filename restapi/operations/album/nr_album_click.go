@@ -67,7 +67,7 @@ func (o *NrAlbumClick) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
-
+	defer db.Close()
 	//如果是点赞
 	if(*(Params.Action) == "click") {
 		//

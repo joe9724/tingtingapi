@@ -75,6 +75,7 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	//query
 	fmt.Println("phone=",Params.PhoneNumber)
 	//判断验证码是否正确

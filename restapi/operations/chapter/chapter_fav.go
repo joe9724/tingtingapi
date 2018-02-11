@@ -66,6 +66,7 @@ func (o *ChapterFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	var status models.Response
 	value, _ := strconv.ParseInt(*Params.ChapterID, 10, 64)
 	//如果是收藏

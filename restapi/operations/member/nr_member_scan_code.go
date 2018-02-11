@@ -65,7 +65,7 @@ func (o *NrMemberScanCode) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
-
+	defer db.Close()
 	var scan models.Scan
 	fmt.Println("Params.CodeUrl = ",Params.CodeURL)
 	db.Table("scan").Where("scanId=?",Params.CodeURL).Where(map[string]interface{}{"status":0}).Last(&scan)

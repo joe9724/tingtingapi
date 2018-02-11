@@ -79,6 +79,7 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	//query
     // type =0 正常注册      =1 第三方登录后绑定手机号     =2 快捷登录
 		db.Table("sms").Where("type=?", 0).Where(map[string]interface{}{"phone": Params.PhoneNumber}).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)

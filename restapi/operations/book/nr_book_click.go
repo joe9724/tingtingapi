@@ -66,6 +66,7 @@ func (o *NrBookClick) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	var status models.Response
 
 	//如果是点赞

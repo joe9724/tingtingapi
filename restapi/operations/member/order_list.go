@@ -65,6 +65,7 @@ func (o *OrderList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	db.Table("orders").Where(map[string]interface{}{"status":0}).Where("member_id=?",Params.MemberID).Find(&orderList)
 	//query
 

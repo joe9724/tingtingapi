@@ -76,7 +76,7 @@ func (o *NrOrderSerialNuber) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
-
+	defer db.Close()
 	var t models.RechargeModel
 	t.Type = "支付宝"
 	t.Status = 0

@@ -69,7 +69,7 @@ func (o *AlbumBuy) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
-
+	defer db.Close()
 	//第一步查出Album对应的价格
 	var album models.Album
 	db.Table("albums").Where("id=?",Params.AlbumID).Last(&album)

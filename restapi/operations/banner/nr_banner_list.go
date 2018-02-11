@@ -65,6 +65,7 @@ func (o *NrBannerList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	db.Table("banners").Where(map[string]interface{}{"status":0}).Find(&banners)
 	//query
 

@@ -67,7 +67,7 @@ func (o *NrAlbumFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
-
+	defer db.Close()
 	//如果是收藏
 	if(*(Params.Action) == "fav") {
 		//

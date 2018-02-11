@@ -180,7 +180,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
-
+	defer db.Close()
 	if(&(Params.SubTitle)!=nil){
 		record.Sub_Title = Params.SubTitle
 	}

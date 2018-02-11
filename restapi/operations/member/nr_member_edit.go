@@ -85,6 +85,7 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	//query
 	fmt.Println("Params.MemberID=",Params.MemberID)
 	//判断验证码是否正确

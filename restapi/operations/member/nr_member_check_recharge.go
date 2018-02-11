@@ -65,6 +65,7 @@ func (o *NrMemberCheckRecharge) ServeHTTP(rw http.ResponseWriter, r *http.Reques
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 
 	var recharge models.RechargeModel
 

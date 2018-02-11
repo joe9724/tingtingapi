@@ -66,6 +66,8 @@ func (o *NrAnalyticsApp) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
+
 	var status models.Response
 
     db.Raw("update chapters set play_count=play_count+1 where id=?",*(Params.TargetID))

@@ -68,6 +68,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	//query
 	fmt.Println("phone=",Params.Phone)
 	fmt.Println("password=",Params.Password)

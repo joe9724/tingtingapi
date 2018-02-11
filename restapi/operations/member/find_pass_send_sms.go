@@ -75,6 +75,7 @@ func (o *FindPassSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if err!=nil{
 		fmt.Println(err.Error())
 	}
+	defer db.Close()
 	//query
 	db.Table("sms").Where("type=?",0).Where(map[string]interface{}{"phone":Params.PhoneNumber}).Where("ts>?",time.Now().Unix()-5*60).Last(&findRecord)
 	fmt.Println(findRecord)
