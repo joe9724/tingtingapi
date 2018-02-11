@@ -159,6 +159,9 @@ func configureAPI(api *operations.TingtingAPI) http.Handler {
 	api.ChapterChapterHistoryListHandler = chapter.ChapterHistoryListHandlerFunc(func(params chapter.ChapterHistoryListParams) middleware.Responder {
 		return middleware.NotImplemented("operation chapter.ChapterHistoryList has not yet been implemented")
 	})
+	api.BookBookDefaultHandler = book.BookDefaultHandlerFunc(func(params book.BookDefaultParams) middleware.Responder {
+		return middleware.NotImplemented("operation book.BookDefault has not yet been implemented")
+	})
 	api.MemberFeedbackHandler = member.FeedbackHandlerFunc(func(params member.FeedbackParams) middleware.Responder {
 		return middleware.NotImplemented("operation member.Feedback has not yet been implemented")
 	})

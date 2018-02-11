@@ -1191,6 +1191,118 @@ func init() {
         }
       }
     },
+    "/book/default": {
+      "get": {
+        "description": "根据用户信息匹配书本",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "根据用户信息匹配书本",
+        "operationId": "book/default/",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "开始时间戳",
+            "name": "startTs",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "结束时间戳",
+            "name": "endTs",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "标签(如:文学|历史|卡通)",
+            "name": "tags",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "年级(如:1-4)",
+            "name": "grade",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页索引",
+            "name": "pageIndex",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页尺寸",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "是否正常调用还是推荐调用 0=正常 1=推荐",
+            "name": "isRecommend",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登录成功，返回登录信息",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_7"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/book/detail": {
       "get": {
         "description": "书本详情",
@@ -6824,6 +6936,118 @@ func init() {
             "description": "返回结果",
             "schema": {
               "$ref": "#/definitions/inline_response_200"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/book/default": {
+      "get": {
+        "description": "根据用户信息匹配书本",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "根据用户信息匹配书本",
+        "operationId": "book/default/",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "开始时间戳",
+            "name": "startTs",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "结束时间戳",
+            "name": "endTs",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "标签(如:文学|历史|卡通)",
+            "name": "tags",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "年级(如:1-4)",
+            "name": "grade",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "加密串",
+            "name": "val",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "时间戳(参与加密)",
+            "name": "ts",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "版本号",
+            "name": "version",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "唯一识别号",
+            "name": "imei",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "客户端类型",
+            "name": "client",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "用户id",
+            "name": "memberId",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页索引",
+            "name": "pageIndex",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "分页尺寸",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "是否正常调用还是推荐调用 0=正常 1=推荐",
+            "name": "isRecommend",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登录成功，返回登录信息",
+            "schema": {
+              "$ref": "#/definitions/inline_response_200_7"
             }
           },
           "default": {

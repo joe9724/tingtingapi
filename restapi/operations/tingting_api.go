@@ -149,6 +149,9 @@ func NewTingtingAPI(spec *loads.Document) *TingtingAPI {
 		ChapterChapterFavListHandler: chapter.ChapterFavListHandlerFunc(func(params chapter.ChapterFavListParams) middleware.Responder {
 			return middleware.NotImplemented("operation ChapterChapterFavList has not yet been implemented")
 		}),
+		BookBookDefaultHandler: book.BookDefaultHandlerFunc(func(params book.BookDefaultParams) middleware.Responder {
+			return middleware.NotImplemented("operation BookBookDefault has not yet been implemented")
+		}),
 		ChapterChapterHistoryListHandler: chapter.ChapterHistoryListHandlerFunc(func(params chapter.ChapterHistoryListParams) middleware.Responder {
 			return middleware.NotImplemented("operation ChapterChapterHistoryList has not yet been implemented")
 		}),
@@ -312,6 +315,7 @@ type TingtingAPI struct {
 	MemberNrMemberEditHandler member.NrMemberEditHandler
 	MemberMemberRechargeListHandler member.MemberRechargeListHandler
 	MemberMemberDetailHandler member.MemberDetailHandler
+	BookBookDefaultHandler book.BookDefaultHandler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
 
@@ -521,6 +525,10 @@ func (o *TingtingAPI) Validate() error {
 
 	if o.ChapterChapterHistoryListHandler == nil {
 		unregistered = append(unregistered, "chapter.ChapterHistoryListHandler")
+	}
+
+	if o.BookBookDefaultHandler == nil {
+		unregistered = append(unregistered, "book.BookDefaultHandler")
 	}
 
 	if o.MemberFeedbackHandler == nil {
@@ -815,6 +823,11 @@ func (o *TingtingAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/chapter/buy"] = chapter.NewChapterBuy(o.context, o.ChapterChapterBuyHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/book/default"] = book.NewBookDefault(o.context, o.BookBookDefaultHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
