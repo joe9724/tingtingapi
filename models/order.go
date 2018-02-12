@@ -17,31 +17,73 @@ import (
 type Order struct {
 
 	// album Id
-	AlbumID int64 `json:"albumId,omitempty"`
+	AlbumID int64 `json:"albumId"`
 
 	// album name
-	AlbumName string `json:"albumName,omitempty"`
+	AlbumName string `json:"albumName"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 
 	// member Id
-	MemberID int64 `json:"memberId,omitempty"`
+	MemberID int64 `json:"memberId"`
 
 	// member name
-	MemberName string `json:"memberName,omitempty"`
+	MemberName string `json:"memberName"`
 
 	// order no
-	OrderNo string `json:"orderNo,omitempty"`
+	OrderNo string `json:"orderNo"`
 
 	// status
-	Status int64 `json:"status,omitempty"`
+	Status int64 `json:"status"`
 
 	// time
-	Time int64 `json:"time,omitempty"`
+	Time int64 `json:"time"`
+
+	LeftMoney int64 `json:"leftMoney"`
 
 	// value
-	Value float64 `json:"value,omitempty"`
+	Value float64 `json:"value"`
+
+	Name string `json:"name",omitempty`
+
+	Name1 string `json:"name1",omitempty`
+
+}
+
+type TrueOrder struct {
+
+	// album Id
+	AlbumID int64 `json:"albumId"`
+
+	// album name
+	AlbumName string `json:"albumName"`
+
+	// id
+	ID int64 `json:"id"`
+
+	// member Id
+	MemberID int64 `json:"memberId"`
+
+	// member name
+	MemberName string `json:"memberName"`
+
+	// order no
+	OrderNo string `json:"orderNo"`
+
+	// status
+	Status int64 `json:"status"`
+
+	// time
+	Time int64 `json:"time"`
+
+	// value
+	Value float64 `json:"value"`
+
+	Name string `json:"name"`
+
+	Name1 string `json:"name1"`
+
 }
 
 // Validate validates this order

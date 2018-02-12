@@ -73,7 +73,9 @@ func (o *AlbumListFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
-	rows, err := db.Table("fav_album").Select("albums.name,albums.id").Joins("left join albums on fav_album.album_id = albums.id").Where("fav_album.member_id=?",Params.MemberID).Rows()
+	db.Table("fav_album").Select("albums.name,albums.id,albums.author_name,albums.author_avatar,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.value").Joins("left join albums on fav_album.album_id = albums.id").Where("fav_album.member_id=?",Params.MemberID).Find(&albumList)
+
+	/*rows, err := db.Table("fav_album").Select("albums.name,albums.id").Joins("left join albums on fav_album.album_id = albums.id").Where("fav_album.member_id=?",Params.MemberID).Rows()
 	//var temp []models.Album
 	for rows.Next() {
 		var name string
@@ -88,9 +90,13 @@ func (o *AlbumListFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		t.AlbumName = name
 		//temp = append(temp,t)
 		albumList = append(albumList,&t)
-	}
+	}*/
 
 	fmt.Println("test is",test)
+	for k:=0; k<len(albumList);k++  {
+		albumList[k].AlbumID = albumList[k].ID
+		albumList[k].AlbumName = albumList[k].Name
+	}
 
 	response.AlbumList = albumList
 

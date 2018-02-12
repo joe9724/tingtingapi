@@ -66,7 +66,7 @@ func (o *MemberRechargeList) ServeHTTP(rw http.ResponseWriter, r *http.Request) 
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
-	db.Table("recharge").Where(map[string]interface{}{"status":0}).Where("member_id=?",Params.MemberID).Find(&rechargeList)
+	db.Table("recharge").Where(map[string]interface{}{"status":0}).Where("memberId=?",Params.MemberID).Find(&rechargeList)
 	//query
 
 	//data

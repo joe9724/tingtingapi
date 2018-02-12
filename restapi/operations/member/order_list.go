@@ -66,11 +66,16 @@ func (o *OrderList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
-	db.Table("orders").Where(map[string]interface{}{"status":0}).Where("member_id=?",Params.MemberID).Find(&orderList)
+
+    //var orders []models.TrueOrder
+	db.Table("orders").Select("orders.album_id,orders.id,orders.member_id,orders.order_no,orders.`value`,orders.leftMoney,albums.name ").Joins("left join albums on orders.album_id=albums.id ").Where("orders.member_id=?",Params.MemberID).Find(&orderList)
 	//query
-
+    //fmt.Println(orders)
 	//data
-
+	for k:=0;k<len(orderList) ;k++  {
+		orderList[k].AlbumName = orderList[k].Name
+		orderList[k].Name = ""
+	}
 	response.Orders = orderList
 
 	//status

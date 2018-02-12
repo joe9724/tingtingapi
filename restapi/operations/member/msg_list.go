@@ -7,8 +7,12 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
 )
 
 // MsgListHandlerFunc turns a function with the right signature into a msg list handler
@@ -53,8 +57,28 @@ func (o *MsgList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok MsgListOK
+	var response models.InlineResponse20013
+	var msgs models.InlineResponse20013MsgList
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	defer db.Close()
+	//db.Table("icons").Where(map[string]interface{}{"status":0}).Find(&icons)
+	db.Table("msgs").Select("id,create_time,title,sub_title").Find(&msgs)
+	//query
+
+	response.MsgList = msgs
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }

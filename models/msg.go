@@ -14,16 +14,18 @@ import (
 type Msg struct {
 
 	// create time
-	CreateTime int64 `json:"createTime,omitempty"`
+	Create_Time int64 `json:"create_time"`
 
 	// from
 	From string `json:"from,omitempty"`
 
 	// sub title
-	SubTitle string `json:"subTitle,omitempty"`
+	SubTitle string `json:"sub_title"`
 
 	// title
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
+
+	Id  int64 `json:"id"`
 }
 
 // Validate validates this msg

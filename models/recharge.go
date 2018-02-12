@@ -41,6 +41,8 @@ type Recharge struct {
 
 	// value
 	Value int64 `json:"value"`
+
+	LeftMoney int64 `json:"leftMoney"`
 }
 
 // Validate validates this recharge
