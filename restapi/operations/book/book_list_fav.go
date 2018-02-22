@@ -69,12 +69,56 @@ func (o *BookListFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("albums").Where(map[string]interface{}{"status":0}).Find(&categoryList).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize)))
 	//query
 
-	var test []interface{}
+	//var test []interface{}
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
+	rows, err := db.Table("books").Select("books.name, fav_book.book_id,books.author_name,books.play_count,books.clips_number,books.icon,books.sub_title").Joins("left join fav_book on fav_book.book_id = books.id").Where("fav_book.member_id=?",Params.MemberID).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+	if err !=nil{
+		fmt.Println("err is",err.Error())
+	}
+	//var temp []models.Album
+	for rows.Next() {
+		var name string
+		var icon string
+		var authorAvatar string
+		var authorName string
+		var bookId int64
+		var playCount int64
+		var clipsNumber int64
+		var subTitle string
 
-	rows, err := db.Table("fav_book").Select("books.name,books.id").Joins("left join books on fav_book.book_id = books.id").Where("fav_book.member_id=?",Params.MemberID).Rows()
+		err = rows.Scan(&name,&bookId,&authorName,&playCount,&clipsNumber,&icon,&subTitle)
+		if err != nil{
+			fmt.Println(err.Error())
+		}
+
+		var t models.Book
+		t.BookID = bookId
+		t.Name = name
+		t.Icon = icon
+		t.AuthorAvatar = authorAvatar
+		t.AuthorName = authorName
+		t.PlayCount = playCount
+		t.ClipsNumber = clipsNumber
+		t.SubTitle = subTitle
+		//temp = append(temp,t)
+		albumList = append(albumList,&t)
+	}
+
+	response.BookList = albumList
+
+	//status
+	var status models.Response
+	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+	response.Status = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
+
+
+	/*rows, err := db.Table("fav_book").Select("books.name,books.id").Joins("left join books on fav_book.book_id = books.id").Where("fav_book.member_id=?",Params.MemberID).Rows()
 	//var temp []models.Album
 	for rows.Next() {
 		var name string
@@ -102,6 +146,6 @@ func (o *BookListFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	ok.SetPayload(&response)
 
-	o.Context.Respond(rw, r, route.Produces, route, ok)
+	o.Context.Respond(rw, r, route.Produces, route, ok)*/
 
 }

@@ -71,7 +71,8 @@ func (o *BookList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
-	if (Params.TagId != nil) {rows, err := db.Table("books").Select("books.name, tag_book_relation.bookId,books.author_name,books.play_count,books.clips_number").Joins("left join tag_book_relation on tag_book_relation.bookId = books.id").Where("tag_book_relation.tagId=?",Params.TagId).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+	if (Params.TagId != nil) {
+		rows, err := db.Table("books").Select("books.name, tag_book_relation.bookId,books.author_name,books.play_count,books.clips_number").Joins("left join tag_book_relation on tag_book_relation.bookId = books.id").Where("tag_book_relation.tagId=?",Params.TagId).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
 		if err !=nil{
 			fmt.Println("err is",err.Error())
 		}
