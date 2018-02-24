@@ -47,6 +47,8 @@ type Member struct {
 
 	Birth string `json:"birth"`
 
+	BuyedAlbumsCount int64 `json:"buyedAlbumsCount"`
+
 
 }
 

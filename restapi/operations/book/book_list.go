@@ -72,6 +72,7 @@ func (o *BookList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
 	if (Params.TagId != nil) {
+		fmt.Println("1")
 		rows, err := db.Table("books").Select("books.name, tag_book_relation.bookId,books.author_name,books.play_count,books.clips_number").Joins("left join tag_book_relation on tag_book_relation.bookId = books.id").Where("tag_book_relation.tagId=?",Params.TagId).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
 		if err !=nil{
 			fmt.Println("err is",err.Error())
@@ -99,6 +100,51 @@ func (o *BookList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			t.AuthorName = authorName
 			t.PlayCount = playCount
 			t.ClipsNumber = clipsNumber
+			//temp = append(temp,t)
+			books = append(books,&t)
+		}
+
+		response.BookList = books
+
+		//status
+		var status models.Response
+		status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+		response.Status = &status
+
+		ok.SetPayload(&response)
+
+		o.Context.Respond(rw, r, route.Produces, route, ok)
+	}else if (*Params.IsRecommend == 1){ //获取推荐书本
+		fmt.Println("2")
+		rows, err := db.Table("books").Select("books.name, books.id,books.author_name,books.play_count,books.clips_number,books.icon,books.sub_title").Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+		if err !=nil{
+			fmt.Println("err is",err.Error())
+		}
+		//var temp []models.Album
+		for rows.Next() {
+			var name string
+			var icon string
+			var authorAvatar string
+			var authorName string
+			var bookId int64
+			var playCount int64
+			var clipsNumber int64
+			var subTitle string
+
+			err = rows.Scan(&name,&bookId,&authorName,&playCount,&clipsNumber,&icon,&subTitle)
+			if err != nil{
+				fmt.Println(err.Error())
+			}
+
+			var t models.Book
+			t.BookID = bookId
+			t.Name = name
+			t.Icon = icon
+			t.AuthorAvatar = authorAvatar
+			t.AuthorName = authorName
+			t.PlayCount = playCount
+			t.ClipsNumber = clipsNumber
+			t.SubTitle = subTitle
 			//temp = append(temp,t)
 			books = append(books,&t)
 		}
