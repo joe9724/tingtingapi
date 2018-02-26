@@ -49,6 +49,8 @@ type Order struct {
 
 	Name1 string `json:"name1",omitempty`
 
+	Icon string `json:"icon"`
+
 }
 
 type TrueOrder struct {

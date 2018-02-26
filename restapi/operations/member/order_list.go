@@ -68,7 +68,7 @@ func (o *OrderList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
     //var orders []models.TrueOrder
-	db.Table("orders").Select("orders.album_id,orders.id,orders.member_id,orders.order_no,orders.`value`,orders.leftMoney,albums.name ").Joins("left join albums on orders.album_id=albums.id ").Where("orders.member_id=?",Params.MemberID).Find(&orderList)
+	db.Table("orders").Select("orders.album_id,orders.id,orders.member_id,orders.order_no,orders.`value`,orders.leftMoney,albums.name,albums.icon").Joins("left join albums on orders.album_id=albums.id ").Where("orders.member_id=?",Params.MemberID).Find(&orderList)
 	//query
     //fmt.Println(orders)
 	//data
