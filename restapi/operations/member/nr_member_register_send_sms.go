@@ -70,7 +70,7 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 	vcode := fmt.Sprintf("%06v", rnd.Int31n(1000000))
 	fmt.Println(vcode)
 	code = vcode
-	code = "654321"
+	//code = "654321"
 	// (2)查询数据库内是否5分钟内已经有验证码下发记录 没有的话请求第三方下发验证码
     var findRecord models.SendSms
 

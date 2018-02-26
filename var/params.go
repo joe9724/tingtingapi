@@ -9,6 +9,10 @@ import (
 	_"io/ioutil"
 	_"net/http"
 	"encoding/json"
+	"net/url"
+	"log"
+	"io/ioutil"
+	"net/http"
 )
 type Respoonse struct{
 	Code int64 `json:"code,omitempty"`
@@ -54,7 +58,7 @@ func SendMsg(mobile string,str string,t int64) bool{
 		content = "【听听阅读】(5分钟内有效)快捷登录初始密码是:" + str
 	}
 	fmt.Println(content)
-	/*var requestUrl string
+	var requestUrl string
 	requestUrl = "http://mes.sh-hstx.com:8800/sendXSms.do?username=tusheng1234&password=abcd1234&mobile="+mobile+"&content="+content+"&dstime=&productid=100035"
 	fmt.Println("send str is",url.QueryEscape(requestUrl))
 	u, _ := url.Parse(requestUrl)
@@ -74,7 +78,7 @@ func SendMsg(mobile string,str string,t int64) bool{
 		sendOk = true
 	}
 
-	fmt.Printf("SP网关回复内容是:%s", result)*/
+	fmt.Printf("SP网关回复内容是:%s", result)
 
 	return sendOk
 }

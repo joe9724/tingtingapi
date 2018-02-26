@@ -140,6 +140,7 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		if has == true{
 			member.Avatar = _var.GetResourceDomain("avatar")+filename+".jpg"
 		}
+		member.Ts1 = "2018-02-24 18:00:15.322041"
 		db.Save(&member)
 	}
 
