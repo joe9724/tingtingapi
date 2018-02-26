@@ -48,6 +48,8 @@ type Book struct {
 
 	// summary
 	Summary string `json:"summary"`
+
+	StartTime string `json:"startTime"`
 }
 
 // Validate validates this book

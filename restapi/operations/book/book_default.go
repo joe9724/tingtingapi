@@ -71,21 +71,17 @@ func (o *BookDefault) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
-	if (2>1) {rows, err := db.Table("books").Select("books.name, tag_book_relation.bookId,books.author_name,books.play_count,books.clips_number").Joins("left join tag_book_relation on tag_book_relation.bookId = books.id").Limit(3).Offset(0).Rows()
+	if (2>1) {rows, err := db.Raw("select book_default_grade_relation.bookId,book_default_grade_relation.startTime,books.name from book_default_grade_relation left join books on books.id=book_default_grade_relation.bookId where book_default_grade_relation.grade=? order by (startTime+1)",Params.Grade).Limit(4).Offset(0).Rows()
 		if err !=nil{
 			fmt.Println("err is",err.Error())
 		}
 		//var temp []models.Album
 		for rows.Next() {
-			var name string
-			var icon string
-			var authorAvatar string
-			var authorName string
 			var bookId int64
-			var playCount int64
-			var clipsNumber int64
+            var startTime string
+			var name string
 
-			err = rows.Scan(&name,&bookId,&authorName,&playCount,&clipsNumber)
+			err = rows.Scan(&bookId,&startTime,&name)
 			if err != nil{
 				fmt.Println(err.Error())
 			}
@@ -93,12 +89,8 @@ func (o *BookDefault) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			var t models.Book
 			t.BookID = bookId
 			t.Name = name
-			t.Icon = icon
-			t.AuthorAvatar = authorAvatar
-			t.AuthorName = authorName
-			t.PlayCount = playCount
-			t.ClipsNumber = clipsNumber
-			//temp = append(temp,t)
+			t.StartTime = startTime
+
 			books = append(books,&t)
 		}
 
