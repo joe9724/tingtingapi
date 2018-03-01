@@ -48,6 +48,8 @@ type Album struct {
 
 	Summary string `json:"summary"`
 
+
+
 }
 
 // Validate validates this album

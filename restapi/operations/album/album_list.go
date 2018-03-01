@@ -76,7 +76,7 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
 	if(Params.TagId!=nil){
-		rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join tag_album_relation on tag_album_relation.albumId = albums.id").Where("tag_album_relation.tagId=?",Params.TagId).Rows()
+		rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join tag_album_relation on tag_album_relation.albumId = albums.id").Where("tag_album_relation.tagId=?",Params.TagId).Where("albums.status=?",0).Rows()
 		for rows.Next() {
 			var name string
 			var albumId int64
@@ -110,7 +110,7 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			categoryList = append(categoryList,&t)
 		}
 	}else{
-		rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",Params.SubCategoryID).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+		rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",Params.SubCategoryID).Where("albums.status=?",0).Where("category_album_relation.status=?",0).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
 		for rows.Next() {
 			var name string
 			var albumId int64

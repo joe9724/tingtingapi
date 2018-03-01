@@ -46,6 +46,7 @@ type AlbumDetail struct {
 	Handler AlbumDetailHandler
 }
 
+
 func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
@@ -67,6 +68,15 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
+	//查找是否已购买
+	var orders []models.Order
+	db.Table("orders").Where("member_id=?",Params.MemberID).Where("album_id=?",Params.AlbumID).Find(&orders)
+	if(len(orders)>0){
+      response.IsPay = true
+	}else{
+		response.IsPay = false
+	}
+
 	db.Table("albums").Where(map[string]interface{}{"status":0}).Where("id=?",Params.AlbumID).Find(&album)
 
 	//response.Data.AlbumID = album.ID
@@ -90,13 +100,14 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	//get taglist
     var tagList []models.Tag
+    db.Raw("select tags.id,tags.name from tags left join tag_album_relation on tags.id=tag_album_relation.tagId where tags.status=0 and tag_album_relation.status=0 and tag_album_relation.albumId=?",Params.AlbumID).Find(&tagList)
 	//db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join tag_album_relation on tag_album_relation.albumId = albums.id").Where("tag_album_relation.album_id=?",Params.AlbumID).Find(&tagList)
-	for k:=0; k<5;k++  {
+	/*for k:=0; k<5;k++  {
 		var temp models.Tag
 		temp.Id = int64(k+1)
 		temp.Name = "文学"+strconv.FormatInt(int64(k+1),10)
 		tagList = append(tagList,temp)
-	}
+	}*/
 	response.TagList = tagList
 	response.Data.AlbumID,_ = strconv.ParseInt(*(Params.AlbumID), 10, 64)
 	//status

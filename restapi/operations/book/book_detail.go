@@ -72,13 +72,14 @@ func (o *BookDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	response.IsFav = false
 	var tagList []models.Tag
+	db.Raw("select tags.id,tags.name from tags left join tag_book_relation on tags.id=tag_book_relation.tagId where tags.status=0 and tag_book_relation.status=0 and tag_book_relation.bookId=?",Params.BookID).Find(&tagList)
 	//db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join tag_album_relation on tag_album_relation.albumId = albums.id").Where("tag_album_relation.album_id=?",Params.AlbumID).Find(&tagList)
-	for k:=0; k<5;k++  {
+	/*for k:=0; k<5;k++  {
 		var temp models.Tag
 		temp.Id = int64(k+1)
 		temp.Name = "文学"+strconv.FormatInt(int64(k+1),10)
 		tagList = append(tagList,temp)
-	}
+	}*/
 	response.TagList = tagList
 
 

@@ -24,6 +24,8 @@ type InlineResponse2005 struct {
 	// is fav
 	IsFav bool `json:"isFav"`
 
+	IsPay bool `json:"isPay"`
+
 	// status
 	Status *Response `json:"status"`
 }

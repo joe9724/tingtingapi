@@ -34,7 +34,7 @@ type Banner struct {
 	// id
 	ID int64 `json:"id,omitempty"`
 
-
+    Jumpid int64 `json:"jumpid"`
 
 	// order
 	Order int64 `json:"order,omitempty"`

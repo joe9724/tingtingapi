@@ -106,6 +106,7 @@ func (o *Register) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	member.Password = *Params.Password
 	member.Phone = *Params.PhoneNumber
 	member.Ts = time.Now().Unix()
+	member.Ts1 = "2018-02-24 18:00:15.322041"
 	if (Params.BirthYear != nil) {
 		birth = strconv.FormatInt(*(Params.BirthYear),10) + "-" + strconv.FormatInt(*(Params.BirthMonth),10) + "-" + strconv.FormatInt(*(Params.BirthDay),10)
 		member.Birth = birth

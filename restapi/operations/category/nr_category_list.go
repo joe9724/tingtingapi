@@ -67,9 +67,9 @@ func (o *NrCategoryList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	if (*(Params.ParentID) == int64(-1)){
-		db.Table("sub_category_items").Where(map[string]interface{}{"status":0}).Find(&categoryList).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize)))
+		db.Table("sub_category_items").Where(map[string]interface{}{"status":0}).Where("id not in(43,44,45,46)").Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Find(&categoryList)
 	}else{
-		db.Table("sub_category_items").Where(map[string]interface{}{"status":0}).Where("category_id=?",Params.ParentID).Find(&categoryList).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize)))
+		db.Table("sub_category_items").Where(map[string]interface{}{"status":0}).Where("category_id=?",Params.ParentID).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Find(&categoryList)
 	}
 	//query
 
