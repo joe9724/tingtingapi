@@ -98,7 +98,7 @@ func (o *AlbumBuy) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 				status.UnmarshalBinary([]byte(_var.Response200(204,"购买成功")))
 			}else{//不够的话，返回购买错误，币不足
-				status.UnmarshalBinary([]byte(_var.Response200(203,"金币不足")))
+				status.UnmarshalBinary([]byte(_var.Response200(203,"悦点不足")))
 			}
 		}
 	}

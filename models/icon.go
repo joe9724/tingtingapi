@@ -37,7 +37,7 @@ type Icon struct {
 	// web Url
 	WebURL string `json:"webUrl"`
 
-	TargetId string `json:"targetId"`
+	Jumpid *int64 `json:"jumpid"`
 }
 
 // Validate validates this icon

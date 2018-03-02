@@ -71,11 +71,11 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var CategoryList []models.SubCategoryItem
 
-	db.Table("sub_category_items").Where("category_id=?",*(Params.CategoryID)).Find(&CategoryList)
+	db.Table("sub_category_items").Where("category_id=?",*(Params.CategoryID)).Where("status=?",0).Find(&CategoryList)
 	for j:=0; j<len(CategoryList);j++  {
 		//根据subCategoryId请求出前6条albumList
 		var AlbumList []models.Album
-		db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",CategoryList[j].ID).Find(&AlbumList)
+		db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("albums.status=? and category_album_relation.status=? and category_album_relation.categoryId=?",0,0,CategoryList[j].ID).Find(&AlbumList)
 
 		for k:=0; k<len(AlbumList);k++  {
 			AlbumList[k].AlbumName = AlbumList[k].Name
