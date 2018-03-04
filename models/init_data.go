@@ -20,7 +20,7 @@ type InitData struct {
 	DownloadURL string `json:"downloadUrl,omitempty"`
 
 	// extra info
-	ExtraInfo *InitDataExtraInfo `json:"extraInfo,omitempty"`
+	ExtraInfo InitDataExtraInfo `json:"extraInfo,omitempty"`
 
 	// force
 	Force string `json:"force,omitempty"`
@@ -49,7 +49,7 @@ func (m *InitData) Validate(formats strfmt.Registry) error {
 
 func (m *InitData) validateExtraInfo(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.ExtraInfo) { // not required
+	/*if swag.IsZero(m.ExtraInfo) { // not required
 		return nil
 	}
 
@@ -61,7 +61,7 @@ func (m *InitData) validateExtraInfo(formats strfmt.Registry) error {
 			}
 			return err
 		}
-	}
+	}*/
 
 	return nil
 }

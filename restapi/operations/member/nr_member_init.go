@@ -45,6 +45,11 @@ type NrMemberInit struct {
 	Handler NrMemberInitHandler
 }
 
+type Web struct{
+	Url string `json:"url"`
+}
+
+
 func (o *NrMemberInit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
@@ -75,11 +80,24 @@ func (o *NrMemberInit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	initData.DownloadURL = "http://www.baidu.com"
 	initData.Force = initData.Force
 	initData.Number = initData.Number
-	/*var aboutus string
-	aboutus = "http://www.baidu.com"
-	initData.ExtraInfo.AboutUsURL = *aboutus
-	initData.ExtraInfo.SpecialURL = *aboutus
-	initData.ExtraInfo.VersionURL = *aboutus*/
+	//var aboutus string
+	//aboutus = "http://www.baidu.com"*/
+
+	var webs []*Web
+
+	var intraInfo models.InitDataExtraInfo
+
+	initData.ExtraInfo = intraInfo
+
+	db.Raw("select url from web").Find(&webs)
+
+	intraInfo.AQURL = (webs[0].Url)
+
+	intraInfo.SpecialURL = (webs[1].Url)
+
+	intraInfo.AboutUsURL = (webs[2].Url)
+
+	initData.ExtraInfo = intraInfo
 
 	//var s interface{}
 	//db.Table("init").Where(map[string]interface{}{"status":0}).Find(&s).Limit(1)
@@ -87,6 +105,8 @@ func (o *NrMemberInit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//data
 	response.Data = &initData
 	response.Data.Force = "0"
+
+//	response.Data.ExtraInfo.AboutUsURL = &(webs[0].Url)
 
 	//status
 	var status models.Status

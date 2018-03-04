@@ -19,15 +19,16 @@ type InitDataExtraInfo struct {
 
 	// about us Url
 	// Required: true
-	AboutUsURL *string `json:"aboutUsUrl"`
+	AQURL string `json:"aqUrl"`
+	AboutUsURL string `json:"aboutUsUrl"`
 
 	// special Url
 	// Required: true
-	SpecialURL *string `json:"specialUrl"`
+	SpecialURL string `json:"specialUrl"`
 
 	// version Url
 	// Required: true
-	VersionURL *string `json:"versionUrl"`
+	VersionURL string `json:"versionUrl"`
 }
 
 // Validate validates this init data extra info
@@ -49,9 +50,23 @@ func (m *InitDataExtraInfo) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateAQURL(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *InitDataExtraInfo) validateAQURL(formats strfmt.Registry) error {
+
+	if err := validate.Required("aqUrl", "body", m.AQURL); err != nil {
+		return err
+	}
+
 	return nil
 }
 
