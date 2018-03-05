@@ -28,6 +28,8 @@ type Category struct {
 	Category_Id int64 `json:"category_id"`
 
 	Icon string `json:"icon"`
+
+	Id int64 `json:"id"`
 }
 
 // Validate validates this category

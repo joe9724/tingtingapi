@@ -67,7 +67,9 @@ func (o *NrCategoryList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	if (*(Params.ParentID) == int64(-1)){
-		db.Table("sub_category_items").Where(map[string]interface{}{"status":0}).Where("id not in(43,44,45,46)").Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Find(&categoryList)
+		//只显示二级类
+		db.Raw("select * from sub_category_items where category_id in(43,44,45,46) and status=0").Find(&categoryList)
+		//db.Table("sub_category_items").Where(map[string]interface{}{"status":0}).Where("id not in(43,44,45,46)").Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Find(&categoryList)
 	}else{
 		db.Table("sub_category_items").Where(map[string]interface{}{"status":0}).Where("category_id=?",Params.ParentID).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Find(&categoryList)
 	}
