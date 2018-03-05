@@ -60,6 +60,10 @@ type NrAnalyticsAppParams struct {
 	  In: query
 	*/
 	Version *string
+
+	Value *float64
+
+	OrderNo *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -90,6 +94,11 @@ func (o *NrAnalyticsAppParams) BindRequest(r *http.Request, route *middleware.Ma
 		res = append(res, err)
 	}
 
+	qValue, qhkValue, _ := qs.GetOK("value")
+	if err := o.bindValue(qValue, qhkValue, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	qTargetID, qhkTargetID, _ := qs.GetOK("targetId")
 	if err := o.bindTargetID(qTargetID, qhkTargetID, route.Formats); err != nil {
 		res = append(res, err)
@@ -102,6 +111,11 @@ func (o *NrAnalyticsAppParams) BindRequest(r *http.Request, route *middleware.Ma
 
 	qVersion, qhkVersion, _ := qs.GetOK("version")
 	if err := o.bindVersion(qVersion, qhkVersion, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qOrderNo, qhkOrderNo, _ := qs.GetOK("order_no")
+	if err := o.bindOrderNo(qOrderNo, qhkOrderNo, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -167,6 +181,24 @@ func (o *NrAnalyticsAppParams) bindMemberID(rawData []string, hasKey bool, forma
 	return nil
 }
 
+func (o *NrAnalyticsAppParams) bindValue(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertFloat64(raw)
+	if err != nil {
+		return errors.InvalidType("value", "query", "int64", raw)
+	}
+	o.Value = &value
+
+	return nil
+}
+
 func (o *NrAnalyticsAppParams) bindTargetID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
@@ -213,6 +245,20 @@ func (o *NrAnalyticsAppParams) bindVersion(rawData []string, hasKey bool, format
 	}
 
 	o.Version = &raw
+
+	return nil
+}
+
+func (o *NrAnalyticsAppParams) bindOrderNo(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.OrderNo = &raw
 
 	return nil
 }

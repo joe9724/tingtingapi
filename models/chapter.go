@@ -16,42 +16,42 @@ import (
 // swagger:model Chapter
 type Chapter struct {
 
-	Id int64 `json:"id,omitempty"`
+	Id int64 `json:"id"`
 	// big cover
-	BigCover string `json:"bigCover,omitempty"`
+	BigCover string `json:"bigCover"`
 
 	// duration
-	Duration int64 `json:"duration,omitempty"`
+	Duration int64 `json:"duration"`
 
 	// hls Url
-	HlsURL string `json:"hlsUrl,omitempty"`
+	HlsURL string `json:"hlsUrl"`
 
 	// icon
-	Icon string `json:"icon,omitempty"`
+	Icon string `json:"icon"`
 
 	// mp3 Url
-	Mp3URL string `json:"mp3Url,omitempty"`
+	Mp3URL string `json:"mp3Url"`
 
 	// name
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// order
-	Order int64 `json:"order,omitempty"`
+	Order int64 `json:"order"`
 
 	// play count
-	PlayCount int64 `json:"playCount,omitempty"`
+	PlayCount int64 `json:"playCount"`
 
 	// show icon
-	ShowIcon bool `json:"showIcon,omitempty"`
+	ShowIcon bool `json:"showIcon"`
 
 	// sub title
-	SubTitle string `json:"subTitle,omitempty"`
+	SubTitle string `json:"subTitle"`
 
 	// summary
-	Summary string `json:"summary,omitempty"`
+	Summary string `json:"summary"`
 
 	// update tips
-	UpdateTips string `json:"updateTips,omitempty"`
+	UpdateTips string `json:"updateTips"`
 }
 
 // Validate validates this chapter

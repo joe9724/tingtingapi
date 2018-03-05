@@ -91,6 +91,7 @@ func (o *BookChapList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		if err != nil{
 			fmt.Println(err.Error())
 		}
+		fmt.Println("url is,", url)
 
 		var t models.Chapter
 		t.Id = id
