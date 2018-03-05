@@ -108,6 +108,9 @@ func (o *AlbumDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		temp.Name = "文学"+strconv.FormatInt(int64(k+1),10)
 		tagList = append(tagList,temp)
 	}*/
+
+	//album.play_count+1
+	db.Exec("update albums set play_count=play_count+1 where id=?",Params.AlbumID)
 	response.TagList = tagList
 	response.Data.AlbumID,_ = strconv.ParseInt(*(Params.AlbumID), 10, 64)
 	//status

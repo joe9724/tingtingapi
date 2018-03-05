@@ -81,7 +81,7 @@ func (o *BookDetail) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		tagList = append(tagList,temp)
 	}*/
 	response.TagList = tagList
-
+	db.Exec("update books set play_count=play_count+1 where id=?",Params.BookID)
 
 	if (Params.MemberID !=nil){
 		var count int64
