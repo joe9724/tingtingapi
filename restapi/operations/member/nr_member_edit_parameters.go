@@ -119,7 +119,7 @@ func (o *NrMemberEditParams) BindRequest(r *http.Request, route *middleware.Matc
 		res = append(res, err)
 	}
 
-	avatar, avatarHeader, err := r.FormFile("avatar")
+	avatar, avatarHeader, err := r.FormFile("file")
 	if err != nil && err != http.ErrMissingFile {
 		res = append(res, errors.New(400, "reading file %q failed: %v", "avatar", err))
 	} else if err == http.ErrMissingFile {

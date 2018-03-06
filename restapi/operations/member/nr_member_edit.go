@@ -137,6 +137,8 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		code = 200
 		msg = "修改成功"
 		has,_ := HasEditAvatar(Params,filename)
+		fmt.Println("filename is",filename)
+		fmt.Println("has is",has)
 		if has == true{
 			member.Avatar = _var.GetResourceDomain("avatar")+filename+".jpg"
 		}
