@@ -13,7 +13,7 @@ import (
 	_"os"
 	"runtime"
 	"time"
-	"strings"
+	_"strings"
 	"tingtingapi/models"
 	"tingtingapi/var"
 	"strconv"
@@ -82,9 +82,9 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 		fmt.Println("contentType is", contentType)
 
 		//save
-		var lower string
-		lower = strings.ToLower(contentType)
-		if(strings.Contains(lower,"amr")||(strings.Contains(lower,"octet-stream"))) {
+		//var lower string
+		//lower = strings.ToLower(contentType)
+		if(true) {
 			if (runtime.GOOS == "windows") {
 				err1 := ioutil.WriteFile(filename+".amr", recordFile, 0644)
 				if err1 != nil {
@@ -98,7 +98,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 			}
 			code = 200
 			msg = "ok"
-			record.URL = "http://tingting-resource.bitekun.xin/resource/mp3/"+filename+".amr"
+			record.URL = "http://tingting-resource.bitekun.xin/resource/amr/"+filename+".amr"
 		}else{
 			code = 401
 			msg = "recordFile format need amr"
@@ -117,9 +117,9 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 		fmt.Println("contentType is", contentType)
 
 		//save
-		var lower string
-		lower = strings.ToLower(contentType)
-		if(strings.Contains(lower,"jp")||(strings.Contains(lower,"pn"))) {
+		//var lower string
+		//lower = strings.ToLower(contentType)
+		if(true) {
 			if (runtime.GOOS == "windows") {
 				err1 := ioutil.WriteFile(filename+".jpg", icon, 0644)
 				if err1 != nil {
@@ -131,7 +131,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 					fmt.Println(err1.Error())
 				}
 			}
-			record.Icon = filename+".jpg"
+			record.Icon = "http://tingting-resource.bitekun.xin/resource/image/icon"+filename+".jpg"
 			code = 200
 			msg = "ok"
 		}else{
@@ -148,13 +148,13 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 		}
 		//fmt.Println(len(icon))
 		// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
-		contentType := http.DetectContentType(cover)
+		//contentType := http.DetectContentType(cover)
 		//fmt.Println("contentType is", contentType)
 
 		//save
-		var lower string
-		lower = strings.ToLower(contentType)
-		if(strings.Contains(lower,"jp")||(strings.Contains(lower,"pn"))) {
+		//var lower string
+		//lower = strings.ToLower(contentType)
+		if(true) {
 			if(runtime.GOOS == "windows") {
 				err1 := ioutil.WriteFile(filename+".jpg", cover, 0644)
 				if err1 != nil {
@@ -168,7 +168,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 			}
 			code = 200
 			msg = "ok"
-			record.Cover = filename+".jpg"
+			record.Cover = "http://tingting-resource.bitekun.xin/resource/image/cover"+filename+".jpg"
 		}else{
 			code = 402
 			msg = "image format need jpg or png"
