@@ -17,29 +17,31 @@ import (
 type Record struct {
 
 	// cover
-	Cover string `json:"cover,omitempty"`
+	Cover string `json:"cover"`
 
 	// duration
-	Duration int64 `json:"duration,omitempty"`
+	Duration int64 `json:"duration"`
 
 	// play count
-	PlayCount int64 `json:"playCount,omitempty"`
+	PlayCount int64 `json:"playCount"`
 
 	// sub title
-	Sub_Title string `json:"subTitle,omitempty"`
+	Sub_Title string `json:"subTitle"`
 
 	// summary
-	Summary string `json:"summary,omitempty"`
+	Summary string `json:"summary"`
 
 	// title
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
 
 	// url
-	URL string `json:"url,omitempty"`
+	URL string `json:"url"`
 
-	User_id  int64 `json:"user_id,omitempty"`
+	User_id  int64 `json:"user_id"`
 
-	Icon  string `json:"icon,omitempty"`
+	Icon  string `json:"icon"`
+
+	Time int64 `json:"time"`
 
 }
 

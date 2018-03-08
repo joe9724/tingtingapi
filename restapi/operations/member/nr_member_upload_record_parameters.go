@@ -76,6 +76,8 @@ type NrMemberUploadRecordParams struct {
 	  In: formData
 	*/
 	Title string
+
+	Duration *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -95,6 +97,11 @@ func (o *NrMemberUploadRecordParams) BindRequest(r *http.Request, route *middlew
 
 	fdCategoryID, fdhkCategoryID, _ := fds.GetOK("categoryId")
 	if err := o.bindCategoryID(fdCategoryID, fdhkCategoryID, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	fdDuration, fdhkDuration, _ := fds.GetOK("duration")
+	if err := o.bindDuration(fdDuration, fdhkDuration, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -184,6 +191,25 @@ func (o *NrMemberUploadRecordParams) bindCategoryID(rawData []string, hasKey boo
 
 	return nil
 }
+
+func (o *NrMemberUploadRecordParams) bindDuration(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("duration", "formData", "int64", raw)
+	}
+	o.Duration = &value
+
+	return nil
+}
+
 
 func (o *NrMemberUploadRecordParams) bindContent(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string

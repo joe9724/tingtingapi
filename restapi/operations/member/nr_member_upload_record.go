@@ -181,6 +181,10 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
+	if Params.Duration !=nil {
+		record.Duration = *(Params.Duration)
+	}
+	record.Time = time.Now().Unix()/1000000
 	if(&(Params.SubTitle)!=nil){
 		record.Sub_Title = Params.SubTitle
 	}
