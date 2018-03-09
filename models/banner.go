@@ -17,11 +17,11 @@ import (
 type Banner struct {
 
 	// cover
-	Cover string `json:"cover,omitempty"`
+	Cover string `json:"cover"`
 	// type
-	Type int64 `json:"type,omitempty"`
+	Type int64 `json:"type"`
 	// 跳转类型(0=大类 1=小类 2=专辑 3=书本 4=章节 5=站内wap 6=第三方链接)
-	Name string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// 备用字段
 	ExtraInfo1 int64 `json:"extraInfo1,omitempty"`
 
@@ -32,9 +32,11 @@ type Banner struct {
 	ExtraInfo3 string `json:"extraInfo3,omitempty"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 
     Jumpid int64 `json:"jumpid"`
+
+    Jumpurl string `json:"jumpurl"`
 
 	// order
 	Order int64 `json:"order,omitempty"`
