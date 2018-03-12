@@ -168,7 +168,7 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 			}
 			code = 200
 			msg = "ok"
-			record.Cover = "http://tingting-resource.bitekun.xin/resource/image/cover"+filename+".jpg"
+			record.Cover = "http://tingting-resource.bitekun.xin/resource/image/cover/"+filename+".jpg"
 		}else{
 			code = 402
 			msg = "image format need jpg or png"
