@@ -148,6 +148,8 @@ func (o *NrMemberEdit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
 	response.Status = &status
+	response.Url = member.Avatar
+	//response.Data.Icon = member.Avatar
 
 	ok.SetPayload(&response)
 

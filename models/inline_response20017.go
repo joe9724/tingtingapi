@@ -24,6 +24,8 @@ type InlineResponse20017 struct {
 
 	// status
 	Status *Response `json:"status,omitempty"`
+
+	Url string `json:"url,omitempty"`
 }
 
 // Validate validates this inline response 200 17
