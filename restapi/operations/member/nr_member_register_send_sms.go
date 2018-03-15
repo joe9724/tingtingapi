@@ -15,6 +15,8 @@ import (
 	"tingtingapi/var"
 	"time"
 	"math/rand"
+	"strconv"
+	_"strings"
 )
 
 // NrMemberRegisterSendSmsHandlerFunc turns a function with the right signature into a member register send sms handler
@@ -64,8 +66,14 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 
 	var status models.Response
 
-	//(1)产生验证码
+	var msg string
 	var code string
+
+	msg = "操作成功"
+	code = "200"
+
+	//(1)产生验证码
+	//var code string
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 	vcode := fmt.Sprintf("%06v", rnd.Int31n(1000000))
 	fmt.Println(vcode)
@@ -80,6 +88,13 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
+
+	    var isexistmember models.Member
+	    db.Table("members").Where("phone=?",Params.PhoneNumber).Find(&isexistmember)
+	    if(isexistmember.ID != 0){
+           code = "404"
+           msg = "手机号已存在，请使用找回密码功能!"
+		}else{
 	//query
     // type =0 正常注册      =1 第三方登录后绑定手机号     =2 快捷登录
 		db.Table("sms").Where("type=?", 0).Where(map[string]interface{}{"phone": Params.PhoneNumber}).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)
@@ -108,15 +123,23 @@ func (o *NrMemberRegisterSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Requ
 
 		// 如果是快捷登录，将验证码作为临时密码存放到member里
 		if(*(Params.Type) ==1 || *(Params.Type) ==2){
+			fmt.Println("register.sendsms.phone=?",Params.PhoneNumber)
 			var member models.Member
 			db.Table("members").Where("phone=?",Params.PhoneNumber).Find(&member)
 			member.Password = code
 			member.Phone = *Params.PhoneNumber
+			member.Name = (*(Params.PhoneNumber))[0:3]+"****"+(*(Params.PhoneNumber))[7:11]
 			member.Ts = time.Now().Unix()
+			member.Ts1 = "2018-02-24 18:00:15.322041"
 			db.Save(&member)
-		}
+			fmt.Println("register.sendsms.code=?",code)
+		}}
 
-    status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
+		codevalue,err := strconv.ParseInt(code,10,64)
+		if err!=nil{
+
+		}
+	status.UnmarshalBinary([]byte(_var.Response200(codevalue,msg)))
 	response.Status = &status
 
 	ok.SetPayload(&response)
