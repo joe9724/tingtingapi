@@ -30,6 +30,8 @@ type InitData struct {
 
 	// number
 	Number float64 `json:"number,omitempty"`
+
+	Cover string `json:"cover,omitempty"`
 }
 
 // Validate validates this init data
