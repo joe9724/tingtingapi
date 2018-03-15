@@ -97,7 +97,7 @@ func (o *FindPassEditPass) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 				msg = "验证码失效"
 				code = 202
 			}else{
-				db.Table("members").Where("phone=?",&Params.PhoneNumber).Where("password=?",&Params.OldPass).Update(map[string]interface{}{"password":Params.NewPass})
+				db.Table("members").Where("phone=?",&Params.PhoneNumber).Update(map[string]interface{}{"password":Params.NewPass})
 				msg ="找回密码成功"
 				code = 203
 			}
