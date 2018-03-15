@@ -98,17 +98,30 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			code = 202
 			msg = "验证码错误或验证码超时"
 		}else{
+			//判断member里是否已经有这个phone,
 			var member models.Member
 			member.Phone = *(Params.Phone)
 			member.Password = *(Params.SmsCode)
-			db.Save(&member)
 			//
 			var temp  models.LoginRet
-		    db.Table("members").Where("phone=?", Params.Phone).Where("password=?", Params.SmsCode).Last(&temp)
+		    db.Table("members").Where("phone=?", Params.Phone).Last(&temp)
 		    temp.Password = ""
 		    if(temp.ID==0){
-				code = 203
-				msg = "无此用户"
+		    	member.Name = (*(Params.Phone))[0:4]+"****"+(*(Params.Phone))[7:11]
+		    	member.Ts1 = "2018-02-24 18:00:15.322041"
+				db.Save(&member)
+				var tempuser  models.LoginRet
+				db.Table("members").Where("phone=?", Params.Phone).Last(&tempuser)
+				if tempuser.ID == 0{
+					code = 503
+					msg = "异常"
+				}else{
+					response.Data = &tempuser
+					response.Data.ID = tempuser.ID
+					code = 200
+					msg = "ok"
+				}
+
 			}else {
 				code = 200
 				msg = "ok"

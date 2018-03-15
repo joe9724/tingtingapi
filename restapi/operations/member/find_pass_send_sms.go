@@ -12,7 +12,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	"fmt"
-	"tingtingbackend/var"
+	"tingtingapi/var"
 	"time"
 	"math/rand"
 )
@@ -86,16 +86,18 @@ func (o *FindPassSendSms) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println("5分钟内有delay2=",time.Now().Unix()-300)
 		code = findRecord.Code
 	}
-	var send bool
-	send = true
+	//var send bool
+	//send =
+	_var.SendMsg(*(Params.PhoneNumber), code,0)
+	//send = true
 	//(3)第二步成功后回调后入库
-	if (send==true){
+	//if (send==true){
 		findRecord.Code = code
 		findRecord.Phone = *(Params.PhoneNumber)
 		findRecord.Type = 1
 		findRecord.Ts = int64(time.Now().Unix())
 		db.Table("sms").Create(&findRecord)
-	}
+	//}
 
 	var ok MemberRegisterSendSmsOK
 	var response models.InlineResponse20016
