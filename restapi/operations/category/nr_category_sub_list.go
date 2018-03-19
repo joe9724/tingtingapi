@@ -84,6 +84,41 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		CategoryList[j].AlbumList = AlbumList
 	}
 
+	var BookList []models.Book
+	rows, err := db.Table("books").Select("books.name, category_book_relation.bookId,books.author_name,books.play_count,books.clips_number,books.icon,books.sub_title").Joins("left join category_book_relation on category_book_relation.bookId = books.id").Where("category_book_relation.categoryId=?",Params.CategoryID).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+	if err !=nil{
+		fmt.Println("err is",err.Error())
+	}
+	//var temp []models.Album
+	for rows.Next() {
+		var name string
+		var icon string
+		var authorAvatar string
+		var authorName string
+		var bookId int64
+		var playCount int64
+		var clipsNumber int64
+		var subTitle string
+
+		err = rows.Scan(&name,&bookId,&authorName,&playCount,&clipsNumber,&icon,subTitle)
+		if err != nil{
+			fmt.Println(err.Error())
+		}
+
+		var t models.Book
+		t.BookID = bookId
+		t.Name = name
+		t.Icon = icon
+		t.AuthorAvatar = authorAvatar
+		t.AuthorName = authorName
+		t.PlayCount = playCount
+		t.ClipsNumber = clipsNumber
+		t.SubTitle = subTitle
+		//temp = append(temp,t)
+		BookList = append(BookList,t)
+	}
+	fmt.Println("bookList is",BookList)
+
 	/*response.Data = categoryList
 
 	var SubCategories []models.SubCategoryItem
@@ -117,6 +152,7 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	status.UnmarshalBinary([]byte(_var.Response200(200,"ok")))
 	response.Status = &status
 	response.DataList = CategoryList
+	response.BookList = BookList
 
 	ok.SetPayload(&response)
 

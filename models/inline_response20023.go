@@ -24,6 +24,8 @@ type InlineResponse20023 struct {
 	Status *Response `json:"status,omitempty"`
 
 	DataList []SubCategoryItem `json:"dataList,omitempty"`
+
+	BookList []Book `json:"bookList,omitempty"`
 }
 
 // Validate validates this inline response 200 23
