@@ -50,6 +50,8 @@ type Book struct {
 	Summary string `json:"summary"`
 
 	StartTime string `json:"startTime"`
+
+	Fav bool `json:"fav"`
 }
 
 // Validate validates this book

@@ -7,8 +7,14 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
+	"fmt"
+	"tingtingbackend/var"
+
+	"time"
 )
 
 // FeedbackHandlerFunc turns a function with the right signature into a feedback handler
@@ -53,8 +59,42 @@ func (o *Feedback) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	var ok FeedbackOK
+	var response models.InlineResponse2008
+	//var icons models.AlbumBuyResult
 
-	o.Context.Respond(rw, r, route.Produces, route, res)
+	db,err := _var.OpenConnection()
+	if err!=nil{
+		fmt.Println(err.Error())
+	}
+	defer db.Close()
+    db.Exec("insert into feedbacks(title,time) values(?,?)",Params.Body.Content,time.Now().UnixNano()/1000000)
+	var status models.Response
+	/*var status models.Response
+	if(*(Params.TargetType)==0){
+		db.Exec("update chapters set play_count=play_count+1 where id=?",*(Params.TargetID))
+	}else if (*(Params.TargetType)==4){//支付宝
+		db.Exec("update members set money=money+? where id=?",*(Params.Value),*(Params.MemberID))
+		db.Exec("insert into recharge(memberId,type,order_no,time,value) values(?,?,?,?,?)",Params.MemberID,4,Params.OrderNo,time.Now().UnixNano()/1000000,Params.Value)
+	}else if (*(Params.TargetType)==5){//微信
+		db.Exec("update members set money=money+? where id=?",*(Params.Value),*(Params.MemberID))
+		db.Exec("insert into recharge(memberId,type,order_no,time,value) values(?,?,?,?,?)",Params.MemberID,5,Params.OrderNo,time.Now().UnixNano()/1000000,Params.Value)
+	}
+*/
+
+
+	var code int64
+	var msg string
+
+	code = 200
+	msg = "上报成功"
+	status.Code = &(code)
+	status.Msg = &(msg)
+
+	response.Return = &status
+
+	ok.SetPayload(&response)
+
+	o.Context.Respond(rw, r, route.Produces, route, ok)
 
 }
