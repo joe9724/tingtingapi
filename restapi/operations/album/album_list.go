@@ -111,7 +111,7 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		}
 	}else{
 		if (Params.Random != nil){
-			rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Where("albums.status=?",0).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+			rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover ").Where("albums.status=?",0).Order("RAND()").Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
 			for rows.Next() {
 				var name string
 				var albumId int64
