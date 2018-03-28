@@ -68,7 +68,7 @@ func (o *Feedback) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
-    db.Exec("insert into feedbacks(title,time) values(?,?)",Params.Body.Content,time.Now().UnixNano()/1000000)
+    db.Exec("insert into feedbacks(title,time) values(?,?)",Params.Body.Content,time.Now().UnixNano()/1000000000)
 	var status models.Response
 	/*var status models.Response
 	if(*(Params.TargetType)==0){
