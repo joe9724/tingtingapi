@@ -78,6 +78,7 @@ type AlbumListParams struct {
 	Version *string
 	PosId *int64
 	TagId *int64
+	Random *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -135,6 +136,11 @@ func (o *AlbumListParams) BindRequest(r *http.Request, route *middleware.Matched
 
 	qTagId, qhkTagId, _ := qs.GetOK("tagId")
 	if err := o.bindTagId(qTagId, qhkTagId, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qRandom, qhkRandom, _ := qs.GetOK("random")
+	if err := o.bindRandom(qRandom, qhkRandom, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -310,6 +316,25 @@ func (o *AlbumListParams) bindTagId(rawData []string, hasKey bool, formats strfm
 		return errors.InvalidType("tagId", "query", "int64", raw)
 	}
 	o.TagId = &value
+
+	return nil
+}
+
+
+func (o *AlbumListParams) bindRandom(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("random", "query", "int64", raw)
+	}
+	o.Random = &value
 
 	return nil
 }

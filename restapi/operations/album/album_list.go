@@ -110,39 +110,76 @@ func (o *AlbumList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			categoryList = append(categoryList,&t)
 		}
 	}else{
-		rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",Params.SubCategoryID).Where("albums.status=?",0).Where("category_album_relation.status=?",0).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
-		for rows.Next() {
-			var name string
-			var albumId int64
-			var author_avatar string
-			var author_name string
-			var books_number int64
-			var icon string
-			var play_count int64
-			var sub_title string
-			var time int64
-			var cover string
+		if (Params.Random != nil){
+			rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Where("albums.status=?",0).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+			for rows.Next() {
+				var name string
+				var albumId int64
+				var author_avatar string
+				var author_name string
+				var books_number int64
+				var icon string
+				var play_count int64
+				var sub_title string
+				var time int64
+				var cover string
 
-			err = rows.Scan(&name,&albumId,&author_avatar,&author_name,&books_number,&icon,&play_count,&sub_title,&time,&cover)
-			if err != nil{
-				fmt.Println(err.Error())
+				err = rows.Scan(&name,&albumId,&author_avatar,&author_name,&books_number,&icon,&play_count,&sub_title,&time,&cover)
+				if err != nil{
+					fmt.Println(err.Error())
+				}
+				fmt.Println(name,albumId)
+				var t models.Album
+				t.AlbumID = albumId
+				t.AlbumName = name
+				t.Value = 1
+				t.Cover = cover
+				t.Author_Name = author_name
+				t.Author_Avatar = author_avatar
+				t.Books_Number = books_number
+				t.Icon = icon
+				t.Play_Count = play_count
+				t.Sub_Title = sub_title
+				t.Time = time
+				//temp = append(temp,t)
+				categoryList = append(categoryList,&t)
 			}
-			fmt.Println(name,albumId)
-			var t models.Album
-			t.AlbumID = albumId
-			t.AlbumName = name
-			t.Value = 1
-			t.Cover = cover
-			t.Author_Name = author_name
-			t.Author_Avatar = author_avatar
-			t.Books_Number = books_number
-			t.Icon = icon
-			t.Play_Count = play_count
-			t.Sub_Title = sub_title
-			t.Time = time
-			//temp = append(temp,t)
-			categoryList = append(categoryList,&t)
+		}else{
+			rows, _ := db.Table("albums").Select("albums.name,albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time,albums.cover").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("category_album_relation.categoryId=?",Params.SubCategoryID).Where("albums.status=?",0).Where("category_album_relation.status=?",0).Limit(*(Params.PageSize)).Offset(*(Params.PageIndex)*(*(Params.PageSize))).Rows()
+			for rows.Next() {
+				var name string
+				var albumId int64
+				var author_avatar string
+				var author_name string
+				var books_number int64
+				var icon string
+				var play_count int64
+				var sub_title string
+				var time int64
+				var cover string
+
+				err = rows.Scan(&name,&albumId,&author_avatar,&author_name,&books_number,&icon,&play_count,&sub_title,&time,&cover)
+				if err != nil{
+					fmt.Println(err.Error())
+				}
+				fmt.Println(name,albumId)
+				var t models.Album
+				t.AlbumID = albumId
+				t.AlbumName = name
+				t.Value = 1
+				t.Cover = cover
+				t.Author_Name = author_name
+				t.Author_Avatar = author_avatar
+				t.Books_Number = books_number
+				t.Icon = icon
+				t.Play_Count = play_count
+				t.Sub_Title = sub_title
+				t.Time = time
+				//temp = append(temp,t)
+				categoryList = append(categoryList,&t)
+			}
 		}
+
 	}
 
 	//var temp []models.Album
