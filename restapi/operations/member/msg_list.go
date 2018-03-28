@@ -66,11 +66,18 @@ func (o *MsgList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
+	var help []*models.Help
+	if Params.Type !=nil {
+		db.Raw("select id,title,url from web where webtype='help'").Find(&help)
+	}else{
+		db.Table("msgs").Select("id,create_time,title,sub_title").Find(&msgs)
+	}
 	//db.Table("icons").Where(map[string]interface{}{"status":0}).Find(&icons)
-	db.Table("msgs").Select("id,create_time,title,sub_title").Find(&msgs)
+
 	//query
 
 	response.MsgList = msgs
+	response.HelpList = help
 
 	//status
 	var status models.Response

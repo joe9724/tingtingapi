@@ -14,13 +14,20 @@ import (
 
 // InlineResponse20013 inline response 200 13
 // swagger:model inline_response_200_13
+type Help struct{
+	Url string `json:"url"`
+	Title string `json:"title"`
+}
+
 type InlineResponse20013 struct {
 
 	// msg list
-	MsgList InlineResponse20013MsgList `json:"msgList"`
+	MsgList InlineResponse20013MsgList `json:"msgList,omitempty"`
 
 	// status
 	Status *Response `json:"status,omitempty"`
+
+	HelpList []*Help `json:help`
 }
 
 // Validate validates this inline response 200 13

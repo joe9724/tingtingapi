@@ -72,6 +72,8 @@ type MsgListParams struct {
 	  In: query
 	*/
 	Version *string
+
+	Type *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -84,6 +86,11 @@ func (o *MsgListParams) BindRequest(r *http.Request, route *middleware.MatchedRo
 
 	qClient, qhkClient, _ := qs.GetOK("client")
 	if err := o.bindClient(qClient, qhkClient, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qType, qhkType, _ := qs.GetOK("type")
+	if err := o.bindType(qType, qhkType, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -148,6 +155,20 @@ func (o *MsgListParams) bindClient(rawData []string, hasKey bool, formats strfmt
 	}
 
 	o.Client = &raw
+
+	return nil
+}
+
+func (o *MsgListParams) bindType(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.Type = &raw
 
 	return nil
 }
