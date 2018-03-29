@@ -74,6 +74,8 @@ type MsgListParams struct {
 	Version *string
 
 	Type *string
+
+	ID *int64
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -121,6 +123,11 @@ func (o *MsgListParams) BindRequest(r *http.Request, route *middleware.MatchedRo
 
 	qPageSize, qhkPageSize, _ := qs.GetOK("pageSize")
 	if err := o.bindPageSize(qPageSize, qhkPageSize, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qID, qhkID, _ := qs.GetOK("id")
+	if err := o.bindID(qID, qhkID, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -265,6 +272,24 @@ func (o *MsgListParams) bindPageSize(rawData []string, hasKey bool, formats strf
 		return errors.InvalidType("pageSize", "query", "int64", raw)
 	}
 	o.PageSize = &value
+
+	return nil
+}
+
+func (o *MsgListParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertInt64(raw)
+	if err != nil {
+		return errors.InvalidType("id", "query", "int64", raw)
+	}
+	o.ID = &value
 
 	return nil
 }

@@ -66,10 +66,14 @@ func (o *MsgList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
+	var m models.Msg
 	var help []*models.Help
-	if Params.Type !=nil {
+	if *(Params.Type) == "0" {
+
+		db.Raw("select * from msgs where id=?",Params.ID).First(&m)
+	}else if (*(Params.Type) == "1") {
 		db.Raw("select id,title,url from web where webtype='help'").Find(&help)
-	}else{
+	} else{
 		db.Table("msgs").Select("id,create_time,title,sub_title").Find(&msgs)
 	}
 	//db.Table("icons").Where(map[string]interface{}{"status":0}).Find(&icons)
@@ -78,6 +82,7 @@ func (o *MsgList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	response.MsgList = msgs
 	response.HelpList = help
+	response.MsgDetail = m
 
 	//status
 	var status models.Response

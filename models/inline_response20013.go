@@ -28,6 +28,8 @@ type InlineResponse20013 struct {
 	Status *Response `json:"status,omitempty"`
 
 	HelpList []*Help `json:help`
+
+	MsgDetail Msg
 }
 
 // Validate validates this inline response 200 13
