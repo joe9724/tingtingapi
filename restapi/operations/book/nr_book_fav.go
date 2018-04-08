@@ -77,7 +77,7 @@ func (o *NrBookFav) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		status.UnmarshalBinary([]byte(_var.Response200(200,"收藏成功")))
 	}else if (*(Params.Action) == "unfav"){
 		var favModel interface{}
-		db.Table("fav_book").Where("album_id = ?", Params.BookID).Where("member_id=?",Params.MemberID).Delete(&favModel)
+		db.Table("fav_book").Where("book_id = ?", Params.BookID).Where("member_id=?",Params.MemberID).Delete(&favModel)
 		status.UnmarshalBinary([]byte(_var.Response200(200,"取消收藏成功")))
 	}
 
