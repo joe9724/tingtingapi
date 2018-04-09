@@ -67,7 +67,7 @@ func (o *NrBannerList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	//db.Table("banners").Where(map[string]interface{}{"status":0}).Find(&banners)
-	db.Raw("select banners.id,banners.name,banners.type,banners.cover,banners.jumpid,banners.jumpurl from banners left join category_banner_relation on banners.id=category_banner_relation.bannerId where category_banner_relation.status=0 and banners.status=0 and category_banner_relation.categoryId=?",Params.PosID).Find(&banners)
+	db.Raw("select banners.id,banners.name,banners.type,banners.cover,banners.jumpid,banners.jumpurl from banners left join category_banner_relation on banners.id=category_banner_relation.bannerId where category_banner_relation.status=0 and banners.status=0 and category_banner_relation.categoryId=? order by category_banner_relation.order",Params.PosID).Find(&banners)
 	//query
 
 	//data

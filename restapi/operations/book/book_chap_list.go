@@ -73,7 +73,7 @@ func (o *BookChapList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
-	rows, err := db.Table("chapters").Select("chapters.name, chapters.id,chapters.icon,chapters.play_count,chapters.duration,chapters.url").Joins("left join book_chapter_relation on book_chapter_relation.chapterId = chapters.id").Where("book_chapter_relation.bookId=?",Params.BookID).Rows()
+	rows, err := db.Table("chapters").Select("chapters.name, chapters.id,chapters.icon,chapters.play_count,chapters.duration,chapters.url").Joins("left join book_chapter_relation on book_chapter_relation.chapterId = chapters.id").Where("book_chapter_relation.bookId=?",Params.BookID).Order("book_chapter_relation.order").Rows()
 	if err !=nil{
 		fmt.Println("err is",err.Error())
 	}
