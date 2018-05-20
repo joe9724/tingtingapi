@@ -51,15 +51,15 @@ func SendMsg(mobile string,str string,t int64) bool{
 	sendOk = true
 	var content string
 	if t==0 {
-		content = "【听听阅读】(5分钟内有效)验证码是:" + str
+		content = "【听听老师】(30分钟内有效)验证码是:" + str + ",听听老师听出好成绩！"
 	}else if t == 1{
-		content = "【听听阅读】(5分钟内有效)绑定手机号后初始密码是:" + str
+		content = "【听听老师】(30分钟内有效)绑定手机号后初始密码是:" + str + ",听听老师听出好成绩！"
 	}else if t == 2{
-		content = "【听听阅读】(5分钟内有效)快捷登录初始密码是:" + str
+		content = "【听听老师】(30分钟内有效)快捷登录初始密码是:" + str + ",听听老师听出好成绩！"
 	}
 	fmt.Println(content)
 	var requestUrl string
-	requestUrl = "http://mes.sh-hstx.com:8800/sendXSms.do?username=tusheng&password=abcd1234&mobile="+mobile+"&content="+content+"&dstime=&productid=100035"
+	requestUrl = "http://mes.sh-hstx.com:8800/sendXSms.do?username=tusheng&password=abcd1234&mobile="+mobile+"&content="+content+"&dstime=&productid=85526"
 	fmt.Println("send str is",url.QueryEscape(requestUrl))
 	u, _ := url.Parse(requestUrl)
 	//q := u.Query()
