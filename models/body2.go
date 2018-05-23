@@ -33,9 +33,14 @@ type Body2 struct {
 	// Required: true
 	Ts *int64 `json:"ts"`
 
-	// 反馈类型 0=账号问题,1=付费问题,2=播放问题,3=会员问题
+	// 反馈类型
+	// 0=账号问题,1=付费问题,2=播放问题,3=会员问题
+	// 10=系统问题,11=专辑信息问题,12=书籍信息问题,13=播放器问题
 	// Required: true
 	Type *int64 `json:"type"`
+
+	// 目标ID
+	TargetID int64 `json:"target_id"`
 
 	// val
 	// Required: true

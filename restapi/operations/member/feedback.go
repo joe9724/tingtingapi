@@ -68,20 +68,8 @@ func (o *Feedback) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
-    db.Exec("insert into feedbacks(title,time) values(?,?)",Params.Body.Content,time.Now().UnixNano()/1000000000)
+    db.Exec("insert into feedbacks(title, time, type, target_id, status) values(?,?,?,?,?)", Params.Body.Content, time.Now().Unix(), Params.Body.Type, Params.Body.TargetID, 0)
 	var status models.Response
-	/*var status models.Response
-	if(*(Params.TargetType)==0){
-		db.Exec("update chapters set play_count=play_count+1 where id=?",*(Params.TargetID))
-	}else if (*(Params.TargetType)==4){//支付宝
-		db.Exec("update members set money=money+? where id=?",*(Params.Value),*(Params.MemberID))
-		db.Exec("insert into recharge(memberId,type,order_no,time,value) values(?,?,?,?,?)",Params.MemberID,4,Params.OrderNo,time.Now().UnixNano()/1000000,Params.Value)
-	}else if (*(Params.TargetType)==5){//微信
-		db.Exec("update members set money=money+? where id=?",*(Params.Value),*(Params.MemberID))
-		db.Exec("insert into recharge(memberId,type,order_no,time,value) values(?,?,?,?,?)",Params.MemberID,5,Params.OrderNo,time.Now().UnixNano()/1000000,Params.Value)
-	}
-*/
-
 
 	var code int64
 	var msg string
