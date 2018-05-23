@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"tingtingbackend/var"
 	"strconv"
+	"time"
 )
 
 // AlbumBuyHandlerFunc turns a function with the right signature into a album buy handler
@@ -92,8 +93,12 @@ func (o *AlbumBuy) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 				//db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
                 //插入order记录
 				memberId, _ := strconv.ParseInt(*Params.MemberID, 10, 64)
-				var order = models.Order{AlbumID: *Params.AlbumID, MemberID: memberId}
-				db.Create(&order)
+				//按时间戳生成order_no
+				order_no := strconv.FormatInt(time.Now().UnixNano(),10)
+				db.Exec("insert into orders(album_id,member_id,order_no,status,value,time) values(?,?,?,?,?,?)",*Params.AlbumID,memberId,order_no,0,album.Value,time.Now().UnixNano()/1000000000)
+				fmt.Println("insert into orders(album_id,member_id,order_no,status,value) values(?,?,?,?,?)",*Params.AlbumID,memberId,order_no,0,album.Value)
+				//var order = models.Order{AlbumID: *Params.AlbumID, MemberID: memberId}
+				//db.Create(&order)
 				//db.Table("orders").FirstOrCreate(&models.Order{}, models.Order{AlbumID: *Params.AlbumID,MemberID:album.Value})
 
 				status.UnmarshalBinary([]byte(_var.Response200(204,"购买成功")))
