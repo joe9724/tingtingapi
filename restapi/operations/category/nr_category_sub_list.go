@@ -12,7 +12,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	_"fmt"
-	"tingtingbackend/var"
+	"tingtingapi/var"
 
 	"fmt"
 )
