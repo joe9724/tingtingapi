@@ -7,9 +7,13 @@ package member
 
 import (
 	"net/http"
-
+	_"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	middleware "github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
+	"tingtingapi/var"
+	"fmt"
+	"time"
 )
 
 // NrMemberLoginByThirdPartyHandlerFunc turns a function with the right signature into a member login by third party handler
@@ -56,14 +60,15 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 
 	//res := o.Handler.Handle(Params) // actually handle the request
 
-	db, err := utils.OpenConnection()
+	db, err := _var.OpenConnection()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
 
 	var ok LoginOK
-	var res models.InlineResponse200
+	var res models.InlineResponse20021
+	var state models.Response
 	var loginRet models.LoginRet
 
 	db.Table("members").Where("openid=?", Params.Body.Openid).Where("platform=?", Params.Body.Type).First(&loginRet)
@@ -71,7 +76,7 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 	if loginRet.ID != 0 {
 		// 修改最后一次登录时间
 		sql := "UPDATE members SET ts = ? WHERE id = ? AND status = 0"
-		db.Exec(sql, time.Now().Unix(), user.ID)
+		db.Exec(sql, time.Now().Unix(), loginRet.ID)
 	} else {
 		sql := "INSERT INTO members(name, avatar, open_id, platform, ts) VALUES (?,?,?,?,?)"
 		db.Exec(sql, Params.Body.Name, Params.Body.Avatar, Params.Body.Openid, Params.Body.Type, time.Now().Unix())
