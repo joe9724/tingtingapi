@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	middleware "github.com/go-openapi/runtime/middleware"
+	"tingtingapi/models"
 )
 
 // NrMemberLoginByThirdPartyHandlerFunc turns a function with the right signature into a member login by third party handler
@@ -53,7 +54,40 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 		return
 	}
 
-	res := o.Handler.Handle(Params) // actually handle the request
+	//res := o.Handler.Handle(Params) // actually handle the request
+
+	db, err := utils.OpenConnection()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer db.Close()
+
+	var ok LoginOK
+	var res models.InlineResponse200
+	var loginRet models.LoginRet
+
+	db.Table("members").Where("openid=?", Params.Body.Openid).Where("platform=?", Params.Body.Type).First(&loginRet)
+	// 判断是否已经存在用户信息，存在则返回这个用户信息
+	if loginRet.ID != 0 {
+		// 修改最后一次登录时间
+		sql := "UPDATE members SET ts = ? WHERE id = ? AND status = 0"
+		db.Exec(sql, time.Now().Unix(), user.ID)
+	} else {
+		sql := "INSERT INTO members(name, avatar, open_id, platform, ts) VALUES (?,?,?,?,?)"
+		db.Exec(sql, Params.Body.Name, Params.Body.Avatar, Params.Body.Openid, Params.Body.Type, time.Now().Unix())
+		// 写完之后再查询一次，保证用户存在
+		db.Table("members").Where("openid=?", Params.Body.Openid).Where("platform=?", Params.Body.Type).First(&loginRet)
+	}
+
+	if loginRet.ID != 0 {
+		loginRet.Password = ""
+		res.Data = &loginRet
+		state.UnmarshalBinary([]byte(utils.Response200(200, "登录成功")))
+		res.State = &state
+	} else {
+		state.UnmarshalBinary([]byte(utils.Response200(301, "用户不存在")))
+		res.State = &state
+	}
 
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
