@@ -11,9 +11,10 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
-	"fmt"
 	"tingtingapi/var"
+	"fmt"
 	"time"
+	"strconv"
 )
 
 // LoginHandlerFunc turns a function with the right signature into a login handler
@@ -130,7 +131,8 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			msg = "验证码错误或验证码超时"
 		} else {
 			var tmp models.LoginRet
-			db.Table("members").Where("id=?", Params.MemberID).Where("status=0").Find(&tmp)
+			memberId, _ := strconv.ParseInt(*Params.MemberID, 10, 64)
+			db.Table("members").Where("id=?", memberId).Where("status=0").Find(&tmp)
 			if tmp.ID == 0 {
 				code = 302
 				msg = "用户不存在"

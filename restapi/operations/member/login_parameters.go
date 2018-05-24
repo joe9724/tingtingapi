@@ -63,7 +63,7 @@ type LoginParams struct {
 	/*用户ID
 	  In: query
 	*/
-	MemberID string
+	MemberID *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -231,7 +231,7 @@ func (o *LoginParams) bindMemberID(rawData []string, hasKey bool, formats strfmt
 		return nil
 	}
 
-	o.Version = &raw
+	o.MemberID = &raw
 
 	return nil
 }
