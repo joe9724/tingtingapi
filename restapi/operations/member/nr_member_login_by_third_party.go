@@ -94,6 +94,8 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 		res.Status = &state
 	}
 
+	ok.SetPayload(&res)
+
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
 }
