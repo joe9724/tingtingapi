@@ -87,11 +87,11 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 	if loginRet.ID != 0 {
 		loginRet.Password = ""
 		res.Data = &loginRet
-		state.UnmarshalBinary([]byte(utils.Response200(200, "登录成功")))
-		res.State = &state
+		state.UnmarshalBinary([]byte(_var.Response200(200, "登录成功")))
+		res.Status = state
 	} else {
-		state.UnmarshalBinary([]byte(utils.Response200(301, "用户不存在")))
-		res.State = &state
+		state.UnmarshalBinary([]byte(_var.Response200(301, "用户不存在")))
+		res.Status = &state
 	}
 
 	o.Context.Respond(rw, r, route.Produces, route, res)
