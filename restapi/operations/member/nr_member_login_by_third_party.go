@@ -88,7 +88,7 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 		loginRet.Password = ""
 		res.Data = &loginRet
 		state.UnmarshalBinary([]byte(_var.Response200(200, "登录成功")))
-		res.Status = state
+		res.Status = &state
 	} else {
 		state.UnmarshalBinary([]byte(_var.Response200(301, "用户不存在")))
 		res.Status = &state
