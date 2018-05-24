@@ -71,7 +71,7 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 	var state models.Response
 	var loginRet models.LoginRet
 
-	db.Table("members").Where("openid=?", Params.Body.Openid).Where("platform=?", Params.Body.Type).First(&loginRet)
+	db.Table("members").Where("open_id=?", Params.Body.Openid).Where("platform=?", Params.Body.Type).First(&loginRet)
 	// 判断是否已经存在用户信息，存在则返回这个用户信息
 	if loginRet.ID != 0 {
 		// 修改最后一次登录时间
@@ -81,7 +81,7 @@ func (o *NrMemberLoginByThirdParty) ServeHTTP(rw http.ResponseWriter, r *http.Re
 		sql := "INSERT INTO members(name, avatar, open_id, platform, ts) VALUES (?,?,?,?,?)"
 		db.Exec(sql, Params.Body.Name, Params.Body.Avatar, Params.Body.Openid, Params.Body.Type, time.Now().Unix())
 		// 写完之后再查询一次，保证用户存在
-		db.Table("members").Where("openid=?", Params.Body.Openid).Where("platform=?", Params.Body.Type).First(&loginRet)
+		db.Table("members").Where("open_id=?", Params.Body.Openid).Where("platform=?", Params.Body.Type).First(&loginRet)
 	}
 
 	if loginRet.ID != 0 {
