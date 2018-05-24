@@ -9,7 +9,7 @@ import (
 	"net/http"
 	_"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	middleware "github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/runtime/middleware"
 	"tingtingapi/models"
 	"fmt"
 	"tingtingapi/var"
@@ -84,6 +84,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			fmt.Println("id is",response.Data.ID)
 		}
 	}else if(*(Params.LoginType) == 1){ //验证码快捷登录
+		var findRecord models.SendSms
 		db.Table("sms").Where("type=?", 2).Where("code=?",Params.SmsCode).Where(map[string]interface{}{"phone": Params.Phone}).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)
 		if(findRecord.Id==0){
 			code = 202
@@ -122,7 +123,8 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 		}
 	} else if (*(Params.LoginType) == 2) {  // 绑定手机号
-		db.Table("sms").Where("type=3").Where("code=?", Params.SmsCode).Where("phone-?", Params.Phone).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)
+		var findRecord models.SendSms
+		db.Table("sms").Where("type=1").Where("code=?", Params.SmsCode).Where("phone=?", Params.Phone).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)
 		if (findRecord.Id == 0) {
 			code = 301
 			msg = "验证码错误或验证码超时"
@@ -133,10 +135,18 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 				code = 302
 				msg = "用户不存在"
 			} else {
-				sql := "UPDATE members SET phone = ? WHERE id = ? AND status = 0"
-				db.Exec(sql, Params.Phone, Params.MemberID)
-				code = 200
-				msg = "绑定成功"
+				var count int64
+				sql := "SELECT COUNT(phone) FROM members where phone = ? AND status = 0"
+				db.Raw(sql, Params.Phone).Find(&count)
+				if count > 0 {
+					code = 304
+					msg = "手机号已被使用"
+				} else {
+					sql := "UPDATE members SET phone = ? WHERE id = ? AND status = 0"
+					db.Exec(sql, Params.Phone, Params.MemberID)
+					code = 200
+					msg = "绑定成功"
+				}
 			}
 		}
 	}
