@@ -60,8 +60,10 @@ type LoginParams struct {
 	  In: query
 	*/
 	Version *string
-
-
+	/*用户ID
+	  In: query
+	*/
+	MemberID string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -104,6 +106,11 @@ func (o *LoginParams) BindRequest(r *http.Request, route *middleware.MatchedRout
 
 	qVersion, qhkVersion, _ := qs.GetOK("version")
 	if err := o.bindVersion(qVersion, qhkVersion, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qMemberID, qhkMemberID, _ := qs.GetOK("memberId")
+	if err := o.bindMemberID(qMemberID, qhkMemberID, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -202,6 +209,20 @@ func (o *LoginParams) bindSmsCode(rawData []string, hasKey bool, formats strfmt.
 }
 
 func (o *LoginParams) bindVersion(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.Version = &raw
+
+	return nil
+}
+
+func (o *LoginParams) bindMemberID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
