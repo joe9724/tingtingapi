@@ -69,16 +69,7 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println(err.Error())
 	}
 	defer db.Close()
-	//query
-	fmt.Println("phone=",Params.Phone)
-	fmt.Println("password=",Params.Password)
-	fmt.Println("loginType=",Params.LoginType)
-	var findRecord models.SendSms
-	msg = "登录成功"
-	/*if(Params.LoginType == 0){
 
-	}
-*/
     if(*(Params.LoginType) == 0 ) { //普通密码登录
 		db.Table("members").Where("phone=?", Params.Phone).Where("password=?", Params.Password).Last(&loginRet)
 		if(loginRet.ID==0){
@@ -127,20 +118,31 @@ func (o *Login) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 				msg = "ok"
 				response.Data = &temp
 				response.Data.ID = temp.ID
-				/*response.Data.MemberID = temp.ID
-				response.Data.Level = temp.Level
-				response.Data.Gender = temp.Gender*/
-
-
 			}
 
+		}
+	} else if (*(Params.LoginType) == 2) {  // 绑定手机号
+		db.Table("sms").Where("type=3").Where("code=?", Params.SmsCode).Where("phone-?", Params.Phone).Where("ts>?", time.Now().Unix()-5*60).Last(&findRecord)
+		if (findRecord.Id == 0) {
+			code = 301
+			msg = "验证码错误或验证码超时"
+		} else {
+			var tmp models.LoginRet
+			db.Table("members").Where("id=?", Params.MemberID).Where("status=0").Find(&tmp)
+			if tmp.ID == 0 {
+				code = 302
+				msg = "用户不存在"
+			} else {
+				sql := "UPDATE members SET phone = ? WHERE id = ? AND status = 0"
+				db.Exec(sql, Params.Phone, Params.MemberID)
+				code = 200
+				msg = "绑定成功"
+			}
 		}
 	}
 
 	var status models.Response
-	fmt.Println("code is",code)
-	fmt.Println("msg is",msg)
-	status.UnmarshalBinary([]byte(_var.Response200(code,msg)))
+	status.UnmarshalBinary([]byte(_var.Response200(code, msg)))
 	response.Status = &status
 	ok.SetPayload(&response)
 
