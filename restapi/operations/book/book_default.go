@@ -71,7 +71,7 @@ func (o *BookDefault) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	//db.Table("sub_category_items").Select("sub_category_items.name, category_album_relation.albumId").Joins("left join category_album_relation on category_album_relation.categoryId = sub_category_items.id and sub_category_items.id=?",1).Scan(&test)
 	//db.Joins("JOIN sub_category_items ON sub_category_items.id = category_album_relation.albumId AND sub_category_items.id = ?",1).Where("credit_cards.number = ?", "411111111111").Find(&test)
 
-	if (2>1) {rows, err := db.Raw("select book_default_grade_relation.bookId,book_default_grade_relation.startTime,books.name from book_default_grade_relation left join books on books.id=book_default_grade_relation.bookId where book_default_grade_relation.grade=? order by (startTime+1)",Params.Grade).Limit(4).Offset(0).Rows()
+	if (2>1) {rows, err := db.Raw("select book_default_grade_relation.bookId,book_default_grade_relation.startTime,books.name from book_default_grade_relation left join books on books.id=book_default_grade_relation.bookId where book_default_grade_relation.grade=? and book_default_grade_relation.status=0 order by (startTime+1)",Params.Grade).Limit(4).Offset(0).Rows()
 		if err !=nil{
 			fmt.Println("err is",err.Error())
 		}

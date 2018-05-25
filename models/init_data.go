@@ -32,6 +32,8 @@ type InitData struct {
 	Number float64 `json:"number,omitempty"`
 
 	Cover string `json:"cover,omitempty"`
+
+	ShareUrl string `json:"shareUrl"`
 }
 
 // Validate validates this init data

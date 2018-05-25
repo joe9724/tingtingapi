@@ -80,6 +80,7 @@ func (o *NrMemberInit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	initData.DownloadURL = "http://www.baidu.com"
 	initData.Force = initData.Force
 	initData.Number = initData.Number
+	initData.ShareUrl = "http://tingting-resource.bitekun.xin/resource/html/3.html"
 	//var aboutus string
 	//aboutus = "http://www.baidu.com"*/
 
