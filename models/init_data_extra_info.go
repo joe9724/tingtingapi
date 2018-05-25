@@ -29,6 +29,8 @@ type InitDataExtraInfo struct {
 	// version Url
 	// Required: true
 	VersionURL string `json:"versionUrl"`
+
+	ShareUrl string `json:"shareUrl"`
 }
 
 // Validate validates this init data extra info

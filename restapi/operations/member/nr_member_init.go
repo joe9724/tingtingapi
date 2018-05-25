@@ -80,7 +80,6 @@ func (o *NrMemberInit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	initData.DownloadURL = "http://www.baidu.com"
 	initData.Force = initData.Force
 	initData.Number = initData.Number
-	initData.ShareUrl = "http://tingting-resource.bitekun.xin/resource/html/3.html"
 	//var aboutus string
 	//aboutus = "http://www.baidu.com"*/
 
@@ -95,6 +94,8 @@ func (o *NrMemberInit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	intraInfo.AQURL = (webs[0].Url)
 
 	intraInfo.SpecialURL = (webs[1].Url)
+
+	intraInfo.ShareUrl = "http://tingting-resource.bitekun.xin/resource/html/3.html"
 
 	intraInfo.AboutUsURL = (webs[2].Url)
 
