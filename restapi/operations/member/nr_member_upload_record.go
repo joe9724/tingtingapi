@@ -188,9 +188,11 @@ func (o *NrMemberUploadRecord) ServeHTTP(rw http.ResponseWriter, r *http.Request
 	if(&(Params.SubTitle)!=nil){
 		record.Sub_Title = Params.SubTitle
 	}
+	/*
 	if(&(Params.Summary)!=nil){
 		record.Summary = *(Params.Summary)
 	}
+	*/
 
 	record.Title = Params.Title
 	record.User_id = *(Params.MemberID)
