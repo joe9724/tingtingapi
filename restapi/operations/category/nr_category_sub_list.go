@@ -13,8 +13,9 @@ import (
 	"tingtingapi/models"
 	_"fmt"
 	"tingtingapi/var"
-
+    "strconv"
 	"fmt"
+	// "golang.org/x/net/html/atom"
 )
 
 // NrCategorySubListHandlerFunc turns a function with the right signature into a category sub list handler
@@ -70,12 +71,27 @@ func (o *NrCategorySubList) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	var CategoryList []models.SubCategoryItem
+	//判断当前用户是否已登录,已登录用户获取年龄后推荐相关对应专辑
+	var detail models.Member
+	if Params.MemberID != nil {
+		db.Table("members").Where(map[string]interface{}{"status":0}).Where("id=?",Params.MemberID).Last(&detail)
+		fmt.Println("grade is",detail.Grade)
+	}
 
 	db.Table("sub_category_items").Where("category_id=?",*(Params.CategoryID)).Where("status=?",0).Find(&CategoryList)
 	for j:=0; j<len(CategoryList);j++  {
 		//根据subCategoryId请求出前6条albumList
 		var AlbumList []models.Album
-		db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("albums.status=? and category_album_relation.status=? and category_album_relation.categoryId=?",0,0,CategoryList[j].ID).Find(&AlbumList)
+		_grade, err := strconv.ParseInt(detail.Grade, 10, 64)
+		if Params.MemberID != nil {
+			if err != nil {
+				fmt.Println("获取用户对应的年级失败")
+			}else{
+				db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where(" find_in_set(?, grade_range) and albums.status=? and category_album_relation.status=? and category_album_relation.categoryId=?",_grade,0,0,CategoryList[j].ID).Find(&AlbumList)
+			}
+		}else{
+			db.Table("albums").Select("albums.name, albums.id,albums.author_avatar,albums.author_name,albums.books_number,albums.icon,albums.play_count,albums.sub_title,albums.time").Joins("left join category_album_relation on category_album_relation.albumId = albums.id").Where("albums.status=? and category_album_relation.status=? and category_album_relation.categoryId=?",0,0,CategoryList[j].ID).Find(&AlbumList)
+		}
 
 		for k:=0; k<len(AlbumList);k++  {
 			AlbumList[k].AlbumName = AlbumList[k].Name

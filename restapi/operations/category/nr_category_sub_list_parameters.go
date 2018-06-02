@@ -76,6 +76,8 @@ type NrCategorySubListParams struct {
 	  In: query
 	*/
 	Version *string
+
+	Euid *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -138,6 +140,11 @@ func (o *NrCategorySubListParams) BindRequest(r *http.Request, route *middleware
 
 	qVersion, qhkVersion, _ := qs.GetOK("version")
 	if err := o.bindVersion(qVersion, qhkVersion, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qEuid, qhkEuid, _ := qs.GetOK("euid")
+	if err := o.bindEuid(qEuid, qhkEuid, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -317,6 +324,20 @@ func (o *NrCategorySubListParams) bindVersion(rawData []string, hasKey bool, for
 	}
 
 	o.Version = &raw
+
+	return nil
+}
+
+func (o *NrCategorySubListParams) bindEuid(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.Euid = &raw
 
 	return nil
 }
